@@ -10,11 +10,11 @@
     <Filter Include="Src\Thread">
       <UniqueIdentifier>{d3c2f325-1645-44de-9e6f-7d574e95fbc6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Utility">
+      <UniqueIdentifier>{8ea6b7d7-19b7-4521-95b7-0265799064f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\Math\math.h">
-      <Filter>Src\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Math\easing.h">
       <Filter>Src\Math</Filter>
     </ClInclude>
@@ -23,6 +23,9 @@
     </ClInclude>
     <ClInclude Include="Src\Math\constant.h">
       <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Utility\macro.h">
+      <Filter>Src\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
