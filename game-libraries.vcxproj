@@ -127,9 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Src\Effekseer\EffekseerHelper.h" />
-    <ClInclude Include="Src\Effekseer\EffekseerManager.h" />
-    <ClInclude Include="Src\Math\Easing\easing.h" />
+    <ClInclude Include="Src\Math\constant.h" />
+    <ClInclude Include="Src\Math\convert.h" />
+    <ClInclude Include="Src\Math\easing.h" />
     <ClInclude Include="Src\Math\math.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
