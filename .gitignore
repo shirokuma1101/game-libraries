@@ -1,32 +1,12 @@
-# Prerequisites
-*.d
+*.code-workspace
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+*.suo
 
-# Precompiled Headers
-*.gch
-*.pch
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+.vs/
