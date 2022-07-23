@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Src">
+      <UniqueIdentifier>{8a37f264-7464-4d54-98be-7d0ed2bc6b5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Math">
+      <UniqueIdentifier>{227127d3-29e2-4588-b72e-899d88ef4eeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Math\Easing">
+      <UniqueIdentifier>{0870cd17-b493-4eab-a8a7-1666076060a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Thread">
+      <UniqueIdentifier>{d3c2f325-1645-44de-9e6f-7d574e95fbc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Effekseer">
+      <UniqueIdentifier>{e7039bf5-9e1e-462f-aacb-605e79f099b6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\Math\Easing\easing.h">
+      <Filter>Src\Math\Easing</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Math\math.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Effekseer\EffekseerManager.h">
+      <Filter>Src\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Effekseer\EffekseerHelper.h">
+      <Filter>Src\Effekseer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
