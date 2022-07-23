@@ -7,11 +7,14 @@
     <Filter Include="Src\Math">
       <UniqueIdentifier>{227127d3-29e2-4588-b72e-899d88ef4eeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Utility">
+      <UniqueIdentifier>{8ea6b7d7-19b7-4521-95b7-0265799064f5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Src\Thread">
       <UniqueIdentifier>{d3c2f325-1645-44de-9e6f-7d574e95fbc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Utility">
-      <UniqueIdentifier>{8ea6b7d7-19b7-4521-95b7-0265799064f5}</UniqueIdentifier>
+    <Filter Include="Src\Thread\SimpleThreadManager">
+      <UniqueIdentifier>{90f1ce9b-48a0-4953-8532-33cb233749fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +29,15 @@
     </ClInclude>
     <ClInclude Include="Src\Utility\macro.h">
       <Filter>Src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h">
+      <Filter>Src\Thread\SimpleThreadManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Utility\assert.h">
+      <Filter>Src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleUniqueThread.h">
+      <Filter>Src\Thread\SimpleThreadManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
