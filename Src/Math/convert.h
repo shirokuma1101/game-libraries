@@ -29,14 +29,14 @@ namespace convert {
     template<>        constexpr int  ToRadians(int deg)  noexcept { return deg * (dPI / 180); }
     template<>        constexpr long ToRadians(long deg) noexcept { return deg * (dPI / 180); }
     template<class T> constexpr void ToRadians(T* deg)            { *deg *= (fPI / 180.f); }
-    template<>        constexpr void ToRadians(float* deg)        { *deg *= (dPI / 180); }
+    template<>        constexpr void ToRadians(int* deg)          { *deg *= (dPI / 180); }
     template<>        constexpr void ToRadians(double* deg)       { *deg *= (dPI / 180); }
 
     template<class T> constexpr T    ToDegrees(T rad)             { return rad * (180.f / fPI); }
     template<>        constexpr int  ToDegrees(int rad)  noexcept { return rad * (180 / dPI); }
     template<>        constexpr long ToDegrees(long rad) noexcept { return rad * (180 / dPI); }
     template<class T> constexpr void ToDegrees(T* rad)            { *rad *= (180.f / fPI); }
-    template<>        constexpr void ToDegrees(float* rad)        { *rad *= (180 / dPI); }
+    template<>        constexpr void ToDegrees(int* rad)          { *rad *= (180 / dPI); }
     template<>        constexpr void ToDegrees(double* rad)       { *rad *= (180 / dPI); }
 
 }
