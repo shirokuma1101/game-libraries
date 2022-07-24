@@ -2,18 +2,19 @@
 
 #include <cmath>
 
-#include "..\Utility\macro.h"
-#define NAMESPACE_EXTERNAL       namespace detail {} namespace {
+#include "Constant.h"
+
+#define NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {
+#define NAMESPACE_EXTERNAL_END   }
 #define NAMESPACE_INTERNAL_BEGIN namespace detail {
 #define NAMESPACE_INTERNAL_END   }
-
-#include "constant.h"
 
 namespace easing {
 
     using constant::fPI;
 
-    NAMESPACE_EXTERNAL
+    NAMESPACE_EXTERNAL_BEGIN
+
     NAMESPACE_INTERNAL_BEGIN
     inline float In(float n, float pow) noexcept {
         return std::pow(n, pow);
@@ -28,7 +29,7 @@ namespace easing {
             : 1.f - std::pow(-2.f * n + 2.f, pow) / 2.f;
     }
     NAMESPACE_INTERNAL_END
-    
+
     // Sine
 
     inline float InSine(float n) noexcept {
@@ -89,4 +90,10 @@ namespace easing {
         return detail::InOut(n, 5.f);
     }
 
+    NAMESPACE_EXTERNAL_END
 }
+
+#undef NAMESPACE_EXTERNAL_BEGIN
+#undef NAMESPACE_EXTERNAL_END
+#undef NAMESPACE_INTERNAL_BEGIN
+#undef NAMESPACE_INTERNAL_END
