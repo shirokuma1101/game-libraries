@@ -16,28 +16,60 @@
     <Filter Include="Src\Thread\SimpleThreadManager">
       <UniqueIdentifier>{90f1ce9b-48a0-4953-8532-33cb233749fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\ExternalDependencies">
+      <UniqueIdentifier>{e6aec463-15ba-4268-a22d-7d3865ddc1d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\ExternalDependencies\Math">
+      <UniqueIdentifier>{c5e911a4-e776-4e6e-90e5-b63fe4125aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\ExternalDependencies\EffekseerManager">
+      <UniqueIdentifier>{9e151961-820d-477d-b4ff-52f73426db26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\Math\easing.h">
+    <ClInclude Include="Src\Math\Easing.h">
       <Filter>Src\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\convert.h">
+    <ClInclude Include="Src\Math\Convert.h">
       <Filter>Src\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\constant.h">
+    <ClInclude Include="Src\Math\Constant.h">
       <Filter>Src\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\macro.h">
+    <ClInclude Include="Src\Utility\Macro.h">
       <Filter>Src\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h">
       <Filter>Src\Thread\SimpleThreadManager</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\assert.h">
+    <ClInclude Include="Src\Utility\Assert.h">
       <Filter>Src\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleUniqueThread.h">
       <Filter>Src\Thread\SimpleThreadManager</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Utility\Memory.h">
+      <Filter>Src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Math\Random.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Math\Curve.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Math\ProjectileMotion.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.h">
+      <Filter>Src\ExternalDependencies\EffekseerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerHelper.h">
+      <Filter>Src\ExternalDependencies\EffekseerManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.cpp">
+      <Filter>Src\ExternalDependencies\EffekseerManager</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

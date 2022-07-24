@@ -131,13 +131,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Src\Math\constant.h" />
-    <ClInclude Include="Src\Math\convert.h" />
-    <ClInclude Include="Src\Math\easing.h" />
+    <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerHelper.h" />
+    <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.h" />
+    <ClInclude Include="Src\Math\Constant.h" />
+    <ClInclude Include="Src\Math\Convert.h" />
+    <ClInclude Include="Src\Math\Curve.h" />
+    <ClInclude Include="Src\Math\Easing.h" />
+    <ClInclude Include="Src\Math\ProjectileMotion.h" />
+    <ClInclude Include="Src\Math\Random.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleUniqueThread.h" />
-    <ClInclude Include="Src\Utility\assert.h" />
-    <ClInclude Include="Src\Utility\macro.h" />
+    <ClInclude Include="Src\Utility\Assert.h" />
+    <ClInclude Include="Src\Utility\Macro.h" />
+    <ClInclude Include="Src\Utility\Memory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
