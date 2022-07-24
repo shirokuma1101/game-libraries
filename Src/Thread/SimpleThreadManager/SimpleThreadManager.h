@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+#include <list>
 #include <map>
 
 #include "SimpleUniqueThread.h"
@@ -12,6 +14,7 @@ public:
     SimpleThreadManager() noexcept {
         m_upThreads.clear();
     }
+
     ~SimpleThreadManager() noexcept {
         for (auto&& e : m_upThreads) {
             e.second->SyncEnd();
@@ -38,25 +41,39 @@ public:
             return iter->second->IsEnd();
         }
         else {
-            assert::RaiseAssert("ë∂ç›ÇµÇƒÇ¢Ç‹ÇπÇÒÅB");
+            assert::RaiseAssert("thread is not exists");
             return false;
         }
     }
 
     void SyncEnd(ID* id, SimpleUniqueThread::SyncType sync_type = SimpleUniqueThread::SyncType::JOIN) {
-
         if (auto iter = m_upThreads.find(*id); iter != m_upThreads.end()) {
             iter->second->SyncEnd(sync_type);
             m_upThreads.erase(*id);
             *id = ID();
         }
         else {
-            assert::RaiseAssert("ë∂ç›ÇµÇƒÇ¢Ç‹ÇπÇÒÅB");
+            assert::RaiseAssert("thread is not exists");
+        }
+    }
+
+    void AutoEnd() {
+        for (auto iter = m_autoSyncEndIDs.begin(); iter != m_autoSyncEndIDs.end();) {
+            if (m_upThreads.count(*iter)) {
+                if (IsEnd(*iter)) {
+                    SyncEnd(&(*iter));
+                    iter = m_autoSyncEndIDs.erase(iter);
+                }
+                else {
+                    ++iter;
+                }
+            }
         }
     }
 
 private:
 
-    std::map<std::thread::id, std::unique_ptr<SimpleUniqueThread>> m_upThreads;
+    std::map<ID, std::unique_ptr<SimpleUniqueThread>> m_upThreads;
+    std::vector<ID>                                   m_autoSyncEndIDs;
 
 };
