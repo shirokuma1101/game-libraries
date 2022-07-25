@@ -12,8 +12,17 @@ struct Timer {
     using M         = std::chrono::minutes;
     using H         = std::chrono::hours;
 
-    TimePoint start = TimePoint();
-    TimePoint end   = TimePoint();
+    TimePoint start;
+    TimePoint end;
+
+    Timer() noexcept
+        : start(TimePoint())
+        , end(TimePoint())
+    {}
+    Timer(const TimePoint& start, const TimePoint& end) noexcept
+        : start(start)
+        , end(end)
+    {}
 
     void Start() noexcept {
         start = GetPoint();
