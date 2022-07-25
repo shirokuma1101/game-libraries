@@ -11,8 +11,6 @@
 
 namespace easing {
 
-    using constant::fPI;
-
     NAMESPACE_EXTERNAL_BEGIN
 
     NAMESPACE_INTERNAL_BEGIN
@@ -33,13 +31,13 @@ namespace easing {
     // Sine
 
     inline float InSine(float n) noexcept {
-        return 1.f - std::cos((n * fPI) / 2.f);
+        return 1.f - std::cos((n * constant::fPI) / 2.f);
     }
     inline float OutSine(float n) noexcept {
-        return std::sin((n * fPI) / 2.f);
+        return std::sin((n * constant::fPI) / 2.f);
     }
     inline float InOutSine(float n) noexcept {
-        return -(std::cos(fPI * n) - 1.f) / 2.f;
+        return -(std::cos(constant::fPI * n) - 1.f) / 2.f;
     }
 
     // Quad
