@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef INC_ASSERT
+#define INC_ASSERT
+#endif // !INC_ASSERT
+
 #include <string_view>
 #include <crtdbg.h>
 
