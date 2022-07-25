@@ -29,13 +29,6 @@ public:
         return m_upThreads.emplace(upThr->GetID(), std::move(upThr)).first;
     }
 
-    //template<class Func, class Inst, class T*, class...Args>
-    //ID Create(Func func, Inst inst, T* ret, Args... args) {
-    //	std::unique_ptr<SimpleUniqueThread> upThr = std::make_unique<SimpleUniqueThread>();
-    //	upThr->Create(func, inst, ret, args...);
-    //	return m_upThreads.emplace(upThr->GetID(), std::move(upThr)).first;
-    //}
-
     bool IsEnd(ID id) const noexcept {
         if (auto iter = m_upThreads.find(id); iter != m_upThreads.end()) {
             return iter->second->IsEnd();

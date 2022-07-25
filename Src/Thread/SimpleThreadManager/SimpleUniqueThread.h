@@ -53,17 +53,6 @@ public:
             );
     }
 
-    //template<class Func, class Inst, class T*, class... Args>
-    //void Create(Func func, Inst inst, T* ret, Args... args) {
-    //    CheckNoExists();
-    //    m_isEnd = false;
-    //    m_upThread = std::make_unique<std::thread>(
-    //        &SimpleUniqueThread::Run<Func, Inst, T*, Args...>,
-    //        this,
-    //        &m_isEnd, func, inst, ret, args...
-    //        );
-    //}
-
     bool IsEnd() const noexcept {
         return m_isEnd;
     }
@@ -94,12 +83,6 @@ private:
     template<class Func, class Inst, class... Args>
     void Run(bool* is_end, Func func, Inst inst, Args... args) {
         (inst->*func)(args...);
-        *is_end = true;
-    }
-
-    template<class Func, class Inst, class T*, class... Args>
-    void Run(bool* is_end, Func func, Inst inst, T* ret, Args... args) {
-        *ret = (inst->*func)(args...);
         *is_end = true;
     }
 
