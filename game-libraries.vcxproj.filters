@@ -25,6 +25,12 @@
     <Filter Include="Src\ExternalDependencies\EffekseerManager">
       <UniqueIdentifier>{9e151961-820d-477d-b4ff-52f73426db26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Thread\SimpleThreadManagerEx">
+      <UniqueIdentifier>{1a51a4aa-8d4d-4228-b5b3-0ee79940e730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{b2d5d939-9d91-467d-abde-f5f2ad552c5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Math\Easing.h">
@@ -66,10 +72,28 @@
     <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerHelper.h">
       <Filter>Src\ExternalDependencies\EffekseerManager</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Math\Time.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Math\Timer.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Thread\SimpleThreadManagerEx\SimpleUniqueThreadEx.h">
+      <Filter>Src\Thread\SimpleThreadManagerEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Thread\SimpleThreadManagerEx\SimpleThreadManagerEx.h">
+      <Filter>Src\Thread\SimpleThreadManagerEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Math\Transform.h">
+      <Filter>Src\ExternalDependencies\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.cpp">
       <Filter>Src\ExternalDependencies\EffekseerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Test\TestMain.cpp">
+      <Filter>Test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
