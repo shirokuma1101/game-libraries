@@ -3,6 +3,7 @@
 #include <string_view>
 #include <thread>
 
+#ifndef INC_ASSERT
 namespace assert {
 
 #ifdef _DEBUG
@@ -23,6 +24,7 @@ namespace assert {
     }
 
 }
+#endif // !INC_ASSERT
 
 class SimpleUniqueThread {
 public:
