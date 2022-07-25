@@ -53,13 +53,13 @@ struct ProjectileMotion {
         , gravity(gravity)
     {}
 
-    std::tuple<float, float> DisplacementPosition(float time) const {
+    std::tuple<float, float> DisplacementPosition(float _time) const {
         using convert::ToSquare;
-        return { vx * time, vy * time - (1.f / 2.f) * g * ToSquare(time) };
+        return { vx * _time, vy * _time - (1.f / 2.f) * g * ToSquare(_time) };
     }
 
-    std::tuple<float, float> DisplacementVector(float time) const {
-        return { vx, vy - (g * time) };
+    std::tuple<float, float> DisplacementVector(float _time) const {
+        return { vx, vy - (g * _time) };
     }
 };
 
