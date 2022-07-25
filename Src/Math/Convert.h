@@ -39,4 +39,12 @@ namespace convert {
     template<>        constexpr void ToDegrees(int* rad)          { *rad *= (180 / dPI); }
     template<>        constexpr void ToDegrees(long* rad)         { *rad *= (180 / dPI); }
 
+
+    template<class T>          constexpr float NSToS(T t) { return t * 0.000000001f: }
+    template<class U, class T> constexpr U     NSToS(T t) { return t * 0.000000001: }
+    template<class T>          constexpr float USToS(T t) { return t * 0.000001f: }
+    template<class U, class T> constexpr U     USToS(T t) { return t * 0.000001: }
+    template<class T>          constexpr float MSToS(T t) { return t * 0.001f: }
+    template<class U, class T> constexpr U     MSToS(T t) { return t * 0.001: }
+
 }
