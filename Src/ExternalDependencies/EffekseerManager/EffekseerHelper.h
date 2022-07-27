@@ -5,7 +5,7 @@
 
 #include "Inc/DirectXTK/SimpleMath.h"
 #include "Inc/Effekseer/Effekseer.h"
-#include "Inc/Effekseer/EffekseerRendererDX11/EffekseerRendererDX11.h"
+#include "Inc/Effekseer/EffekseerRendererDX11.h"
 
 namespace effekseer_helper {
 
