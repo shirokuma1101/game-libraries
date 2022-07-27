@@ -31,6 +31,12 @@
     <Filter Include="Test">
       <UniqueIdentifier>{b2d5d939-9d91-467d-abde-f5f2ad552c5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Socket">
+      <UniqueIdentifier>{cc9bc329-e0c7-4164-9218-0f542454ee35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\ExternalDependencies\Utility">
+      <UniqueIdentifier>{ade4d1f1-246d-4a92-8a7c-af2e61dccd5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Math\Easing.h">
@@ -87,6 +93,15 @@
     <ClInclude Include="Src\ExternalDependencies\Math\Transform.h">
       <Filter>Src\ExternalDependencies\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Socket\SocketHelper.h">
+      <Filter>Src\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Math\Camera.h">
+      <Filter>Src\ExternalDependencies\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Utility\String.h">
+      <Filter>Src\ExternalDependencies\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.cpp">
@@ -94,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="Test\TestMain.cpp">
       <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Socket\SocketHelper.cpp">
+      <Filter>Src\Socket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
