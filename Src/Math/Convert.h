@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef INC_CONVERT
+#define INC_CONVERT
+#endif // !INC_CONVERT
+
 #include <vector>
 #include <list>
 
@@ -42,6 +46,12 @@ namespace convert {
     template<class T>          constexpr float MSToS(T t) { return t * 0.001f; }
     template<class U, class T> constexpr U     MSToS(T t) { return t * 0.001; }
 
+    template<class T>          constexpr T SToNS(T t)  { return t * 1000000000; }
+    template<class T>          constexpr T SToUS(T t)  { return t * 1000000; }
+    template<class T>          constexpr T SToMS(T t)  { return t * 1000; }
+    template<class T>          constexpr T MSToNS(T t) { return t * 1000000; }
+    template<class T>          constexpr T MSToUS(T t) { return t * 1000; }
+    template<class T>          constexpr T USToNS(T t) { return t * 1000; }
 
     template<class T, class U>
     inline std::vector<T> ToVector(U iterable) {
