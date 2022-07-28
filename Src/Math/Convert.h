@@ -71,4 +71,22 @@ namespace convert {
         return list;
     }
 
+    //enumerate()
+
+    inline float Normalize(float x, float x_min, float x_max, float y_start = 0.f, float y_end = 1.f) {
+        
+        if (x_min != 0.f) {
+            x -= x_min;
+            x_max -= x_min;
+            x_min = 0.f;
+        }
+
+        if (y_start != 0.f) {
+            y_end -= y_start;
+        }
+
+        float y = x / x_max;
+        return (y_end * y) + y_start;
+    }
+
 }
