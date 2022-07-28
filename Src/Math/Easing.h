@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "Constant.h"
+#include "Convert.h"
 
 #define NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {
 #define NAMESPACE_EXTERNAL_END   }
@@ -86,6 +87,17 @@ namespace easing {
     }
     inline float InOutQuint(float n) noexcept {
         return detail::InOut(n, 5.f);
+    }
+
+    template<class Func>
+    inline float NormalizedEasing(Func func, float x, float x_start, float x_end, int start_displacement, int end_displacement) {
+        return convert::Normalize(
+            func(convert::Normalize(x, x_start, x_end)),
+            0.f,
+            1.f,
+            start_displacement,
+            end_displacement
+        );
     }
 
     NAMESPACE_EXTERNAL_END
