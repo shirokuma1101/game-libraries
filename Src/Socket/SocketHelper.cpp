@@ -6,7 +6,12 @@ SOCKET socket_helper::Create(int family, int type, int protocol)
 
     if (SOCKET_HELPER_CHECK_ERROR(WSAStartup(WINSOCK_VERSION, &wsa_data), err)) {
         switch (err) {
-            // WSA
+            // note "https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup"
+        case WSAEFAULT:
+        case WSAEINPROGRESS:
+        case WSAEPROCLIM:
+        case WSASYSNOTREADY:
+        case WSAVERNOTSUPPORTED:
         default:
             break;
         }
@@ -48,10 +53,10 @@ SOCKET socket_helper::Create(const SockInfo& sock_info)
 void socket_helper::Close(SOCKET* sock)
 {
     if (SOCKET_HELPER_CHECK_ERROR(closesocket(*sock), err)) {
-
+        assert(0);
     }
     if (SOCKET_HELPER_CHECK_ERROR(WSACleanup(), err)) {
-
+        assert(0);
     }
     *sock = SOCKET();
 }
@@ -86,11 +91,14 @@ bool socket_helper::GetAddrInfo(std::string_view host, PORT port, PADDRINFOA add
     PADDRINFOA result, next;
 
     if (SOCKET_HELPER_CHECK_ERROR(getaddrinfo(host.data(), std::to_string(port).c_str(), &hints, &result), err)) {
-        // ERR
-        //assert(0);
         // no exits domain
+        //assert(0);
     }
 
+    if (result) {
+        *addr_info = *result;
+    }
+    
     for (next = result; next != NULL; next = next->ai_next) {
         SOCKET sock = Create(next->ai_family, next->ai_socktype, next->ai_protocol);
 
@@ -106,6 +114,26 @@ bool socket_helper::GetAddrInfo(std::string_view host, PORT port, PADDRINFOA add
     return true;
 }
 
+void socket_helper::Bind(SOCKET sock, const SOCKADDR& sock_addr)
+{
+    if (SOCKET_HELPER_CHECK_ERROR(bind(sock, &sock_addr, sizeof(sock_addr)), err)) {
+        assert(0);
+    }
+}
+
+void socket_helper::Listen(SOCKET sock, int backlog)
+{
+    if (SOCKET_HELPER_CHECK_ERROR(listen(sock, backlog), err)) {
+        assert(0);
+    }
+}
+
+SOCKET socket_helper::Accept(SOCKET sock, PSOCKADDR sock_addr)
+{
+    int size = sizeof(sock_addr);
+    return accept(sock, sock_addr, &size);
+}
+
 bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out_ms)
 {
     if (time_out_ms) {
@@ -118,6 +146,10 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
                 if (err != WSAEWOULDBLOCK) {
                     return false;
                 }
+            }
+            else {
+                assert(0);
+                return false;
             }
         }
 
@@ -154,6 +186,35 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
 
 }
 
+void socket_helper::Send(SOCKET sock, std::string_view data)
+{
+    int send_byte = send(sock, data.data(), static_cast<int>(strlen(data.data())), 0);
+}
+
+void socket_helper::Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr)
+{
+    int send_byte = sendto(sock, data.data(), static_cast<int>(strlen(data.data())), 0, &sock_addr, sizeof(sock_addr));
+}
+
+std::string socket_helper::Recv(SOCKET sock)
+{
+    const int buf_size = 4096;
+    char buf[buf_size];
+
+    int recv_byte = recv(sock, buf, buf_size, 0);
+    return CheckRecvData(buf, recv_byte);
+}
+
+std::string socket_helper::Recv(SOCKET sock, PSOCKADDR sock_addr)
+{
+    const int buf_size = 4096;
+    char buf[buf_size];
+    int size = sizeof(sock_addr);
+
+    int recv_byte = recvfrom(sock, buf, buf_size, 0, sock_addr, &size);
+    return CheckRecvData(buf, recv_byte);
+}
+
 std::string socket_helper::GetIPAddr(const ADDRINFOA& addr_info)
 {
     if (!addr_info.ai_addr) return std::string();
@@ -164,4 +225,14 @@ std::string socket_helper::GetIPAddr(const ADDRINFOA& addr_info)
 
     inet_ntop(addr_info.ai_family, &in_addr, dst, sizeof(dst));
     return std::string(dst);
+}
+
+std::string socket_helper::CheckRecvData(char* buf, int recv_byte)
+{
+    if (recv_byte) {
+        assert(recv_byte == 4096);
+        buf[recv_byte] = '\0';
+        return std::string(buf);
+    }
+    return std::string();
 }

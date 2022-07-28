@@ -52,9 +52,22 @@ namespace socket_helper {
 
 	bool GetAddrInfo(std::string_view host, PORT port, PADDRINFOA addr_info);
 
+	void Bind(SOCKET sock, const SOCKADDR& sock_addr);
+	
+	void Listen(SOCKET sock, int backlog);
+	
+	SOCKET Accept(SOCKET sock, PSOCKADDR sock_addr);
+	
 	bool Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out_ms = 0);
+	
+	void Send(SOCKET sock, std::string_view data);
+	void Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr);
+	
+	std::string Recv(SOCKET sock);
+	std::string Recv(SOCKET sock, PSOCKADDR sock_addr);
 
 	std::string GetIPAddr(const ADDRINFOA& addr_info);
+	std::string CheckRecvData(char* buf, int recv_byte);
 
 }
 
@@ -74,26 +87,3 @@ SOCKADDR;
 SOCKADDR_IN;
 IN_ADDR;
 */
-
-////////////////////////
-
-//connect(sock, res->ai_addr, res->ai_addrlen))
-
-//////////////////////////
-//
-//LPSOCKADDR sa;
-//TCHAR buf[48];
-//DWORD buflen;
-
-//for (ptr = ppResult; ptr != NULL; ptr = ptr->ai_next) {
-//    memset(buf, 0, sizeof(buf));
-//    buflen = 48;
-
-//    switch (ptr->ai_family) {
-//    case AF_INET:
-//    case AF_INET6:
-//        sa = (LPSOCKADDR)ptr->ai_addr;
-//        result = WSAAddressToString(sa, (DWORD)ptr->ai_addrlen, NULL, buf, &buflen);
-//        break;
-//    }
-//}
