@@ -15,6 +15,7 @@ struct Time {
 
     Time() noexcept
         : timer(Timer())
+        , deltaTime(0)
     {
         timer.Start();
         timer.End();
