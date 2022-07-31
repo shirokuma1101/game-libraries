@@ -188,12 +188,12 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
 
 void socket_helper::Send(SOCKET sock, std::string_view data)
 {
-    int send_byte = send(sock, data.data(), static_cast<int>(strlen(data.data())), 0);
+    int send_byte = send(sock, data.data(), static_cast<int>(data.size()), 0);
 }
 
 void socket_helper::Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr)
 {
-    int send_byte = sendto(sock, data.data(), static_cast<int>(strlen(data.data())), 0, &sock_addr, sizeof(sock_addr));
+    int send_byte = sendto(sock, data.data(), static_cast<int>(data.size()), 0, &sock_addr, sizeof(sock_addr));
 }
 
 std::string socket_helper::Recv(SOCKET sock)
@@ -230,9 +230,9 @@ std::string socket_helper::GetIPAddr(const ADDRINFOA& addr_info)
 std::string socket_helper::CheckRecvData(char* buf, int recv_byte)
 {
     if (recv_byte) {
-        assert(recv_byte == 4096);
+        assert(recv_byte != 4096);
         buf[recv_byte] = '\0';
-        return std::string(buf);
+        return std::string(buf, recv_byte);
     }
     return std::string();
 }
