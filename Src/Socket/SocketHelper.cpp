@@ -1,5 +1,10 @@
 #include "SocketHelper.h"
 
+#include <Math/Convert.h>
+
+#define SOCKET_HELPER_CHECK_ERROR(func, err) int err = func; err
+#define SOCKET_HELPER_CHECK_NOT_ERROR(func, err) int err = func; !err
+
 SOCKET socket_helper::Create(int family, int type, int protocol)
 {
     WSADATA wsa_data{};
@@ -186,14 +191,14 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
 
 }
 
-void socket_helper::Send(SOCKET sock, std::string_view data)
+int socket_helper::Send(SOCKET sock, std::string_view data)
 {
-    int send_byte = send(sock, data.data(), static_cast<int>(data.size()), 0);
+    return send(sock, data.data(), static_cast<int>(data.size()), 0);
 }
 
-void socket_helper::Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr)
+int socket_helper::Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr)
 {
-    int send_byte = sendto(sock, data.data(), static_cast<int>(data.size()), 0, &sock_addr, sizeof(sock_addr));
+    return sendto(sock, data.data(), static_cast<int>(data.size()), 0, &sock_addr, sizeof(sock_addr));
 }
 
 std::string socket_helper::Recv(SOCKET sock)

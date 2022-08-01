@@ -8,20 +8,6 @@
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
 
-#ifndef INC_CONVERT
-namespace convert {
-	template<class T>          constexpr T SToNS(T t)  { return t * 1000000000; }
-	template<class T>          constexpr T SToUS(T t)  { return t * 1000000; }
-	template<class T>          constexpr T SToMS(T t)  { return t * 1000; }
-	template<class T>          constexpr T MSToNS(T t) { return t * 1000000; }
-	template<class T>          constexpr T MSToUS(T t) { return t * 1000; }
-	template<class T>          constexpr T USToNS(T t) { return t * 1000; }
-}
-#endif // !INC_CONVERT
-
-#define SOCKET_HELPER_CHECK_ERROR(func, err) int err = func; err
-#define SOCKET_HELPER_CHECK_NOT_ERROR(func, err) int err = func; !err
-
 #undef GetAddrInfo
 
 namespace socket_helper {
@@ -60,8 +46,8 @@ namespace socket_helper {
 	
 	bool Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out_ms = 0);
 	
-	void Send(SOCKET sock, std::string_view data);
-	void Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr);
+	int Send(SOCKET sock, std::string_view data);
+	int Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr);
 	
 	std::string Recv(SOCKET sock);
 	std::string Recv(SOCKET sock, PSOCKADDR sock_addr);
