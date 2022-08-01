@@ -2,13 +2,9 @@
 
 #include <cmath>
 
-#include "Constant.h"
-#include "Convert.h"
-
-#define NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {
-#define NAMESPACE_EXTERNAL_END   }
-#define NAMESPACE_INTERNAL_BEGIN namespace detail {
-#define NAMESPACE_INTERNAL_END   }
+#include <Utility/Macro.h>
+#include <Math/Constant.h>
+#include <Math/Constant.h>
 
 namespace easing {
 
@@ -102,8 +98,3 @@ namespace easing {
 
     NAMESPACE_EXTERNAL_END
 }
-
-#undef NAMESPACE_EXTERNAL_BEGIN
-#undef NAMESPACE_EXTERNAL_END
-#undef NAMESPACE_INTERNAL_BEGIN
-#undef NAMESPACE_INTERNAL_END
