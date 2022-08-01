@@ -8,6 +8,9 @@
 #include "Convert.h"
 
 struct ProjectileMotion {
+    // nonstandard extension used : nameless struct/union
+#pragma warning(push)
+#pragma warning(disable : 4201)
     union {
         struct {
             float velocity;
@@ -30,6 +33,7 @@ struct ProjectileMotion {
             float g;
         };
     };
+#pragma warning(pop)
 
     ProjectileMotion() noexcept
         : velocity(0.f)
@@ -161,16 +165,6 @@ struct ProjectileMotionFromVelocityLength {
             );
     }
 
-    ProjectileMotionFromVelocityTheta NarrowAngleDisplacement() const {
-        return
-            NarrowAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
-                },
-                0
-            );
-    }
-
     std::tuple<float, float> WideAngleDisplacementPosition(float time) const {
         return
             WideAngleDisplacement(
@@ -192,6 +186,19 @@ struct ProjectileMotionFromVelocityLength {
             );
     }
 
+    // 'identifier' : unreferenced formal parameter
+#pragma warning(push)
+#pragma warning(disable : 4100)
+    ProjectileMotionFromVelocityTheta NarrowAngleDisplacement() const {
+        return
+            NarrowAngleDisplacement(
+                [&](int i, float time) {
+                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
+                },
+                0
+                    );
+    }
+
     ProjectileMotionFromVelocityTheta WideAngleDisplacement() const {
         return
             WideAngleDisplacement(
@@ -201,6 +208,7 @@ struct ProjectileMotionFromVelocityLength {
                 0
             );
     }
+#pragma warning(pop)
 
     bool IsEnable() const noexcept {
         return parabolicMotions[0].isEnable || parabolicMotions[1].isEnable;
