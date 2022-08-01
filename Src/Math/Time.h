@@ -2,8 +2,8 @@
 
 #include <chrono>
 
-#include "Convert.h"
-#include "Timer.h"
+#include <Math/Constant.h>
+#include <Math/Timer.h>
 
 struct Time {
 
@@ -13,6 +13,8 @@ struct Time {
         MS,
     };
 
+    double deltaTime;
+
     Time() noexcept
         : timer(Timer())
         , deltaTime(0)
@@ -20,8 +22,6 @@ struct Time {
         timer.Start();
         timer.End();
     }
-
-    double deltaTime;
 
     void CalcDeltaTime(Precision precision = Precision::MS) {
         timer.End();
