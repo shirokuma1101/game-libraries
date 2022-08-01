@@ -1,13 +1,9 @@
 #pragma once
 
-#ifndef INC_CONVERT
-#define INC_CONVERT
-#endif // !INC_CONVERT
-
 #include <vector>
 #include <list>
 
-#include "Constant.h"
+#include <Math/Constant.h>
 
 namespace convert {
 
@@ -53,25 +49,42 @@ namespace convert {
     template<class T>          constexpr T MSToUS(T t) { return t * 1000; }
     template<class T>          constexpr T USToNS(T t) { return t * 1000; }
 
+    template<template<class> class Container, class T>
+    inline auto ToContainer(T iterable) {
+        typename T::value_type Ty;
+        Container<decltype(Ty)> container;
+        for (auto&& e : iterable) {
+            container.insert(container.end(), e);
+        }
+        return container;
+    }
+
     template<class T, class U>
     inline std::vector<T> ToVector(U iterable) {
-        std::vector<T> list;
-        for (auto&& e : iterable) {
-            list.push_back(e);
-        }
-        return list;
+        return ToContainer<std::vector>(iterable);
     }
 
     template<class T, class U>
     inline std::list<T> ToList(U iterable) {
-        std::list<T> list;
-        for (auto&& e : iterable) {
-            list.push_back(e);
-        }
-        return list;
+        return ToContainer<std::list>(iterable);
     }
 
-    //enumerate()
+    template<class T, class Iter = decltype(std::begin(std::declval<T>()))>
+    inline auto Enumerate(T&& iterable) {
+        struct iterator {
+            size_t i;
+            Iter iter;
+            bool operator!= (const iterator& other) const { return iter != other.iter; }
+            void operator++ ()                            { ++i; ++iter; }
+            auto operator*  ()                      const { return std::tuple(i, *iter); }
+        };
+        struct iterable_wrapper {
+            T iterable;
+            auto begin() { return iterator{ 0, std::begin(iterable) }; }
+            auto end()   { return iterator{ 0, std::end(iterable) }; }
+        };
+        return iterable_wrapper{ std::forward<T>(iterable) };
+    }
 
     inline float Normalize(float x, float x_min, float x_max, float y_start = 0.f, float y_end = 1.f) {
         
