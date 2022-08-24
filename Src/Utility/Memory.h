@@ -1,16 +1,23 @@
-#pragma once
+﻿#pragma once
 
 namespace memory {
 
     template<class T>
-    void SafeRelease(T* p) {
+    inline void SafeRelease(T* p) {
         if (!p) return;
         p->Release();
         p = nullptr;
     }
 
     template<class T>
-    void SafeDelete(T* p) {
+    inline void safe_release(T* p) {
+        if (!p) return;
+        p->release();
+        p = nullptr;
+    }
+
+    template<class T>
+    inline void SafeDelete(T* p) {
         if (!p) return;
         delete p;
         p = nullptr;
