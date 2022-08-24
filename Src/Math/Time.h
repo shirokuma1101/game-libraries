@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #include <chrono>
 
 #include <Math/Constant.h>
+#include <Math/Convert.h>
 #include <Math/Timer.h>
 
 struct Time {
@@ -13,8 +14,6 @@ struct Time {
         MS,
     };
 
-    double deltaTime;
-
     Time() noexcept
         : timer(Timer())
         , deltaTime(0)
@@ -23,21 +22,23 @@ struct Time {
         timer.End();
     }
 
-    void CalcDeltaTime(Precision precision = Precision::MS) {
+    void CalcDeltaTime(Precision precision = Precision::NS) {
         timer.End();
         switch (precision) {
         case Precision::NS:
-            deltaTime = convert::NSToS<double>(timer.Duration<Timer::NS>());
+            deltaTime = convert::NSToS<double>(static_cast<double>(timer.Duration<Timer::NS>()));
             break;
         case Precision::US:
-            deltaTime = convert::USToS<double>(timer.Duration<Timer::US>());
+            deltaTime = convert::USToS<double>(static_cast<double>(timer.Duration<Timer::US>()));
             break;
         case Precision::MS:
-            deltaTime = convert::MSToS<double>(timer.Duration<Timer::MS>());
+            deltaTime = convert::MSToS<double>(static_cast<double>(timer.Duration<Timer::MS>()));
             break;
         }
         timer.Start();
     }
+
+    double deltaTime;
 
 private:
 
