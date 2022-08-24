@@ -31,7 +31,7 @@ public:
         CheckNoExists();
         m_isEnd = false;
         m_upThread = std::make_unique<std::thread>(
-            &SimpleUniqueThread::Run<Func, Inst, Args...>,
+            &SimpleUniqueThreadEx::Run<Func, Inst, Args...>,
             this,
             &m_isEnd, func, inst, args...
         );
@@ -42,7 +42,7 @@ public:
         CheckNoExists();
         m_isEnd = false;
         m_upThread = std::make_unique<std::thread>(
-            &SimpleUniqueThread::AutoRun<Func, Inst, Args...>,
+            &SimpleUniqueThreadEx::AutoRun<Func, Inst, Args...>,
             this,
             &m_isEnd, func, inst, args...
         );
