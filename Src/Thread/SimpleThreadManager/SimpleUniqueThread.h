@@ -1,6 +1,5 @@
-#pragma once
+﻿#pragma once
 
-#include <string_view>
 #include <thread>
 
 #include <Utility/Assert.h>
@@ -31,14 +30,18 @@ public:
             &SimpleUniqueThread::Run<Func, Inst, Args...>,
             this,
             &m_isEnd, func, inst, args...
-            );
+        );
     }
 
     bool IsEnd() const noexcept {
         return m_isEnd;
     }
 
-    std::thread::id GetID() const noexcept{
+    bool IsExists() const noexcept {
+        return static_cast<bool>(m_upThread);
+    }
+
+    std::thread::id GetID() const noexcept {
         CheckExists();
         return m_upThread->get_id();
     }
@@ -77,7 +80,9 @@ private:
     }
 
     void Release() noexcept {
-        SyncEnd();
+        if (IsExists()) {
+            SyncEnd();
+        }
     }
 
     bool                         m_isEnd    = false;

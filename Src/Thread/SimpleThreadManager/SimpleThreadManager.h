@@ -1,7 +1,6 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
-#include <list>
 #include <map>
 
 #include "SimpleUniqueThread.h"
@@ -16,17 +15,14 @@ public:
     }
 
     ~SimpleThreadManager() noexcept {
-        for (auto&& e : m_upThreads) {
-            e.second->SyncEnd();
-        }
-        m_upThreads.clear();
+        Release();
     }
 
     template<class Func, class Inst, class...Args>
     ID Create(Func func, Inst inst, Args... args) {
-        std::unique_ptr<SimpleUniqueThread> upThr = std::make_unique<SimpleUniqueThread>();
-        upThr->Create(func, inst, args...);
-        return m_upThreads.emplace(upThr->GetID(), std::move(upThr)).first;
+        std::unique_ptr<SimpleUniqueThread> th = std::make_unique<SimpleUniqueThread>();
+        th->Create(func, inst, args...);
+        return m_upThreads.emplace(th->GetID(), std::move(th)).first;
     }
 
     bool IsEnd(ID id) const noexcept {
@@ -65,6 +61,13 @@ public:
     }
 
 private:
+
+    void Release() {
+        for (auto&& e : m_upThreads) {
+            e.second->SyncEnd();
+        }
+        m_upThreads.clear();
+    }
 
     std::map<ID, std::unique_ptr<SimpleUniqueThread>> m_upThreads;
     std::vector<ID>                                   m_autoSyncEndIDs;
