@@ -1,4 +1,4 @@
-#include "EffekseerManager.h"
+﻿#include "EffekseerManager.h"
 
 #include "..\Utility\String.h"
 

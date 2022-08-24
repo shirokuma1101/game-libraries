@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <cmath>
 #include <array>
@@ -119,7 +119,7 @@ struct ProjectileMotionFromVelocityLength {
         }
 
         if (length == 0.f) {
-            //note: ‚‚³‚ğl—¶‚·‚éê‡‚Í—LŒøƒtƒ‰ƒO‚ğØ‚è‘Ö‚¦‚é
+            //note: é«˜ã•ã‚’è€ƒæ…®ã™ã‚‹å ´åˆã¯æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
             parabolicMotions[0].projectileMotionFromVelocityTheta.theta = std::atan2(velocity, 0.f);
             parabolicMotions[1].projectileMotionFromVelocityTheta.theta = std::atan2(-velocity, 0.f);
             parabolicMotions[0].isEnable = true;
@@ -128,7 +128,7 @@ struct ProjectileMotionFromVelocityLength {
         else {
             float a = (-gravity * ToSquare(length)) / (2.f * ToSquare(velocity));
             float b = length / a;
-            float c = 1.f; // a / a; // ‚‚³‚ğl—¶‚·‚éê‡: (a - pos_vec) / a;
+            float c = 1.f; // a / a; // é«˜ã•ã‚’è€ƒæ…®ã™ã‚‹å ´åˆ: (a - pos_vec) / a;
             float root = std::sqrt(-c + ToSquare(b) / 4.f);
             float t = ToSquare(b) / 4.f - c;
 

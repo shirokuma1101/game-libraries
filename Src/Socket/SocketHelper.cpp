@@ -1,4 +1,4 @@
-#include "SocketHelper.h"
+ï»¿#include "SocketHelper.h"
 
 #include <Math/Convert.h>
 
@@ -89,9 +89,9 @@ bool socket_helper::GetAddrInfo(std::string_view host, PORT port, PADDRINFOA add
     ADDRINFOA hints{};
     SecureZeroMemory(&hints, sizeof(hints));
     hints.ai_flags    = AI_CANONNAME;
-    hints.ai_family   = AF_INET;     // IPv4ŒÀ’è AF_UNSPEC ‘S‚Äó‚¯“ü‚ê‚é
-    hints.ai_socktype = SOCK_STREAM; // TCP‚Å‘—M
-    hints.ai_protocol = IPPROTO_TCP; // ó‚¯æ‚è‚ğTCP‚ÉŒÀ’è
+    hints.ai_family   = AF_INET;     // IPv4é™å®š AF_UNSPEC å…¨ã¦å—ã‘å…¥ã‚Œã‚‹
+    hints.ai_socktype = SOCK_STREAM; // TCPã§é€ä¿¡
+    hints.ai_protocol = IPPROTO_TCP; // å—ã‘å–ã‚Šã‚’TCPã«é™å®š
 
     PADDRINFOA result, next;
 

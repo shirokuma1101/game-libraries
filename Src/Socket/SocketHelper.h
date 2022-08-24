@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <cstdint>
 #include <cassert>
@@ -12,58 +12,58 @@
 
 namespace socket_helper {
 
-	using PORT = uint16_t;
+    using PORT = uint16_t;
 
-	struct SockInfo {
-		enum class Family {
-			IPv4,
-			IPv6,
-		};
-		enum class Type {
-			TCP,
-			UDP
-		};
+    struct SockInfo {
+        enum class Family {
+            IPv4,
+            IPv6,
+        };
+        enum class Type {
+            TCP,
+            UDP
+        };
 
-		Family family;
-		Type   type;
-	};
+        Family family;
+        Type   type;
+    };
 
-	SOCKET Create(int family, int type, int protocol = 0);
-	SOCKET Create(const SockInfo& sock_info = { SockInfo::Family::IPv4, SockInfo::Type::TCP });
+    SOCKET Create(int family, int type, int protocol = 0);
+    SOCKET Create(const SockInfo& sock_info = { SockInfo::Family::IPv4, SockInfo::Type::TCP });
 
-	void Close(SOCKET* sock);
+    void Close(SOCKET* sock);
 
-	void SetNonBlocking(SOCKET* sock);
-	void SetBlocking(SOCKET* sock);
+    void SetNonBlocking(SOCKET* sock);
+    void SetBlocking(SOCKET* sock);
 
-	bool GetAddrInfo(std::string_view host, PORT port, PADDRINFOA addr_info);
+    bool GetAddrInfo(std::string_view host, PORT port, PADDRINFOA addr_info);
 
-	void Bind(SOCKET sock, const SOCKADDR& sock_addr);
-	
-	void Listen(SOCKET sock, int backlog);
-	
-	SOCKET Accept(SOCKET sock, PSOCKADDR sock_addr);
-	
-	bool Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out_ms = 0);
-	
-	int Send(SOCKET sock, std::string_view data);
-	int Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr);
-	
-	std::string Recv(SOCKET sock);
-	std::string Recv(SOCKET sock, PSOCKADDR sock_addr);
+    void Bind(SOCKET sock, const SOCKADDR& sock_addr);
+    
+    void Listen(SOCKET sock, int backlog);
+    
+    SOCKET Accept(SOCKET sock, PSOCKADDR sock_addr);
+    
+    bool Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out_ms = 0);
+    
+    int Send(SOCKET sock, std::string_view data);
+    int Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr);
+    
+    std::string Recv(SOCKET sock);
+    std::string Recv(SOCKET sock, PSOCKADDR sock_addr);
 
-	std::string GetIPAddr(const ADDRINFOA& addr_info);
-	std::string CheckRecvData(char* buf, int recv_byte);
+    std::string GetIPAddr(const ADDRINFOA& addr_info);
+    std::string CheckRecvData(char* buf, int recv_byte);
 
 }
 
 /*
-htonl 	    ƒzƒXƒgEƒoƒCƒgƒI[ƒ_[‚ğƒlƒbƒgƒ[ƒNEƒoƒCƒgƒI[ƒ_[‚É•ÏŠ· (4ƒoƒCƒg)
-htons 	    ƒzƒXƒgEƒoƒCƒgƒI[ƒ_[‚ğƒlƒbƒgƒ[ƒNEƒoƒCƒgƒI[ƒ_[‚É•ÏŠ· (2ƒoƒCƒg)
-ntohl 	    ƒlƒbƒgƒ[ƒNEƒoƒCƒgƒI[ƒ_[‚ğƒzƒXƒgEƒoƒCƒgƒI[ƒ_[‚É•ÏŠ· (4ƒoƒCƒg)
-ntohs 	    ƒlƒbƒgƒ[ƒNEƒoƒCƒgƒI[ƒ_[‚ğƒzƒXƒgEƒoƒCƒgƒI[ƒ_[‚É•ÏŠ· (2ƒoƒCƒg)
-inet_addr 	•¶š—ñ‚ğIPƒAƒhƒŒƒX‚É•ÏŠ·
-inet_ntoa 	IPƒAƒhƒŒƒX‚ğ•¶š—ñ‚É•ÏŠ·
+htonl 	    ãƒ›ã‚¹ãƒˆãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã«å¤‰æ› (4ãƒã‚¤ãƒˆ)
+htons 	    ãƒ›ã‚¹ãƒˆãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã‚’ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã«å¤‰æ› (2ãƒã‚¤ãƒˆ)
+ntohl 	    ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã‚’ãƒ›ã‚¹ãƒˆãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã«å¤‰æ› (4ãƒã‚¤ãƒˆ)
+ntohs 	    ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯ãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã‚’ãƒ›ã‚¹ãƒˆãƒ»ãƒã‚¤ãƒˆã‚ªãƒ¼ãƒ€ãƒ¼ã«å¤‰æ› (2ãƒã‚¤ãƒˆ)
+inet_addr 	æ–‡å­—åˆ—ã‚’IPã‚¢ãƒ‰ãƒ¬ã‚¹ã«å¤‰æ›
+inet_ntoa 	IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ–‡å­—åˆ—ã«å¤‰æ›
 */
 
 /*

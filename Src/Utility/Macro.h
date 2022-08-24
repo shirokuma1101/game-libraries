@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {
 #define NAMESPACE_EXTERNAL_END   }
