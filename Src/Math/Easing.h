@@ -1,9 +1,8 @@
-#pragma once
+﻿#pragma once
 
 #include <cmath>
 
 #include <Utility/Macro.h>
-#include <Math/Constant.h>
 #include <Math/Constant.h>
 
 namespace easing {
@@ -25,65 +24,70 @@ namespace easing {
     }
     NAMESPACE_INTERNAL_END
 
-    // Sine
-
-    inline float InSine(float n) noexcept {
-        return 1.f - std::cos((n * constant::fPI) / 2.f);
-    }
-    inline float OutSine(float n) noexcept {
-        return std::sin((n * constant::fPI) / 2.f);
-    }
-    inline float InOutSine(float n) noexcept {
-        return -(std::cos(constant::fPI * n) - 1.f) / 2.f;
-    }
-
-    // Quad
-
-    inline float InQuad(float n) noexcept {
-        return detail::In(n, 2.f);
-    }
-    inline float OutQuad(float n) noexcept {
-        return detail::Out(n, 2.f);
-    }
-    inline float InOutQuad(float n) noexcept {
-        return detail::InOut(n, 5.f);
+    namespace Sine {
+        inline float In(float n) noexcept {
+            return 1.f - std::cos((n * constant::fPI) / 2.f);
+        }
+        inline float Out(float n) noexcept {
+            return std::sin((n * constant::fPI) / 2.f);
+        }
+        inline float InOut(float n) noexcept {
+            return -(std::cos(constant::fPI * n) - 1.f) / 2.f;
+        }
     }
 
-    // Cubic
-
-    inline float InCubic(float n) noexcept {
-        return detail::In(n, 3.f);
-    }
-    inline float OutCubic(float n) noexcept {
-        return detail::Out(n, 3.f);
-    }
-    inline float InOutCubic(float n) noexcept {
-        return detail::InOut(n, 3.f);
-    }
-
-    // Quart
-
-    inline float InQuart(float n) noexcept {
-        return detail::In(n, 4.f);
-    }
-    inline float OutQuart(float n) noexcept {
-        return detail::Out(n, 4.f);
-    }
-    inline float InOutQuart(float n) noexcept {
-        return detail::InOut(n, 4.f);
+    namespace Quad {
+        inline float In(float n) noexcept {
+            return detail::In(n, 2.f);
+        }
+        inline float Out(float n) noexcept {
+            return detail::Out(n, 2.f);
+        }
+        inline float InOut(float n) noexcept {
+            return detail::InOut(n, 5.f);
+        }
     }
 
-    // Quint
+    namespace Cubic {
+        inline float In(float n) noexcept {
+            return detail::In(n, 3.f);
+        }
+        inline float Out(float n) noexcept {
+            return detail::Out(n, 3.f);
+        }
+        inline float InOut(float n) noexcept {
+            return detail::InOut(n, 3.f);
+        }
+    }
 
-    inline float InQuint(float n) noexcept {
-        return detail::In(n, 5.f);
+    namespace Quart {
+        inline float In(float n) noexcept {
+            return detail::In(n, 4.f);
+        }
+        inline float Out(float n) noexcept {
+            return detail::Out(n, 4.f);
+        }
+        inline float InOut(float n) noexcept {
+            return detail::InOut(n, 4.f);
+        }
     }
-    inline float OutQuint(float n) noexcept {
-        return detail::Out(n, 5.f);
+    
+    namespace Quint {
+        inline float In(float n) noexcept {
+            return detail::In(n, 5.f);
+        }
+        inline float Out(float n) noexcept {
+            return detail::Out(n, 5.f);
+        }
+        inline float InOut(float n) noexcept {
+            return detail::InOut(n, 5.f);
+        }
     }
-    inline float InOutQuint(float n) noexcept {
-        return detail::InOut(n, 5.f);
-    }
+
+    namespace Power1 = Quad;
+    namespace Power2 = Cubic;
+    namespace Power3 = Quart;
+    namespace Power4 = Quint;
 
     template<class Func>
     inline float NormalizedEasing(Func func, float x, float x_start, float x_end, int start_displacement, int end_displacement) {
