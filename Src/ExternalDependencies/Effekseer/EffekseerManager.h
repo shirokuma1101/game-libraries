@@ -2,26 +2,26 @@
 
 #include "EffekseerHelper.h"
 
-class EffekseerManager {
+class EffekseerManager
+{
 public:
 
-    ~EffekseerManager() noexcept { Release(); }
+    ~EffekseerManager() noexcept {
+        Release();
+    }
 
-    void Init(ID3D11Device* dev, ID3D11DeviceContext* ctx, int max_square = 8192);
+    void Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max_square = 8192);
     void Update();
     void Draw();
 
     void SetCamera(const DirectX::SimpleMath::Matrix& proj_mat, const DirectX::SimpleMath::Matrix& view_mat);
     void SetEffect(std::string_view effect_name, std::string_view file_path);
     
-    void Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false);
+    effekseer_helper::EffectTransform& Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false);
 
 private:
 
-    void Release() noexcept {
-        m_manager.Reset();
-        m_renderer.Reset();
-    };
+    void Release() noexcept;
 
     int                                                                m_maxSquare = 0;
     effekseer_helper::Renderer                                         m_renderer;
