@@ -39,6 +39,10 @@ public:
         return nullptr;
     }
 
+    virtual const std::unique_ptr<AssetDataImpl>& operator[] (std::string_view name) const final {
+        return GetAsset(name);
+    }
+
     virtual void Load(std::string_view name) final {
         if (!GetAsset(name)->Load()) {
             assert::RaiseAssert(std::string("Path not found: ") + GetFilePath(name).data());
