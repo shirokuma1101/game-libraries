@@ -13,3 +13,11 @@ public:                                \
         static class_name Instance;    \
         return Instance;               \
     }
+
+#define VALID_POINTER(p, func) \
+p = func;                      \
+if (p)
+
+#define INVALID_POINTER(p, func) \
+p = func;                        \
+if (!p)
