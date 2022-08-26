@@ -10,7 +10,7 @@ namespace memory {
     }
 
     template<class T>
-    inline void safe_release(T* p) {
+    inline void SafeRelease(T* p) {
         if (!p) return;
         p->release();
         p = nullptr;
