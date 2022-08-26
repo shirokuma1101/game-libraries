@@ -3,14 +3,14 @@
 namespace memory {
 
     template<class T>
-    inline void SafeRelease(T* p) {
+    inline auto SafeRelease(T* p)->decltype(p->Release(), void()) {
         if (!p) return;
         p->Release();
         p = nullptr;
     }
 
     template<class T>
-    inline void SafeRelease(T* p) {
+    inline auto SafeRelease(T* p)->decltype(p->release(), void()) {
         if (!p) return;
         p->release();
         p = nullptr;
