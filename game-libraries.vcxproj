@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -95,7 +95,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,7 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,7 +129,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,20 +139,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerHelper.h">
+    <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetData.h" />
+    <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetManager.h" />
+    <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonData.h" />
+    <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonManager.h" />
+    <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerHelper.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerManager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Input\InputHelper.h" />
+    <ClInclude Include="Src\ExternalDependencies\Input\InputManager.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Camera.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Transform.h" />
+    <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXHelper.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Socket\SocketHelper.h" />
+    <ClInclude Include="Src\ExternalDependencies\Utility\DateTime.h" />
     <ClInclude Include="Src\ExternalDependencies\Utility\String.h" />
     <ClInclude Include="Src\Math\Constant.h" />
     <ClInclude Include="Src\Math\Convert.h" />
@@ -162,7 +190,6 @@
     <ClInclude Include="Src\Math\Random.h" />
     <ClInclude Include="Src\Math\Time.h" />
     <ClInclude Include="Src\Math\Timer.h" />
-    <ClInclude Include="Src\Socket\SocketHelper.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManagerEx\SimpleThreadManagerEx.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManagerEx\SimpleUniqueThreadEx.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h" />
@@ -172,14 +199,24 @@
     <ClInclude Include="Src\Utility\Memory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\ExternalDependencies\EffekseerManager\EffekseerManager.cpp">
+    <ClCompile Include="Src\ExternalDependencies\Effekseer\EffekseerManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Src\Socket\SocketHelper.cpp" />
+    <ClCompile Include="Src\ExternalDependencies\PhysX\PhysXManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Src\ExternalDependencies\Socket\SocketHelper.cpp" />
     <ClCompile Include="Test\TestMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Asset\asset.json" />
+    <None Include="Asset\test.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
