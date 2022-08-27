@@ -23,10 +23,10 @@ public:
     }
 
     template<class Func, class Inst, class...Args>
-    ID Create(Func func, Inst inst, Args... args) {
-        std::unique_ptr<SimpleUniqueThread> upThr = std::make_unique<SimpleUniqueThread>();
-        upThr->Create(func, inst, args...);
-        return m_upThreads.emplace(upThr->GetID(), std::move(upThr)).first;
+    ID Create(Func func, Inst inst, Args... args) const {
+        std::unique_ptr<SimpleUniqueThread> th = std::make_unique<SimpleUniqueThread>();
+        th->Create(func, inst, args...);
+        return m_upThreads.emplace(th->GetID(), std::move(th)).first;
     }
 
     bool IsEnd(ID id) const noexcept {
