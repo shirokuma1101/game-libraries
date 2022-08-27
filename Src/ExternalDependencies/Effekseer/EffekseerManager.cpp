@@ -9,7 +9,7 @@ void EffekseerManager::Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max
     effekseer_helper::ManagerInit(&m_manager, m_renderer, m_maxSquare);
 }
 
-void EffekseerManager::Update()
+void EffekseerManager::Update(double delta_time)
 {
     for (auto iter = m_emittedEffectData.begin(); iter != m_emittedEffectData.end();) {
         auto& key      = iter->first;
@@ -17,24 +17,24 @@ void EffekseerManager::Update()
         auto& handle   = iter->second.handle;
         auto& tranform = iter->second.effectTransform;
 
-        if (data.frame == 0) {
+        if (data.elapsedTime == 0) {
             handle = m_manager->Play(data.effect, 0, 0, 0);
             m_manager->SetMatrix(handle, effekseer_helper::ToMatrix43(tranform.matrix));
             m_manager->SetSpeed(handle, tranform.speed);
         }
 
-        if ((data.frame) > (tranform.maxFrame)) {
+        if (static_cast<float>(data.elapsedTime) > (tranform.maxFrame / 60.f)) {
             m_manager->StopEffect(handle);
             if (tranform.isLoop) {
-                data.frame = 0;
+                data.elapsedTime = 0;
             }
             else {
                 iter = m_emittedEffectData.erase(iter);
             }
         }
         else {
-            m_renderer->SetTime(data.frame / 60.0f); //TODO: deltaTime
-            ++(data.frame);
+            m_renderer->SetTime(static_cast<float>(data.elapsedTime));
+            data.elapsedTime += delta_time;
             ++iter;
         }
     }

@@ -11,7 +11,7 @@ public:
     }
 
     void Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max_square = 8192);
-    void Update();
+    void Update(double delta_time);
     void Draw();
 
     void SetCamera(const DirectX::SimpleMath::Matrix& proj_mat, const DirectX::SimpleMath::Matrix& view_mat);

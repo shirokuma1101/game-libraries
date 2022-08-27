@@ -4,9 +4,9 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "Inc/DirectXTK/SimpleMath.h"
-#include "Inc/Effekseer/Effekseer.h"
-#include "Inc/Effekseer/EffekseerRendererDX11.h"
+#include "SimpleMath.h"
+#include "Effekseer.h" // Effekseer must set both "include" and "Effekseer" directory
+#include "EffekseerRendererDX11/EffekseerRendererDX11.h"
 
 namespace effekseer_helper {
 
@@ -29,8 +29,8 @@ namespace effekseer_helper {
         {}
         
         Effect          effect;
-        Handle          handle = 0;
-        int             frame  = 0;
+        Handle          handle       = 0;
+        double          elapsedTime  = 0;
         EffectTransform effectTransform;
     };
 
