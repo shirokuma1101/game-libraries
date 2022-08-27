@@ -1,15 +1,13 @@
 ﻿#include "SocketHelper.h"
 
 #include <Math/Convert.h>
-
-#define SOCKET_HELPER_CHECK_ERROR(func, err) int err = func; err
-#define SOCKET_HELPER_CHECK_NOT_ERROR(func, err) int err = func; !err
+#include <Utility/Macro.h>
 
 SOCKET socket_helper::Create(int family, int type, int protocol)
 {
     WSADATA wsa_data{};
 
-    if (SOCKET_HELPER_CHECK_ERROR(WSAStartup(WINSOCK_VERSION, &wsa_data), err)) {
+    if (FAIL_CHECK(WSAStartup(WINSOCK_VERSION, &wsa_data), err)) {
         switch (err) {
             // note "https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup"
         case WSAEFAULT:
@@ -57,10 +55,10 @@ SOCKET socket_helper::Create(const SockInfo& sock_info)
 
 void socket_helper::Close(SOCKET* sock)
 {
-    if (SOCKET_HELPER_CHECK_ERROR(closesocket(*sock), err)) {
+    if (FAIL_CHECK(closesocket(*sock), err)) {
         assert(0);
     }
-    if (SOCKET_HELPER_CHECK_ERROR(WSACleanup(), err)) {
+    if (FAIL_CHECK(WSACleanup(), err)) {
         assert(0);
     }
     *sock = SOCKET();
@@ -69,7 +67,7 @@ void socket_helper::Close(SOCKET* sock)
 void socket_helper::SetNonBlocking(SOCKET* sock)
 {
     u_long mode = 1;
-    if (SOCKET_HELPER_CHECK_ERROR(ioctlsocket(*sock, FIONBIO, &mode), err)) {
+    if (FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
         assert(0);
     }
 }
@@ -77,7 +75,7 @@ void socket_helper::SetNonBlocking(SOCKET* sock)
 void socket_helper::SetBlocking(SOCKET* sock)
 {
     u_long mode = 0;
-    if (SOCKET_HELPER_CHECK_ERROR(ioctlsocket(*sock, FIONBIO, &mode), err)) {
+    if (FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
         assert(0);
     }
 }
@@ -95,7 +93,7 @@ bool socket_helper::GetAddrInfo(std::string_view host, PORT port, PADDRINFOA add
 
     PADDRINFOA result, next;
 
-    if (SOCKET_HELPER_CHECK_ERROR(getaddrinfo(host.data(), std::to_string(port).c_str(), &hints, &result), err)) {
+    if (FAIL_CHECK(getaddrinfo(host.data(), std::to_string(port).c_str(), &hints, &result), err)) {
         // no exits domain
         //assert(0);
     }
@@ -121,14 +119,14 @@ bool socket_helper::GetAddrInfo(std::string_view host, PORT port, PADDRINFOA add
 
 void socket_helper::Bind(SOCKET sock, const SOCKADDR& sock_addr)
 {
-    if (SOCKET_HELPER_CHECK_ERROR(bind(sock, &sock_addr, sizeof(sock_addr)), err)) {
+    if (FAIL_CHECK(bind(sock, &sock_addr, sizeof(sock_addr)), err)) {
         assert(0);
     }
 }
 
 void socket_helper::Listen(SOCKET sock, int backlog)
 {
-    if (SOCKET_HELPER_CHECK_ERROR(listen(sock, backlog), err)) {
+    if (FAIL_CHECK(listen(sock, backlog), err)) {
         assert(0);
     }
 }
@@ -144,7 +142,7 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
     if (time_out_ms) {
         SetNonBlocking(&sock);
 
-        if (SOCKET_HELPER_CHECK_ERROR(connect(sock, &sock_addr, static_cast<int>(sizeof(sock_addr))), err)) {
+        if (FAIL_CHECK(connect(sock, &sock_addr, static_cast<int>(sizeof(sock_addr))), err)) {
             if (err == SOCKET_ERROR) {
                 err = WSAGetLastError();
                 SetBlocking(&sock);
@@ -171,7 +169,7 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
         timeout.tv_usec = convert::MSToUS(time_out_ms);
 
         // if return 0 timeout
-        if (SOCKET_HELPER_CHECK_NOT_ERROR(select(static_cast<int>(sock + 1), &readfds, &writefds, &exceptfds, &timeout), err)) {
+        if (SUCCESS_CHECK(select(static_cast<int>(sock + 1), &readfds, &writefds, &exceptfds, &timeout), err)) {
             return false;
         }
         if (FD_ISSET(sock, &readfds) || FD_ISSET(sock, &writefds)) {
@@ -179,7 +177,7 @@ bool socket_helper::Connect(SOCKET sock, const SOCKADDR& sock_addr, int time_out
         }
     }
     else {
-        if (SOCKET_HELPER_CHECK_ERROR(connect(sock, &sock_addr, static_cast<int>(sizeof(sock_addr))), err)) {
+        if (FAIL_CHECK(connect(sock, &sock_addr, static_cast<int>(sizeof(sock_addr))), err)) {
             return false;
         }
         else {

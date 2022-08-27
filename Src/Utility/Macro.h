@@ -14,10 +14,8 @@ public:                                \
         return Instance;               \
     }
 
-#define VALID_POINTER(p, func) \
-p = func;                      \
-if (p)
+#define VALID_POINTER(p, func) p = func; p
+#define INVALID_POINTER(p, func) p = func; !p
 
-#define INVALID_POINTER(p, func) \
-p = func;                        \
-if (!p)
+#define FAIL_CHECK(func, err) int err = func; err
+#define SUCCESS_CHECK(func, err) int err = func; !err

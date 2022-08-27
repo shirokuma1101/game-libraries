@@ -5,16 +5,16 @@
 
 void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, ID3D11Device* dev)
 {
-    INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback)) {
+    if (INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
         return;
     }
 
-    VALID_POINTER(m_pPvd, physx::PxCreatePvd(*m_pFoundation)) {
+    if (VALID_POINTER(m_pPvd, physx::PxCreatePvd(*m_pFoundation))) {
         physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
         m_pPvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
     }
 
-    INVALID_POINTER(m_pPhysics, PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd)) {
+    if (INVALID_POINTER(m_pPhysics, PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd))) {
         return;
     }
 
@@ -23,7 +23,7 @@ void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, 
     }
     PxCloseExtensions();
 
-    INVALID_POINTER(m_pCooking, PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(physx::PxTolerancesScale()))) {
+    if (INVALID_POINTER(m_pCooking, PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(physx::PxTolerancesScale())))) {
         return;
     }
 
@@ -39,7 +39,7 @@ void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, 
         cuda_ctx_mgr_desc.interopMode    = physx::PxCudaInteropMode::D3D11_INTEROP;
         cuda_ctx_mgr_desc.graphicsDevice = dev;
 
-        VALID_POINTER(m_pCudaCtxMgr, PxCreateCudaContextManager(*m_pFoundation, cuda_ctx_mgr_desc, PxGetProfilerCallback())) {
+        if (VALID_POINTER(m_pCudaCtxMgr, PxCreateCudaContextManager(*m_pFoundation, cuda_ctx_mgr_desc, PxGetProfilerCallback()))) {
             if (!m_pCudaCtxMgr->contextIsValid()) {
                 memory::SafeRelease(m_pCudaCtxMgr);
             }
@@ -56,7 +56,7 @@ void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, 
     m_pScene = m_pPhysics->createScene(scene_desc);
 
     physx::PxPvdSceneClient* pvd_client;
-    VALID_POINTER(pvd_client, m_pScene->getScenePvdClient()) {
+    if (VALID_POINTER(pvd_client, m_pScene->getScenePvdClient())) {
         pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
         pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
         pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
