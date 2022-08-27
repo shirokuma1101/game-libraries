@@ -1,9 +1,9 @@
 ﻿#pragma once
 
+#include <d3d11.h>
+
 #include <Math/Constant.h>
 #include "PhysXHelper.h"
-
-#include <d3d11.h>
 
 class PhysXManager
 {

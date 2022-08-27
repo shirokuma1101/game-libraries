@@ -4,10 +4,9 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "IAssetData.h"
-
 #include <Utility/Assert.h>
 #include <ExternalDependencies/Asset/Json/JsonData.h>
+#include "IAssetData.h"
 
 template<class AssetDataImpl>
 class IAssetManager

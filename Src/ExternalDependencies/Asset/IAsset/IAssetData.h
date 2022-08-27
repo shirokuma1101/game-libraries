@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <string>
+#include <string_view>
+
 #include <Thread/SimpleThreadManagerEx/SimpleUniqueThreadEx.h>
 
 template<class _AssetClass>

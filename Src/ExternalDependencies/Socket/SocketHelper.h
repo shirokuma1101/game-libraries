@@ -5,6 +5,10 @@
 #include <string>
 #include <string_view>
 
+#ifdef _WINSOCKAPI_
+#error Please include SocketHelper.h before winsock.h (Maybe in Windows.h)
+#endif // _WINSOCKAPI_
+
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")

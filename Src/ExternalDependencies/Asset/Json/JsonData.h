@@ -1,16 +1,18 @@
 ﻿#pragma once
 
 #include <fstream>
+
 #include <ExternalDependencies/Asset/IAsset/IAssetData.h>
 
 #ifndef INCLUDE_NLOHMANN_JSON_HPP_
-#include "Inc/nlohmann/json.hpp"
-using json = nlohmann::json;
+#include "nlohmann/json.hpp"
 #endif // !INCLUDE_NLOHMANN_JSON_HPP_
 
-class JsonData : public IAssetData<json>
+class JsonData : public IAssetData<nlohmann::json>
 {
 public:
+
+    using json = nlohmann::json;
 
     JsonData(std::string_view file_path)
         : IAssetData(file_path)

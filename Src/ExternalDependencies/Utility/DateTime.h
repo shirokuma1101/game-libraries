@@ -1,4 +1,6 @@
-﻿#include <Windows.h>
+﻿#pragma once
+
+#include <Windows.h>
 
 namespace date_time {
     union RealTime {
