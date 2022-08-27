@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -95,7 +95,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,7 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,7 +129,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;.\Src\ExternalDependencies\Asset\Json\Inc\json</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
