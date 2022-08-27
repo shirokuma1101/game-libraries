@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Inc/DirectXTK/SimpleMath.h"
+#include "SimpleMath.h"
 
 struct Transform {
 
@@ -15,8 +15,8 @@ struct Transform {
         , matrix(Matrix::Identity)
     {}
 
-    Transform(const Vector3& pos, const Quaternion& q, const Vector3& s) noexcept
-        : position(pos)
+    Transform(const Vector3& p, const Quaternion& q, const Vector3& s) noexcept
+        : position(p)
         , quaternion(q)
         , scale(s)
     {}
