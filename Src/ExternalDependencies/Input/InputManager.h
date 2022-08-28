@@ -19,15 +19,13 @@ public:
         }
     }
 
-    bool GetState(int key, bool is_press_and_hold) {
+    bool GetState(int key, bool is_press_and_hold = true) const {
         for (auto iter = m_keys.begin(); iter != m_keys.end();) {
             if (iter->GetKey() == key) {
                 if (is_press_and_hold) {
                     return true;
                 }
-                else {
-                    return false;
-                }
+                ++iter;
             }
             else {
                 ++iter;
@@ -42,7 +40,7 @@ public:
 
 private:
     
-    std::list<input_helper::KeyData> m_keys;
+    mutable std::list<input_helper::KeyData> m_keys;
     
 };
 
@@ -58,17 +56,17 @@ public:
         m_mouseData.GetPosition();
     }
 
-    POINT GetPosition() {
+    POINT GetPosition() const {
         return m_mouseData.GetPoint();
     }
 
-    POINT GetDifference() {
+    POINT GetDifference() const {
         return m_mouseData.GetDifference();
     }
 
 private:
 
-    input_helper::MouseData m_mouseData;
+    mutable input_helper::MouseData m_mouseData;
 
 };
 
