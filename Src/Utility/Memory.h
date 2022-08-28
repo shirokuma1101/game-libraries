@@ -17,10 +17,10 @@ namespace memory {
     }
 
     template<class T>
-    inline void SafeDelete(T* p) {
-        if (!p) return;
-        delete p;
-        p = nullptr;
+    inline void SafeDelete(T** p) {
+        if (!*p) return;
+        delete *p;
+        *p = nullptr;
     }
 
 }
