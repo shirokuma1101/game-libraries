@@ -1,8 +1,5 @@
 ﻿#include "PhysXManager.h"
 
-#include <Utility/Macro.h>
-#include <Utility/Memory.h>
-
 void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, ID3D11Device* dev)
 {
     if (INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
@@ -41,7 +38,7 @@ void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, 
 
         if (VALID_POINTER(m_pCudaCtxMgr, PxCreateCudaContextManager(*m_pFoundation, cuda_ctx_mgr_desc, PxGetProfilerCallback()))) {
             if (!m_pCudaCtxMgr->contextIsValid()) {
-                memory::SafeRelease(m_pCudaCtxMgr);
+                memory::SafeRelease(&m_pCudaCtxMgr);
             }
         }
 
@@ -61,32 +58,6 @@ void PhysXManager::Init(DirectX::SimpleMath::Vector3 gravity, bool enable_cuda, 
         pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
         pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
     }
-}
 
-void PhysXManager::Update(double delta_time)
-{
-    m_pScene->simulate(static_cast<physx::PxReal>(delta_time));
-    m_pScene->fetchResults(true);
-}
-
-void PhysXManager::AddActor(physx::PxActor& actor)
-{
-    m_pScene->addActor(actor);
-}
-
-void PhysXManager::Release() noexcept
-{
-    memory::SafeRelease(m_pScene);
-    memory::SafeRelease(m_pDispatcher);
-    memory::SafeRelease(m_pCudaCtxMgr);
-    memory::SafeRelease(m_pCooking);
-    memory::SafeRelease(m_pPhysics);
-    if (m_pPvd) {
-        m_pPvd->disconnect();
-        physx::PxPvdTransport* transport = m_pPvd->getTransport();
-        memory::SafeRelease(m_pPvd);
-        memory::SafeRelease(transport);
-    }
-    memory::SafeRelease(m_pPvd);
-    memory::SafeRelease(m_pFoundation);
+    m_pMaterials.emplace("default", m_pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
 }

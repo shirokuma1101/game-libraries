@@ -3,6 +3,15 @@
 #include "SimpleMath.h"
 #include "PxPhysicsAPI.h"
 #include "PxFoundation.h"
+#pragma comment(lib, "PhysX_64.lib")
+#pragma comment(lib, "PhysXCommon_64.lib")
+#pragma comment(lib, "PhysXCooking_64.lib")
+#pragma comment(lib, "PhysXExtensions_static_64.lib")
+#pragma comment(lib, "PhysXFoundation_64.lib")
+#pragma comment(lib, "PhysXPvdSDK_static_64.lib")
+#pragma comment(lib, "PhysXTask_static_64.lib")
+#pragma comment(lib, "SceneQuery_static_64.lib")
+#pragma comment(lib, "SimulationController_static_64.lib")
 
 namespace physx_helper {
 
@@ -45,13 +54,14 @@ namespace physx_helper {
         return triangle_mesh;
     }
 
+    //TODO: PxQuat
+
     inline physx::PxRigidStatic* CreateStatic(
         physx::PxPhysics* physics,
         physx::PxShape* shape,
-        const DirectX::SimpleMath::Vector3& position,
-        const DirectX::SimpleMath::Quaternion& rotation
+        const DirectX::SimpleMath::Vector3& position = {0.f, 0.f, 0.f}
     ) {
-        physx::PxRigidStatic* rigid_static = physics->createRigidStatic(physx::PxTransform(ToPxVec3(position), ToPxQuat(rotation)));
+        physx::PxRigidStatic* rigid_static = physics->createRigidStatic(physx::PxTransform(ToPxVec3(position)));
         rigid_static->attachShape(*shape);
         return rigid_static;
     }
@@ -59,93 +69,17 @@ namespace physx_helper {
     inline physx::PxRigidDynamic* CreateDynamic(
         physx::PxPhysics* physics,
         physx::PxShape* shape,
-        const DirectX::SimpleMath::Vector3& position,
-        const DirectX::SimpleMath::Quaternion& rotation,
+        const DirectX::SimpleMath::Vector3& position = {0.f, 0.f, 0.f},
         const DirectX::SimpleMath::Vector3& velocity = { 0.f, 0.f, 0.f },
         float damping = 0.f
     ) {
-        physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(physx::PxTransform(ToPxVec3(position), ToPxQuat(rotation)));
+        physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(physx::PxTransform(ToPxVec3(position)));
         rigid_dynamic->attachShape(*shape);
-        rigid_dynamic->setLinearVelocity(ToPxVec3(velocity));
+        //rigid_dynamic->setLinearVelocity(ToPxVec3(velocity));
+        rigid_dynamic->setAngularVelocity(ToPxVec3(velocity));
+        //rigid_dynamic->setLinearDamping(damping);
         rigid_dynamic->setAngularDamping(damping);
         return rigid_dynamic;
     }
-
-    /* Geometry manual */
-    // URL:"https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Geometry.html"
-
-    struct Geometry {
-        Geometry(physx::PxPhysics* physics, physx::PxMaterial* material)
-            : physics(physics)
-            , material(material)
-            , shape(nullptr)
-        {}
-
-        virtual physx::PxShape* Make() = 0;
-        
-        physx::PxPhysics*  physics;
-        physx::PxMaterial* material;
-        physx::PxShape*    shape;
-    };
-
-    struct Sphere : public Geometry {
-        Sphere(physx::PxPhysics* physics, physx::PxMaterial* material, float radius)
-            : Geometry(physics, material)
-            , radius(radius)
-        {
-            Make();
-        }
-
-        physx::PxShape* Make() override {
-            return shape = physics->createShape(physx::PxSphereGeometry(radius), *material);
-        }
-
-        float radius;
-    };
-
-    struct Cupsule : public Geometry {
-        Cupsule(physx::PxPhysics* physics, physx::PxMaterial* material, float radius, float half_height)
-            : Geometry(physics, material)
-            , radius(radius)
-            , halfHeight(half_height)
-        {
-            Make();
-        }
-
-        physx::PxShape* Make() override {
-            return shape = physics->createShape(physx::PxCapsuleGeometry(radius, halfHeight), *material);
-        }
-
-        float radius;
-        float halfHeight;
-    };
-
-    struct Box : public Geometry {
-        Box(physx::PxPhysics* physics, physx::PxMaterial* material, const DirectX::SimpleMath::Vector3& half_extent)
-            : Geometry(physics, material)
-            , halfExtent(half_extent)
-        {
-            Make();
-        }
-
-        physx::PxShape* Make() override {
-            return shape = physics->createShape(physx::PxBoxGeometry(ToPxVec3(halfExtent)), *material);
-        }
-
-        DirectX::SimpleMath::Vector3 halfExtent;
-    };
-
-    struct Plane : public Geometry {
-        Plane(physx::PxPhysics* physics, physx::PxMaterial* material)
-            : Geometry(physics, material)
-        {
-            Make();
-        }
-
-        physx::PxShape* Make() override {
-            return shape = physics->createShape(physx::PxPlaneGeometry(), *material);
-        }
-
-    };
 
 }
