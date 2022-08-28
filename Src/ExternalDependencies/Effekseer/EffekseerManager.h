@@ -17,7 +17,7 @@ public:
     void SetCamera(const DirectX::SimpleMath::Matrix& proj_mat, const DirectX::SimpleMath::Matrix& view_mat);
     void SetEffect(std::string_view effect_name, std::string_view file_path);
     
-    effekseer_helper::EffectTransform& Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false);
+    effekseer_helper::EffectTransform* Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false);
 
 private:
 

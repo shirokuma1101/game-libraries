@@ -7,6 +7,13 @@
 #include "SimpleMath.h"
 #include "Effekseer.h" // Effekseer must set both "include" and "Effekseer" directory
 #include "EffekseerRendererDX11/EffekseerRendererDX11.h"
+#ifdef _DEBUG
+#pragma comment(lib, "Effekseerd.lib")
+#pragma comment(lib, "EffekseerRendererDX11d.lib")
+#else
+#pragma comment(lib, "Effekseer.lib")
+#pragma comment(lib, "EffekseerRendererDX11.lib")
+#endif // _DEBUG
 
 namespace effekseer_helper {
 

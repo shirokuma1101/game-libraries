@@ -62,16 +62,16 @@ void EffekseerManager::SetEffect(std::string_view effect_name, std::string_view 
     m_effectData.emplace(effect_name, effect_data);
 }
 
-effekseer_helper::EffectTransform& EffekseerManager::Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique)
+effekseer_helper::EffectTransform* EffekseerManager::Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique)
 {
-    if (is_unique) {
-        if (m_emittedEffectData.count(effect_name.data())) return;
-    }
     if (auto iter = m_effectData.find(effect_name.data()); iter != std::end(m_effectData)) {
+        if (is_unique) {
+            return &iter->second.effectTransform;
+        }
         auto data = effekseer_helper::EffectData(iter->second);
         data.effectTransform = effekseer_helper::EffectTransform(effect_transform);
         m_emittedEffectData.emplace(effect_name, data);
-        return data.effectTransform;
+        return &data.effectTransform;
     }
 }
 
