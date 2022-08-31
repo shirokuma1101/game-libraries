@@ -56,6 +56,18 @@ public:
 
 protected:
 
+    template<class Func>
+    bool LoadProcess(Func func) const {
+        m_isLoaded = false;
+        m_isFirstTimeLoaded = true;
+
+        const bool succeeded = func();
+
+        m_isLoaded = true;
+
+        return succeeded;
+    }
+
     void Release() {
         if (m_thread.IsExists()) {
             while (true) {

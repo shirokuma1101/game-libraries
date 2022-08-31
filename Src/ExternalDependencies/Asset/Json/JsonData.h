@@ -20,16 +20,13 @@ public:
     ~JsonData() override { Release(); }
 
     bool Load() const override {
-        m_isLoaded = false;
-        m_isFirstTimeLoaded = true;
-
-        std::ifstream ifs(m_filePath);
-        if (ifs) {
-            ifs >> *m_upAssetData;
-        }
-
-        m_isLoaded = true;
-        return static_cast<bool>(ifs);
+        return LoadProcess([&] {
+            std::ifstream ifs(m_filePath);
+            if (ifs) {
+                ifs >> *m_upAssetData;
+            }
+            return static_cast<bool>(ifs);
+        });
     }
 
 private:
