@@ -8,6 +8,9 @@
 #include <ExternalDependencies/Asset/Json/JsonData.h>
 #include "IAssetData.h"
 
+#pragma warning(push)
+#pragma warning(disable:4172) // returning address of local variable or temporary
+
 template<class AssetDataImpl>
 class IAssetManager
 {
@@ -98,3 +101,5 @@ protected:
 private:
 
 };
+
+#pragma warning(pop)
