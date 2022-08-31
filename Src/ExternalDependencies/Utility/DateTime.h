@@ -3,6 +3,7 @@
 #include <Windows.h>
 
 namespace date_time {
+    
     union RealTime {
         ULARGE_INTEGER ui;
         FILETIME       ft;
@@ -22,6 +23,7 @@ namespace date_time {
     }
 
     inline SYSTEMTIME GetSystemTime(UINT64 real_time) {
+        
         RealTime rt;
         SecureZeroMemory(&rt, sizeof(rt));
         rt.ui.QuadPart = real_time;
@@ -32,4 +34,5 @@ namespace date_time {
 
         return st;
     }
+    
 }

@@ -12,9 +12,6 @@ struct Timer {
     using M         = std::chrono::minutes;
     using H         = std::chrono::hours;
 
-    TimePoint start;
-    TimePoint end;
-
     Timer() noexcept
         : start(TimePoint())
         , end(TimePoint())
@@ -35,17 +32,21 @@ struct Timer {
         return std::chrono::duration_cast<Unit>(end - start).count();
     }
 
+    void Reset() noexcept {
+        start = TimePoint();
+        end = TimePoint();
+    }
+
     static TimePoint GetPoint() noexcept {
         return std::chrono::system_clock::now();
     }
-    
+
     template<class Unit = MS>
     static Time Get() noexcept {
         return std::chrono::duration_cast<Unit>(std::chrono::system_clock::now().time_since_epoch()).count();
     }
 
-    void Reset() noexcept {
-        start = TimePoint();
-        end = TimePoint();
-    }
+    TimePoint start;
+    TimePoint end;
+    
 };

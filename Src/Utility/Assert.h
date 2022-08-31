@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include <string_view>
 #include <crtdbg.h>
+#include <string_view>
 
 namespace assert {
 
