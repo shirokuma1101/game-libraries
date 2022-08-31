@@ -2,9 +2,10 @@
 
 #include <d3d11.h>
 
-#include <Math/Constant.h>
-#include <Utility/Macro.h>
-#include <Utility/Memory.h>
+#include "Math/Constant.h"
+#include "Utility/Macro.h"
+#include "Utility/Memory.h"
+
 #include "PhysXHelper.h"
 
 class PhysXManager
@@ -50,12 +51,19 @@ public:
     physx::PxShape* Plane(std::string_view material_name = "") {
         return m_pPhysics->createShape(physx::PxPlaneGeometry(), *FindMaterial(material_name));
     }
+    physx::PxShape* TriangleMesh(physx::PxTriangleMesh* mesh, std::string_view material_name = "") {
+        return m_pPhysics->createShape(physx::PxTriangleMeshGeometry(mesh), *FindMaterial(material_name));
+    }
 
-    physx::PxRigidStatic* CreateStatic(physx::PxShape* shape, const DirectX::SimpleMath::Vector3& position) {
+    template<class VArray, class TArray>
+    physx::PxTriangleMesh* ToPxTriangleMesh(VArray& vertices, TArray& triangles) {
+        return physx_helper::ToPxTriangleMesh(m_pPhysics, m_pCooking, vertices, triangles);
+    }
+    physx::PxRigidStatic* CreateStatic(physx::PxShape* shape, const DirectX::SimpleMath::Vector3& position = {}) {
         return physx_helper::CreateStatic(m_pPhysics, shape, position);
     }
-    physx::PxRigidDynamic* CreateDynamic(physx::PxShape* shape, const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& velocity = { 0.f, 0.f, 0.f }, float damping = 0.f) {
-        return physx_helper::CreateDynamic(m_pPhysics, shape, position);
+    physx::PxRigidDynamic* CreateDynamic(physx::PxShape* shape, const DirectX::SimpleMath::Vector3& position = {}, const DirectX::SimpleMath::Vector3& velocity = {}, float damping = 0.f) {
+        return physx_helper::CreateDynamic(m_pPhysics, shape, position, velocity, damping);
     }
     
 private:

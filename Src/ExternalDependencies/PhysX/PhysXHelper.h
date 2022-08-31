@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "SimpleMath.h"
 #include "PxPhysicsAPI.h"
 #include "PxFoundation.h"
 #pragma comment(lib, "PhysX_64.lib")
@@ -12,6 +11,7 @@
 #pragma comment(lib, "PhysXTask_static_64.lib")
 #pragma comment(lib, "SceneQuery_static_64.lib")
 #pragma comment(lib, "SimulationController_static_64.lib")
+#include "SimpleMath.h"
 
 namespace physx_helper {
 
@@ -36,16 +36,16 @@ namespace physx_helper {
         return DirectX::SimpleMath::Vector3(px_vec3.x, px_vec3.y, px_vec3.z);
     }
 
-    template<class Array>
-    inline physx::PxTriangleMesh* ToPxTriangleMesh(physx::PxPhysics* physics, physx::PxCooking* cooking, Array* vertices, Array* triangles) {
+    template<class VArray, class TArray>
+    inline physx::PxTriangleMesh* ToPxTriangleMesh(physx::PxPhysics* physics, physx::PxCooking* cooking, VArray vertices, TArray triangles) {
         physx::PxTriangleMeshDesc px_mesh_desc;
         px_mesh_desc.setToDefault();
-        px_mesh_desc.points.count = vertices.size();
-        px_mesh_desc.points.stride = sizeof(Array::value_type);
-        px_mesh_desc.points.data = vertices[0];
-        px_mesh_desc.triangles.count = triangles.size();
-        px_mesh_desc.triangles.stride = sizeof(Array::value_type);
-        px_mesh_desc.triangles.data = triangles[0];
+        px_mesh_desc.points.count = static_cast<physx::PxU32>(vertices.size());
+        px_mesh_desc.points.stride = sizeof(VArray::value_type);
+        px_mesh_desc.points.data = &vertices[0];
+        px_mesh_desc.triangles.count = static_cast<physx::PxU32>(triangles.size());
+        px_mesh_desc.triangles.stride = sizeof(TArray::value_type);
+        px_mesh_desc.triangles.data = &triangles[0];
 
         physx::PxDefaultMemoryOutputStream write_buffer;
         cooking->cookTriangleMesh(px_mesh_desc, write_buffer);
@@ -75,8 +75,8 @@ namespace physx_helper {
     ) {
         physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(physx::PxTransform(ToPxVec3(position)));
         rigid_dynamic->attachShape(*shape);
-        //rigid_dynamic->setLinearVelocity(ToPxVec3(velocity));
-        rigid_dynamic->setAngularVelocity(ToPxVec3(velocity));
+        rigid_dynamic->setLinearVelocity(ToPxVec3(velocity));
+        //rigid_dynamic->setAngularVelocity(ToPxVec3(velocity));
         //rigid_dynamic->setLinearDamping(damping);
         rigid_dynamic->setAngularDamping(damping);
         return rigid_dynamic;
