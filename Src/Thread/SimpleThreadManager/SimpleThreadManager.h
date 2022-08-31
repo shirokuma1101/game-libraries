@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#include <vector>
 #include <map>
+#include <memory>
+#include <vector>
 
 #include "SimpleUniqueThread.h"
 

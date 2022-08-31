@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include <cmath>
 #include <array>
+#include <cmath>
 #include <tuple>
 
-#include <Math/Constant.h>
-#include <Math/Convert.h>
+#include "Math/Constant.h"
+#include "Math/Convert.h"
 
 #pragma warning(push)
 #pragma warning(disable:4100) // 'identifier' : unreferenced formal parameter

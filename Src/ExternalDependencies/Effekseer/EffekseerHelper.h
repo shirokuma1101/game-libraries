@@ -1,10 +1,9 @@
 ﻿#pragma once
 
+#include <unordered_map>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 
-#include "SimpleMath.h"
 #include "Effekseer.h" // Effekseer must set both "include" and "Effekseer" directory
 #include "EffekseerRendererDX11/EffekseerRendererDX11.h"
 #ifdef _DEBUG
@@ -14,6 +13,7 @@
 #pragma comment(lib, "Effekseer.lib")
 #pragma comment(lib, "EffekseerRendererDX11.lib")
 #endif // _DEBUG
+#include "SimpleMath.h"
 
 namespace effekseer_helper {
 

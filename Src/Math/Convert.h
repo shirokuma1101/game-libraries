@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include <vector>
 #include <list>
+#include <vector>
 
-#include <Math/Constant.h>
+#include "Math/Constant.h"
 
 namespace convert {
 

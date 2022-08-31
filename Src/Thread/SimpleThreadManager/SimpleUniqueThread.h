@@ -1,8 +1,9 @@
 ﻿#pragma once
 
+#include <memory>
 #include <thread>
 
-#include <Utility/Assert.h>
+#include "Utility/Assert.h"
 
 class SimpleUniqueThread {
 public:

@@ -1,8 +1,9 @@
 ﻿#pragma once
 
-#include <vector>
 #include <list>
 #include <map>
+#include <memory>
+#include <vector>
 
 #include "SimpleUniqueThreadEx.h"
 

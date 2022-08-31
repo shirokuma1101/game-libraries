@@ -1,7 +1,7 @@
 ﻿#include "SocketHelper.h"
 
-#include <Math/Convert.h>
-#include <Utility/Macro.h>
+#include "Math/Convert.h"
+#include "Utility/Macro.h"
 
 SOCKET socket_helper::Create(int family, int type, int protocol)
 {
@@ -34,7 +34,7 @@ SOCKET socket_helper::Create(int family, int type, int protocol)
 
 SOCKET socket_helper::Create(const SockInfo& sock_info)
 {
-    int family{}, type{};
+    int family = AF_INET, type = SOCK_STREAM;
 
     if (sock_info.family == SockInfo::Family::IPv4) {
         family = AF_INET;

@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-#include <Utility/Macro.h>
-#include <Math/Constant.h>
+#include "Math/Constant.h"
+#include "Utility/Macro.h"
 
 namespace easing {
 

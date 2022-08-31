@@ -4,9 +4,8 @@
 #include <string_view>
 #include <unordered_map>
 
-#include <Utility/Assert.h>
-#include <ExternalDependencies/Asset/Json/JsonData.h>
-#include "IAssetData.h"
+#include "Utility/Assert.h"
+#include "ExternalDependencies/Asset/Json/JsonData.h"
 
 #pragma warning(push)
 #pragma warning(disable:4172) // returning address of local variable or temporary

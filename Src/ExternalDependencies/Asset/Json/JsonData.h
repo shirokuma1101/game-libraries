@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include <ExternalDependencies/Asset/IAsset/IAssetData.h>
+#include "ExternalDependencies/Asset/IAsset/IAssetData.h"
 
 #ifndef INCLUDE_NLOHMANN_JSON_HPP_
 #include "nlohmann/json.hpp"

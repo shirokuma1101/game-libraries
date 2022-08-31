@@ -2,9 +2,9 @@
 
 #include <chrono>
 
-#include <Math/Constant.h>
-#include <Math/Convert.h>
-#include <Math/Timer.h>
+#include "Math/Constant.h"
+#include "Math/Convert.h"
+#include "Math/Timer.h"
 
 struct Time {
 

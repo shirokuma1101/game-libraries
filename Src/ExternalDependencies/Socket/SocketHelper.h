@@ -1,14 +1,12 @@
 ﻿#pragma once
 
-#include <cstdint>
 #include <cassert>
+#include <cstdint>
 #include <string>
 #include <string_view>
-
 #ifdef _WINSOCKAPI_
 #error Please include SocketHelper.h before winsock.h (Maybe in Windows.h)
 #endif // _WINSOCKAPI_
-
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
@@ -28,6 +26,11 @@ namespace socket_helper {
             TCP,
             UDP
         };
+
+        SockInfo(SockInfo::Family family = SockInfo::Family::IPv4, SockInfo::Type type = SockInfo::Type::TCP)
+            : family(family)
+            , type(type)
+        {}
 
         Family family;
         Type   type;
