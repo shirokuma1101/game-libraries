@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <memory>
+
 #include "EffekseerHelper.h"
 
 class EffekseerManager
@@ -23,10 +25,10 @@ private:
 
     void Release() noexcept;
 
-    int                                                                m_maxSquare = 0;
-    effekseer_helper::Renderer                                         m_renderer;
-    effekseer_helper::Manager                                          m_manager;
-    std::unordered_map<std::string, effekseer_helper::EffectData>      m_effectData;
-    std::unordered_multimap<std::string, effekseer_helper::EffectData> m_emittedEffectData;
+    int                                                                                 m_maxSquare = 0;
+    effekseer_helper::Renderer                                                          m_renderer;
+    effekseer_helper::Manager                                                           m_manager;
+    std::unordered_map<std::string, effekseer_helper::EffectData>                       m_effectData;
+    std::unordered_multimap<std::string, std::unique_ptr<effekseer_helper::EffectData>> m_upEmittedEffectData;
 
 };

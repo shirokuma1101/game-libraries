@@ -1,6 +1,6 @@
 ﻿#include "EffekseerManager.h"
 
-#include <ExternalDependencies/Utility/String.h>
+#include "ExternalDependencies/Utility/String.h"
 
 void EffekseerManager::Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max_square)
 {
@@ -11,11 +11,12 @@ void EffekseerManager::Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max
 
 void EffekseerManager::Update(double delta_time)
 {
-    for (auto iter = m_emittedEffectData.begin(); iter != m_emittedEffectData.end();) {
+    static const double effect_frame = 60.0;
+    for (auto iter = m_upEmittedEffectData.begin(); iter != m_upEmittedEffectData.end();) {
         auto& key      = iter->first;
-        auto& data     = iter->second;
-        auto& handle   = iter->second.handle;
-        auto& tranform = iter->second.effectTransform;
+        auto& data     = *iter->second;
+        auto& handle   = iter->second->handle;
+        auto& tranform = iter->second->effectTransform;
 
         if (data.elapsedTime == 0) {
             handle = m_manager->Play(data.effect, 0, 0, 0);
@@ -23,13 +24,13 @@ void EffekseerManager::Update(double delta_time)
             m_manager->SetSpeed(handle, tranform.speed);
         }
 
-        if (static_cast<float>(data.elapsedTime) > (tranform.maxFrame / 60.f)) {
+        if (data.elapsedTime > (tranform.maxFrame / effect_frame)) {
             m_manager->StopEffect(handle);
             if (tranform.isLoop) {
                 data.elapsedTime = 0;
             }
             else {
-                iter = m_emittedEffectData.erase(iter);
+                iter = m_upEmittedEffectData.erase(iter);
             }
         }
         else {
@@ -39,7 +40,7 @@ void EffekseerManager::Update(double delta_time)
         }
     }
 
-    m_manager->Update();
+    m_manager->Update(static_cast<float>(delta_time * effect_frame));
 }
 
 void EffekseerManager::Draw()
@@ -64,15 +65,19 @@ void EffekseerManager::SetEffect(std::string_view effect_name, std::string_view 
 
 effekseer_helper::EffectTransform* EffekseerManager::Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique)
 {
-    if (auto iter = m_effectData.find(effect_name.data()); iter != std::end(m_effectData)) {
-        if (is_unique) {
-            return &iter->second.effectTransform;
+    if (is_unique) {
+        if (auto iter = m_upEmittedEffectData.find(effect_name.data()); iter != m_upEmittedEffectData.end()) {
+            return &iter->second->effectTransform;
         }
-        auto data = effekseer_helper::EffectData(iter->second);
-        data.effectTransform = effekseer_helper::EffectTransform(effect_transform);
-        m_emittedEffectData.emplace(effect_name, data);
-        return &data.effectTransform;
     }
+    if (auto iter = m_effectData.find(effect_name.data()); iter != std::end(m_effectData)) {
+        auto data = std::make_unique<effekseer_helper::EffectData>(iter->second);
+        auto et_ptr = &data->effectTransform;
+        data->effectTransform = effect_transform;
+        m_upEmittedEffectData.emplace(effect_name, std::move(data));
+        return et_ptr;
+    }
+    return nullptr;
 }
 
 void EffekseerManager::Release() noexcept
