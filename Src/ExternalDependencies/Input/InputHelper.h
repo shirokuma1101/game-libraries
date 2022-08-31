@@ -9,21 +9,26 @@ namespace input_helper {
     public:
 
         constexpr KeyData(int key) noexcept
-            : key(key)
+            : m_key(key)
         {}
 
         int GetKey() const noexcept {
-            return key;
+            return m_key;
         }
 
-        bool GetState(bool is_press_and_hold = false) {
-            if (is_press_and_hold) {
-                if (isPressed) {
+        bool GetState(bool is_press_and_hold = true) {
+            if (GetState(m_key)) {
+                if (is_press_and_hold) {
+                    m_isPressed = true;
+                    return true;
+                }
+                if (m_isPressed) {
                     return false;
                 }
+                return true;
             }
-            isPressed = GetState(key);
-            return isPressed;
+            m_isPressed = false;
+            return false;
         }
 
         static bool GetState(int key) noexcept {
@@ -32,8 +37,8 @@ namespace input_helper {
 
     private:
         
-        const int key;
-        bool      isPressed = false;
+        const int m_key;
+        bool      m_isPressed = false;
         
     };
 
@@ -42,30 +47,30 @@ namespace input_helper {
     public:
         
         MouseData(HWND hwnd = 0) noexcept
-            : hwnd(hwnd)
-            , point()
-            , beforePoint()
+            : m_hwnd(hwnd)
+            , m_point()
+            , m_beforePoint()
         {}
 
         POINT GetPoint() const noexcept {
-            return point;
+            return m_point;
         }
 
         POINT GetBeforePoint() const noexcept {
-            return beforePoint;
+            return m_beforePoint;
         }
         
         POINT GetPosition() noexcept {
-            beforePoint = point;
-            point = GetPosition(hwnd);
-            return point;
+            m_beforePoint = m_point;
+            m_point = GetPosition(m_hwnd);
+            return m_point;
         }
 
         POINT GetDifference() noexcept {
-            return { point.x - beforePoint.x, point.y - beforePoint.y };
+            return { m_point.x - m_beforePoint.x, m_point.y - m_beforePoint.y };
         }
 
-        static POINT GetPosition(HWND hwnd) {
+        static POINT GetPosition(HWND hwnd) noexcept {
             POINT point;
             GetCursorPos(&point);
             if (hwnd) {
@@ -76,9 +81,9 @@ namespace input_helper {
 
     private:
         
-        const HWND hwnd;
-        POINT      point;
-        POINT      beforePoint;
+        const HWND m_hwnd;
+        POINT      m_point;
+        POINT      m_beforePoint;
         
     };
     

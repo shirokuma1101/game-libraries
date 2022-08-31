@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <list>
+#include <memory>
+#include <tuple>
 
 #include "InputHelper.h"
 
@@ -8,9 +10,10 @@ class KeyManager
 {
 public:
 
-    void Update() {
+    void Update() noexcept {
         for (auto iter = m_keys.begin(); iter != m_keys.end();) {
-            if (iter->GetState()) {
+            std::get<bool>(*iter) = false;
+            if (std::get<input_helper::KeyData>(*iter).GetState()) {
                 ++iter;
             }
             else {
@@ -19,28 +22,36 @@ public:
         }
     }
 
-    bool GetState(int key, bool is_press_and_hold = true) const {
-        for (auto iter = m_keys.begin(); iter != m_keys.end();) {
-            if (iter->GetKey() == key) {
-                if (is_press_and_hold) {
+    bool GetState(int key, bool is_press_and_hold = true) noexcept {
+        for (const auto & e : m_keys) {
+            if (std::get<input_helper::KeyData>(e).GetKey() == key) {
+                if (is_press_and_hold || std::get<bool>(e)) {
                     return true;
                 }
-                ++iter;
-            }
-            else {
-                ++iter;
+                return false;
             }
         }
         if (input_helper::KeyData::GetState(key)) {
-            m_keys.push_back(input_helper::KeyData(key));
+            m_keys.push_back({ input_helper::KeyData(key), true });
             return true;
         }
         return false;
     }
 
+    std::tuple<bool, bool, bool, bool, bool, bool> GetDirection(std::tuple<int, int, int, int, int, int> direction, bool is_press_and_hold = true) noexcept {
+        return std::make_tuple(
+            GetState(std::get<0>(direction), is_press_and_hold),
+            GetState(std::get<1>(direction), is_press_and_hold),
+            GetState(std::get<2>(direction), is_press_and_hold),
+            GetState(std::get<3>(direction), is_press_and_hold),
+            GetState(std::get<4>(direction), is_press_and_hold),
+            GetState(std::get<5>(direction), is_press_and_hold)
+        );
+    }
+
 private:
     
-    mutable std::list<input_helper::KeyData> m_keys;
+    std::list<std::pair<input_helper::KeyData, bool>> m_keys;
     
 };
 
@@ -56,17 +67,17 @@ public:
         m_mouseData.GetPosition();
     }
 
-    POINT GetPosition() const {
+    POINT GetPosition() {
         return m_mouseData.GetPoint();
     }
 
-    POINT GetDifference() const {
+    POINT GetDifference() {
         return m_mouseData.GetDifference();
     }
 
 private:
 
-    mutable input_helper::MouseData m_mouseData;
+    input_helper::MouseData m_mouseData;
 
 };
 
@@ -75,26 +86,26 @@ class InputManager
 public:
 
     InputManager(HWND hwnd = 0)
-        : m_keyMgr()
-        , m_mouseMgr(hwnd)
+        : m_spKeyMgr(std::make_shared<KeyManager>())
+        , m_spMouseMgr(std::make_shared<MouseManager>())
     {}
 
     void Update() {
-        m_keyMgr.Update();
-        m_mouseMgr.Update();
+        m_spKeyMgr->Update();
+        m_spMouseMgr->Update();
     }
 
-    const KeyManager& GetKeyManager() const {
-        return m_keyMgr;
+    auto GetKeyManager() {
+        return m_spKeyMgr;
     }
 
-    const MouseManager& GetMouseManager() const {
-        return m_mouseMgr;
+    auto GetMouseManager() {
+        return m_spMouseMgr;
     }
 
 private:
 
-    KeyManager m_keyMgr;
-    MouseManager m_mouseMgr;
+    std::shared_ptr<KeyManager> m_spKeyMgr;
+    std::shared_ptr<MouseManager> m_spMouseMgr;
     
 };
