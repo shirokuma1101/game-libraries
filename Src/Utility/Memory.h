@@ -1,18 +1,26 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_UTILITY_MEMORY_H_
+#define GAME_LIBRARIES_UTILITY_MEMORY_H_
+
+#include "Utility/Templates.h"
+
 namespace memory {
 
     template<class T>
-    inline auto SafeRelease(T** p)->decltype((*p)->Release(), void()) {
+    inline void SafeRelease(T** p) {
         if (!*p) return;
-        (*p)->Release();
-        *p = nullptr;
-    }
 
-    template<class T>
-    inline auto SafeRelease(T** p)->decltype((*p)->release(), void()) {
-        if (!*p) return;
-        (*p)->release();
+        if constexpr (TEMPLATES_HAS_FUNC(T, Release())) {
+            (*p)->Release();
+        }
+        else if constexpr (TEMPLATES_HAS_FUNC(T, release())) {
+            (*p)->release();
+        }
+        else {
+            static_assert(templates::false_v<T>, "No [Rr]elease function defined");
+        }
+
         *p = nullptr;
     }
 
@@ -24,3 +32,5 @@ namespace memory {
     }
 
 }
+
+#endif
