@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETMANAGER_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETMANAGER_H_
+
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -102,3 +105,5 @@ private:
 };
 
 #pragma warning(pop)
+
+#endif

@@ -1,9 +1,12 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETDATA_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETDATA_H_
+
 #include <string>
 #include <string_view>
 
-#include "Thread/SimpleThreadManagerEx/SimpleUniqueThreadEx.h"
+#include "Thread/SimpleThreadManager/SimpleUniqueThread.h"
 
 template<class _AssetClass>
 class IAssetData
@@ -26,7 +29,7 @@ public:
     virtual void AsyncLoad(bool force = false) final {
         if (!m_thread.IsEnd()) return;
         if ((!m_thread.IsExists() && !m_isFirstTimeLoaded) || force) {
-            m_thread.AutoCreate(&IAssetData::Load, this);
+            m_thread.CreateAuto(&IAssetData::Load, this);
         }
     }
 
@@ -76,7 +79,7 @@ protected:
         }
     }
 
-    SimpleUniqueThreadEx              m_thread;
+    SimpleUniqueThread                m_thread;
     mutable bool                      m_isLoaded          = false;
     mutable bool                      m_isFirstTimeLoaded = false;
     mutable bool                      m_isLoadedOnlyOnce  = false;
@@ -87,3 +90,5 @@ protected:
 private:
 
 };
+
+#endif
