@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXHELPER_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXHELPER_H_
+
 #include "PxPhysicsAPI.h"
 #include "PxFoundation.h"
 #pragma comment(lib, "PhysX_64.lib")
@@ -83,3 +86,5 @@ namespace physx_helper {
     }
 
 }
+
+#endif

@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXMANAGER_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXMANAGER_H_
+
 #include <d3d11.h>
 
 #include "Math/Constant.h"
@@ -16,7 +19,66 @@ public:
         Release();
     }
 
-    void Init(DirectX::SimpleMath::Vector3 gravity = { 0.f, -constant::fG, 0.f }, bool enable_cuda = false, ID3D11Device* dev = nullptr);
+    void Init(DirectX::SimpleMath::Vector3 gravity = { 0.f, -constant::fG, 0.f }, bool enable_cuda = false, ID3D11Device* dev = nullptr) {
+        if (INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
+            return;
+        }
+
+        if (VALID_POINTER(m_pPvd, physx::PxCreatePvd(*m_pFoundation))) {
+            physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
+            m_pPvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+        }
+
+        if (INVALID_POINTER(m_pPhysics, PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd))) {
+            return;
+        }
+
+        if (!PxInitExtensions(*m_pPhysics, m_pPvd)) {
+            return;
+        }
+        PxCloseExtensions();
+
+        if (INVALID_POINTER(m_pCooking, PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(physx::PxTolerancesScale())))) {
+            return;
+        }
+
+        m_pDispatcher = physx::PxDefaultCpuDispatcherCreate(4);
+
+        physx::PxSceneDesc scene_desc(m_pPhysics->getTolerancesScale());
+        scene_desc.gravity = physx::PxVec3(physx_helper::ToPxVec3(gravity));
+        scene_desc.filterShader = physx::PxDefaultSimulationFilterShader;
+        scene_desc.cpuDispatcher = m_pDispatcher;
+
+        if (enable_cuda) {
+            physx::PxCudaContextManagerDesc cuda_ctx_mgr_desc;
+            cuda_ctx_mgr_desc.interopMode = physx::PxCudaInteropMode::D3D11_INTEROP;
+            cuda_ctx_mgr_desc.graphicsDevice = dev;
+
+            if (VALID_POINTER(m_pCudaCtxMgr, PxCreateCudaContextManager(*m_pFoundation, cuda_ctx_mgr_desc, PxGetProfilerCallback()))) {
+                if (!m_pCudaCtxMgr->contextIsValid()) {
+                    memory::SafeRelease(&m_pCudaCtxMgr);
+                }
+            }
+
+            scene_desc.cudaContextManager = m_pCudaCtxMgr;
+            scene_desc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
+            scene_desc.flags |= physx::PxSceneFlag::eENABLE_PCM;
+            scene_desc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
+            scene_desc.flags |= physx::PxSceneFlag::eENABLE_STABILIZATION;
+            scene_desc.gpuMaxNumPartitions = 8;
+        }
+
+        m_pScene = m_pPhysics->createScene(scene_desc);
+
+        physx::PxPvdSceneClient* pvd_client;
+        if (VALID_POINTER(pvd_client, m_pScene->getScenePvdClient())) {
+            pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
+            pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
+            pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+        }
+
+        m_pMaterials.emplace("default", m_pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
+    }
 
     void Update(double delta_time) {
         m_pScene->simulate(static_cast<physx::PxReal>(delta_time));
@@ -111,3 +173,5 @@ private:
     physx::PxCudaContextManager*   m_pCudaCtxMgr = nullptr;
 
 };
+
+#endif
