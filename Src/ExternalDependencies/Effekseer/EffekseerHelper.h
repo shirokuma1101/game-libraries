@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_EFFEKSEER_EFFEKSEERHELPER_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_EFFEKSEER_EFFEKSEERHELPER_H_
+
 #include <unordered_map>
 #include <string>
 #include <string_view>
@@ -83,3 +86,5 @@ namespace effekseer_helper {
         return emat;
     }
 }
+
+#endif
