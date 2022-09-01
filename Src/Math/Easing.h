@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_EASING_H_
+#define GAME_LIBRARIES_MATH_EASING_H_
+
 #include <cmath>
 
 #include "Math/Constant.h"
@@ -44,7 +47,7 @@ namespace easing {
             return detail::Out(n, 2.f);
         }
         inline float InOut(float n) noexcept {
-            return detail::InOut(n, 5.f);
+            return detail::InOut(n, 2.f);
         }
     }
 
@@ -102,3 +105,5 @@ namespace easing {
 
     NAMESPACE_EXTERNAL_END
 }
+
+#endif
