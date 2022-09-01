@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_TIME_H_
+#define GAME_LIBRARIES_MATH_TIME_H_
+
 #include <chrono>
 
 #include "Math/Constant.h"
@@ -45,3 +48,5 @@ private:
     Timer timer;
 
 };
+
+#endif

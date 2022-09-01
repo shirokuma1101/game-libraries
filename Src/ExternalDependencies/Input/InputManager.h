@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_INPUT_INPUTMANAGER_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_INPUT_INPUTMANAGER_H_
+
 #include <list>
 #include <memory>
 #include <tuple>
@@ -63,15 +66,15 @@ public:
         : m_mouseData(hwnd)
     {}
 
-    void Update() {
+    void Update() noexcept {
         m_mouseData.GetPosition();
     }
 
-    POINT GetPosition() {
+    POINT GetPosition() noexcept {
         return m_mouseData.GetPoint();
     }
 
-    POINT GetDifference() {
+    POINT GetDifference() noexcept {
         return m_mouseData.GetDifference();
     }
 
@@ -90,16 +93,16 @@ public:
         , m_spMouseMgr(std::make_shared<MouseManager>())
     {}
 
-    void Update() {
+    void Update() noexcept {
         m_spKeyMgr->Update();
         m_spMouseMgr->Update();
     }
 
-    auto GetKeyManager() {
+    auto GetKeyManager() noexcept {
         return m_spKeyMgr;
     }
 
-    auto GetMouseManager() {
+    auto GetMouseManager() noexcept {
         return m_spMouseMgr;
     }
 
@@ -109,3 +112,5 @@ private:
     std::shared_ptr<MouseManager> m_spMouseMgr;
     
 };
+
+#endif

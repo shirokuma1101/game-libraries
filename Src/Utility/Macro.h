@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_UTILITY_MACRO_H_
+#define GAME_LIBRARIES_UTILITY_MACRO_H_
+
 #define NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {
 #define NAMESPACE_EXTERNAL_END   }
 #define NAMESPACE_INTERNAL_BEGIN namespace detail {
@@ -19,3 +22,5 @@ public:                                \
 
 #define FAIL_CHECK(func, err) int err = func; err
 #define SUCCESS_CHECK(func, err) int err = func; !err
+
+#endif

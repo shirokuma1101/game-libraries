@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_CONVERT_H_
+#define GAME_LIBRARIES_MATH_CONVERT_H_
+
 #include <list>
 #include <vector>
 
@@ -99,3 +102,5 @@ namespace convert {
     }
 
 }
+
+#endif

@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_PROJECTILEMOTION_H_
+#define GAME_LIBRARIES_MATH_PROJECTILEMOTION_H_
+
 #include <array>
 #include <cmath>
 #include <tuple>
@@ -46,7 +49,7 @@ struct ProjectileMotion {
         , gravity(constant::fPI)
     {}
 
-    constexpr ProjectileMotion(float velocity, float vectorx, float vectory, float theta, float time, float length, float height, float gravity = constant::fPI)
+    constexpr ProjectileMotion(float velocity, float vectorx, float vectory, float theta, float time, float length, float height, float gravity = constant::fPI) noexcept
         : velocity(velocity)
         , vectorx(vectorx)
         , vectory(vectory)
@@ -57,12 +60,12 @@ struct ProjectileMotion {
         , gravity(gravity)
     {}
 
-    std::tuple<float, float> DisplacementPosition(float _time) const {
+    std::tuple<float, float> DisplacementPosition(float _time) const noexcept {
         using convert::ToSquare;
         return { vx * _time, vy * _time - (1.f / 2.f) * g * ToSquare(_time) };
     }
 
-    std::tuple<float, float> DisplacementVector(float _time) const {
+    std::tuple<float, float> DisplacementVector(float _time) const noexcept {
         return { vx, vy - (g * _time) };
     }
 };
@@ -256,3 +259,5 @@ private:
 };
 
 #pragma warning(pop)
+
+#endif

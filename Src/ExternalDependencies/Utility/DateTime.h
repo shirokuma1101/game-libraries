@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_UTILITY_DATETIME_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_UTILITY_DATETIME_H_
+
 #include <Windows.h>
 
 namespace date_time {
@@ -10,7 +13,7 @@ namespace date_time {
     };
 
     inline UINT64 GetRealTime() {
-
+        
         SYSTEMTIME st;
         SecureZeroMemory(&st, sizeof(st));
         GetSystemTime(&st);
@@ -36,3 +39,5 @@ namespace date_time {
     }
     
 }
+
+#endif

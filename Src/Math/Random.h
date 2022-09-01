@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_RANDOM_H_
+#define GAME_LIBRARIES_MATH_RANDOM_H_
+
 #include <random>
 
 namespace random {
@@ -19,3 +22,5 @@ namespace random {
     }
 
 }
+
+#endif

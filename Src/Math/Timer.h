@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_TIMER_H_
+#define GAME_LIBRARIES_MATH_TIMER_H_
+
 #include <chrono>
 
 struct Timer {
@@ -50,3 +53,5 @@ struct Timer {
     TimePoint end;
     
 };
+
+#endif

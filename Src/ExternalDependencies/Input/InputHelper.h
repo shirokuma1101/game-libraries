@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_INPUT_INPUTHELPER_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_INPUT_INPUTHELPER_H_
+
 #include <Windows.h>
 
 namespace input_helper {
@@ -16,7 +19,7 @@ namespace input_helper {
             return m_key;
         }
 
-        bool GetState(bool is_press_and_hold = true) {
+        bool GetState(bool is_press_and_hold = true) noexcept {
             if (GetState(m_key)) {
                 if (is_press_and_hold) {
                     m_isPressed = true;
@@ -88,3 +91,5 @@ namespace input_helper {
     };
     
 }
+
+#endif

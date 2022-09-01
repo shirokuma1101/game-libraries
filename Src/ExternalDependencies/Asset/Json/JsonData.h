@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_JSON_JSONDATA_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_JSON_JSONDATA_H_
+
 #include <fstream>
 
 #include "ExternalDependencies/Asset/IAsset/IAssetData.h"
@@ -32,3 +35,5 @@ public:
 private:
 
 };
+
+#endif

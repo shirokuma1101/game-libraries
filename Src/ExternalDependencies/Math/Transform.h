@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_MATH_TRANSFORM_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_MATH_TRANSFORM_H_
+
 #include "Math/Convert.h"
 
 #include "SimpleMath.h"
@@ -76,8 +79,10 @@ struct Transform {
     Vector3    rotation;
 #else
     Quaternion quaternion;
-#endif // TRANSFORM_ROTAION_USE_EULER
+#endif
 
     Matrix     matrix;
 
 };
+
+#endif

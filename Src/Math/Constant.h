@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_MATH_CONSTANT_H_
+#define GAME_LIBRARIES_MATH_CONSTANT_H_
+
 namespace constant {
 
 #define CONSTANT_G  9.80665
@@ -11,3 +14,5 @@ namespace constant {
     constexpr double dPI = static_cast<double>(CONSTANT_PI);
 
 }
+
+#endif

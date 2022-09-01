@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_UTILITY_STRING_H_
+#define GAME_LIBRARIES_EXTERNALDEPENDENCIES_UTILITY_STRING_H_
+
 #include <string>
 #include <string_view>
 
@@ -12,3 +15,5 @@ namespace string {
         return std::u16string(wstr.begin(), wstr.end());
     }
 }
+
+#endif
