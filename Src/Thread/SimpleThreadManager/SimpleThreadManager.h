@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_THREAD_SIMPLETHREADMANAGER_SIMPLETHREADMANAGER_H_
+#define GAME_LIBRARIES_THREAD_SIMPLETHREADMANAGER_SIMPLETHREADMANAGER_H_
+
 #include <map>
 #include <memory>
 #include <vector>
@@ -47,23 +50,9 @@ public:
         }
     }
 
-    void AutoEnd() {
-        for (auto iter = m_autoSyncEndIDs.begin(); iter != m_autoSyncEndIDs.end();) {
-            if (m_upThreads.count(*iter)) {
-                if (IsEnd(*iter)) {
-                    SyncEnd(&(*iter));
-                    iter = m_autoSyncEndIDs.erase(iter);
-                }
-                else {
-                    ++iter;
-                }
-            }
-        }
-    }
-
 private:
 
-    void Release() {
+    void Release() noexcept {
         for (auto&& e : m_upThreads) {
             e.second->SyncEnd();
         }
@@ -74,3 +63,5 @@ private:
     std::vector<ID>                                   m_autoSyncEndIDs;
 
 };
+
+#endif

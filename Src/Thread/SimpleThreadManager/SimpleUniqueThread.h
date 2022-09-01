@@ -1,9 +1,14 @@
 ﻿#pragma once
 
+#ifndef GAME_LIBRARIES_THREAD_SIMPLETHREADMANAGER_SIMPLEUNIQUETHREAD_H_
+#define GAME_LIBRARIES_THREAD_SIMPLETHREADMANAGER_SIMPLEUNIQUETHREAD_H_
+
 #include <memory>
 #include <thread>
 
 #include "Utility/Assert.h"
+
+//TODO future, promise
 
 class SimpleUniqueThread {
 public:
@@ -29,6 +34,17 @@ public:
         m_isEnd = false;
         m_upThread = std::make_unique<std::thread>(
             &SimpleUniqueThread::Run<Func, Inst, Args...>,
+            this,
+            &m_isEnd, func, inst, args...
+        );
+    }
+
+    template<class Func, class Inst, class... Args>
+    void CreateAuto(Func func, Inst inst, Args... args) {
+        CheckNoExists();
+        m_isEnd = false;
+        m_upThread = std::make_unique<std::thread>(
+            &SimpleUniqueThreadEx::AutoRun<Func, Inst, Args...>,
             this,
             &m_isEnd, func, inst, args...
         );
@@ -71,6 +87,13 @@ private:
         *is_end = true;
     }
 
+    template<class Func, class Inst, class... Args>
+    void AutoRun(bool* is_end, Func func, Inst inst, Args... args) {
+        (inst->*func)(args...);
+        SyncEnd(SyncType::DETACH);
+        *is_end = true;
+    }
+
     void CheckExists() const noexcept {
         if (m_upThread) return;
         assert::RaiseAssert("thread is not exists");
@@ -78,6 +101,16 @@ private:
     void CheckNoExists() const noexcept {
         if (!m_upThread) return;
         assert::RaiseAssert("thread is exists");
+    }
+
+    // make std::function
+    template<class Func, class Inst, class... Args>
+    auto ToFuncObj(const Func& func, const Inst& inst, const Args&... args) {
+        std::function<decltype((inst->func)(args...))(typename std::decay_t<const Args>...)> std_func
+            = [&](const decltype(args)&... args) {
+            return (inst->func)(args...);
+        };
+        return std_func(args...);
     }
 
     void Release() noexcept {
@@ -90,3 +123,5 @@ private:
     std::unique_ptr<std::thread> m_upThread = nullptr;
 
 };
+
+#endif
