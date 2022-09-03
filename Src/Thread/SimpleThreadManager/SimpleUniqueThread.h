@@ -104,14 +104,14 @@ private:
     }
 
     // make std::function
-    template<class Func, class Inst, class... Args>
-    auto ToFuncObj(const Func& func, const Inst& inst, const Args&... args) {
-        std::function<decltype((inst->func)(args...))(typename std::decay_t<const Args>...)> std_func
-            = [&](const decltype(args)&... args) {
-            return (inst->func)(args...);
-        };
-        return std_func(args...);
-    }
+    //template<class Func, class Inst, class... Args>
+    //auto ToFuncObj(const Func& func, const Inst& inst, const Args&... args) {
+    //    std::function<decltype((inst->func)(args...))(typename std::decay_t<const Args>...)> std_func
+    //        = [&](const decltype(args)&... args) {
+    //        return (inst->func)(args...);
+    //    };
+    //    return std_func(args...);
+    //}
 
     void Release() noexcept {
         if (IsExists()) {
