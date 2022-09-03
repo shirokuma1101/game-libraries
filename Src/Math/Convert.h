@@ -10,9 +10,6 @@
 
 namespace convert {
 
-    using constant::fPI;
-    using constant::dPI;
-
     template<class T> constexpr T      ToSquare(T base)      noexcept { return base * base; }
     template<class T> constexpr void   ToSquare(T* base)              { *base *= *base; }
 
@@ -25,13 +22,13 @@ namespace convert {
     template<class T> constexpr void   ToQuarter(T* num)              { *num *= 0.25f; }
 
 
-    template<class T> constexpr T      ToRadians(T deg)      noexcept { return deg * (fPI / 180.f); }
-    template<class T> constexpr double ToRadians(double deg) noexcept { return deg * (dPI / 180.0); }
-    template<class T> constexpr void   ToRadians(T* deg)              { *deg *= (fPI / 180.f); }
+    template<class T> constexpr T      ToRadians(T deg)      noexcept { return deg * (constant::fPI / 180.f); }
+    template<class T> constexpr double ToRadians(double deg) noexcept { return deg * (constant::dPI / 180.0); }
+    template<class T> constexpr void   ToRadians(T* deg)              { *deg *= (constant::fPI / 180.f); }
 
-    template<class T> constexpr T      ToDegrees(T rad)      noexcept { return rad * (180.f / fPI); }
-    template<>        constexpr double ToDegrees(double rad) noexcept { return rad * (180.0 / dPI); }
-    template<class T> constexpr void   ToDegrees(T* rad)              { *rad *= (180.f / fPI); }
+    template<class T> constexpr T      ToDegrees(T rad)      noexcept { return rad * (180.f / constant::fPI); }
+    template<>        constexpr double ToDegrees(double rad) noexcept { return rad * (180.0 / constant::dPI); }
+    template<class T> constexpr void   ToDegrees(T* rad)              { *rad *= (180.f / constant::fPI); }
 
 
     template<class T> constexpr T      NSToS(T t)      noexcept { return t * 0.000000001f; }
