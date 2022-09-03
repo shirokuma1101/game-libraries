@@ -19,7 +19,7 @@ public:
         Release();
     }
 
-    void Init(DirectX::SimpleMath::Vector3 gravity = { 0.f, -constant::fG, 0.f }, bool enable_cuda = false, ID3D11Device* dev = nullptr) {
+    void Init(const DirectX::SimpleMath::Vector3& gravity = { 0.f, -constant::fG, 0.f }, bool enable_cuda = false, ID3D11Device* dev = nullptr) {
         if (INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
             return;
         }
@@ -78,6 +78,12 @@ public:
         }
 
         m_pMaterials.emplace("default", m_pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
+
+#ifdef _DEBUG
+        m_pScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.f);
+        m_pScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 1.f);
+#endif // _DEBUG
+
     }
 
     void Update(double delta_time) {
@@ -85,8 +91,8 @@ public:
         m_pScene->fetchResults(true);
     }
 
-    void AddActor(physx::PxActor& actor) {
-        m_pScene->addActor(actor);
+    void AddActor(physx::PxActor* actor) {
+        m_pScene->addActor(*actor);
     }
 
     void AddMaterial(std::string_view material_name, physx::PxMaterial* material) {
@@ -113,19 +119,52 @@ public:
     physx::PxShape* Plane(std::string_view material_name = "") {
         return m_pPhysics->createShape(physx::PxPlaneGeometry(), *FindMaterial(material_name));
     }
+    physx::PxShape* ConvexMesh(physx::PxConvexMesh* mesh, std::string_view material_name = "") {
+        return m_pPhysics->createShape(physx::PxConvexMeshGeometry(mesh), *FindMaterial(material_name));
+    }
     physx::PxShape* TriangleMesh(physx::PxTriangleMesh* mesh, std::string_view material_name = "") {
         return m_pPhysics->createShape(physx::PxTriangleMeshGeometry(mesh), *FindMaterial(material_name));
     }
-
+    
+    template<class VArray>
+    physx::PxConvexMesh* ToPxConvexMesh(const VArray& vertices) {
+        return physx_helper::ToPxConvexMesh(m_pPhysics, m_pCooking, vertices);
+    }
     template<class VArray, class TArray>
-    physx::PxTriangleMesh* ToPxTriangleMesh(VArray& vertices, TArray& triangles) {
+    physx::PxTriangleMesh* ToPxTriangleMesh(const VArray& vertices, const TArray& triangles) {
         return physx_helper::ToPxTriangleMesh(m_pPhysics, m_pCooking, vertices, triangles);
     }
-    physx::PxRigidStatic* CreateStatic(physx::PxShape* shape, const DirectX::SimpleMath::Vector3& position = {}) {
-        return physx_helper::CreateStatic(m_pPhysics, shape, position);
+    
+    physx::PxRigidStatic* CreateStatic(const DirectX::SimpleMath::Vector3& position = {}) {
+        return physx_helper::CreateStatic(m_pPhysics, position);
     }
-    physx::PxRigidDynamic* CreateDynamic(physx::PxShape* shape, const DirectX::SimpleMath::Vector3& position = {}, const DirectX::SimpleMath::Vector3& velocity = {}, float damping = 0.f) {
-        return physx_helper::CreateDynamic(m_pPhysics, shape, position, velocity, damping);
+    physx::PxRigidStatic* CreateStatic(
+        physx::PxShape* shape,
+        const DirectX::SimpleMath::Vector3& local_position = {},
+        const DirectX::SimpleMath::Vector3& position = {}
+    ) {
+        physx::PxRigidStatic* rigid_static = physx_helper::CreateStatic(m_pPhysics, position);
+        physx_helper::AttachShape(&shape, reinterpret_cast<physx::PxRigidActor**>(&rigid_static), local_position);
+        return rigid_static;
+    }
+
+    physx::PxRigidDynamic* CreateDynamic(
+        const DirectX::SimpleMath::Vector3& position = {},
+        const DirectX::SimpleMath::Vector3& velocity = {},
+        float damping = 0.f
+    ) {
+        return physx_helper::CreateDynamic(m_pPhysics, position, velocity, damping);
+    }
+    physx::PxRigidDynamic* CreateDynamic(
+        physx::PxShape* shape,
+        const DirectX::SimpleMath::Vector3& local_position = {},
+        const DirectX::SimpleMath::Vector3& position = {},
+        const DirectX::SimpleMath::Vector3& velocity = {},
+        float damping = 0.f
+    ) {
+        physx::PxRigidDynamic* rigid_dynamic = physx_helper::CreateDynamic(m_pPhysics, position, velocity, damping);
+        physx_helper::AttachShape(&shape, reinterpret_cast<physx::PxRigidActor**>(&rigid_dynamic), local_position);
+        return rigid_dynamic;
     }
     
 private:
