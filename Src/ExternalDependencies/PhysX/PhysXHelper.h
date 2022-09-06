@@ -72,6 +72,20 @@ namespace physx_helper {
         return triangle_mesh;
     }
 
+    inline std::vector<physx::PxShape*> GetShapes(physx::PxRigidActor* actor) {
+        std::vector<physx::PxShape*> shapes;
+        physx::PxU32 shape_count = actor->getNbShapes();
+        physx::PxShape** ppshapes = new physx::PxShape*[shape_count];
+        shapes.reserve(shape_count);
+
+        actor->getShapes(ppshapes, shape_count);
+        for (physx::PxU32 i = 0; i < shape_count; ++i) {
+            shapes.push_back(ppshapes[i]);
+        }
+        delete[] ppshapes;
+        return shapes;
+    }
+
     //TODO: PxQuat
 
     inline void AttachShape(physx::PxShape** shape, physx::PxRigidActor** actor, const DirectX::SimpleMath::Vector3& local_position = {}) {
@@ -103,7 +117,7 @@ namespace physx_helper {
     inline physx::PxRigidDynamic* IsDynamic(physx::PxRigidActor* actor) {
         physx::PxRigidDynamic* dynamic = actor->is<physx::PxRigidDynamic>();
         if (!dynamic) {
-            // "actor is not dynamic"
+            // "actor is not dynamic assert"
             return nullptr;
         }
         return dynamic;

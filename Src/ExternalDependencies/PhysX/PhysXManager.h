@@ -103,6 +103,9 @@ public:
     physx::PxPhysics* GetPhysics() {
         return m_pPhysics;
     }
+    physx::PxScene* GetScene() {
+        return m_pScene;
+    }
 
     /* Geometry manual */
     // URL:"https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Geometry.html"
