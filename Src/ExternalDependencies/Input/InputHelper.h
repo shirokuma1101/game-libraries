@@ -65,12 +65,39 @@ namespace input_helper {
         
         POINT GetPosition() noexcept {
             m_beforePoint = m_point;
-            m_point = GetPosition(m_hwnd);
-            return m_point;
+            return m_point = GetPosition(m_hwnd);
         }
 
-        POINT GetDifference() noexcept {
+        POINT GetDifference() const noexcept {
             return { m_point.x - m_beforePoint.x, m_point.y - m_beforePoint.y };
+        }
+
+        POINT GetCenterPosition() const noexcept {
+            WINDOWINFO wi;
+            SecureZeroMemory(&wi, sizeof(wi));
+            GetWindowInfo(m_hwnd, &wi);
+            LONG width = wi.rcClient.right - wi.rcClient.left;
+            LONG height = wi.rcClient.bottom - wi.rcClient.top;
+
+            return { wi.rcClient.left + width / 2, wi.rcClient.top + height / 2 };
+        }
+
+        POINT GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
+            POINT center = GetCenterPosition();
+            POINT point = GetPosition(0);
+
+            POINT result = { point.x - center.x, point.y - center.y };
+            if (invert_x) {
+                result.x *= -1;
+            }
+            if (invert_y) {
+                result.y *= -1;
+            }
+            return result;
+        }
+
+        void LockInCenter() noexcept {
+            SetPosition(GetCenterPosition());
         }
 
         static POINT GetPosition(HWND hwnd) noexcept {
@@ -80,6 +107,10 @@ namespace input_helper {
                 ScreenToClient(hwnd, &point);
             }
             return point;
+        }
+
+        static void SetPosition(POINT point) noexcept {
+            SetCursorPos(point.x, point.y);
         }
 
     private:

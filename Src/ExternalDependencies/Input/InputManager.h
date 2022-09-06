@@ -78,6 +78,22 @@ public:
         return m_mouseData.GetDifference();
     }
 
+    POINT GetCenterPosition() const noexcept {
+        return m_mouseData.GetCenterPosition();
+    }
+
+    POINT GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
+        return m_mouseData.GetPositionFromCenter(invert_x, invert_y);
+    }
+
+    void LockInCenter() noexcept {
+        m_mouseData.LockInCenter();
+    }
+
+    void SetPosition(POINT point) noexcept {
+        m_mouseData.SetPosition(point);
+    }
+
 private:
 
     input_helper::MouseData m_mouseData;
@@ -90,7 +106,7 @@ public:
 
     InputManager(HWND hwnd = 0)
         : m_spKeyMgr(std::make_shared<KeyManager>())
-        , m_spMouseMgr(std::make_shared<MouseManager>())
+        , m_spMouseMgr(std::make_shared<MouseManager>(hwnd))
     {}
 
     void Update() noexcept {
