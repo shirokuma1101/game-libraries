@@ -25,7 +25,6 @@ public:
     void Update(double delta_time) {
         static const double effect_frame = 60.0;
         for (auto iter = m_upEmittedEffectData.begin(); iter != m_upEmittedEffectData.end();) {
-            auto& key = iter->first;
             auto& data = *iter->second;
             auto& handle = iter->second->handle;
             auto& tranform = iter->second->effectTransform;

@@ -3,7 +3,10 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXHELPER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXHELPER_H_
 
+#pragma warning(push)
+#pragma warning(disable:26495) // Variable 'identifier' is uninitialized. Always initialize a member variable (type.6).
 #include "PxPhysicsAPI.h"
+#pragma warning(pop)
 #include "PxFoundation.h"
 #pragma comment(lib, "PhysX_64.lib")
 #pragma comment(lib, "PhysXCommon_64.lib")
@@ -146,7 +149,7 @@ namespace physx_helper {
 
     inline void CalcCG(physx::PxRigidActor** actor, const DirectX::SimpleMath::Vector3& offset = {}) {
         physx::PxRigidDynamic* dynamic = IsDynamic(*actor);
-        DirectX::SimpleMath::Vector3 cg = CalcCG(*actor);
+        DirectX::SimpleMath::Vector3 cg = CalcCG(*actor, offset);
         dynamic->setCMassLocalPose(physx::PxTransform(ToPxVec3(cg)));
     }
 

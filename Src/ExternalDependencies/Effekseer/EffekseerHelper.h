@@ -7,8 +7,11 @@
 #include <string>
 #include <string_view>
 
+#pragma warning(push)
+#pragma warning(disable:4100) // 'identifier' : unreferenced formal parameter
 #include "Effekseer.h" // Effekseer must set both "include" and "Effekseer" directory
 #include "EffekseerRendererDX11/EffekseerRendererDX11.h"
+#pragma warning(pop)
 #ifdef _DEBUG
 #pragma comment(lib, "Effekseerd.lib")
 #pragma comment(lib, "EffekseerRendererDX11d.lib")

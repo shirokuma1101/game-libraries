@@ -13,12 +13,11 @@ namespace date_time {
     };
 
     inline UINT64 GetRealTime() {
-        
-        SYSTEMTIME st;
+        SYSTEMTIME st{};
         SecureZeroMemory(&st, sizeof(st));
         GetSystemTime(&st);
 
-        RealTime rt;
+        RealTime rt{};
         SecureZeroMemory(&rt, sizeof(rt));
         SystemTimeToFileTime(&st, &rt.ft);
 
@@ -26,12 +25,11 @@ namespace date_time {
     }
 
     inline SYSTEMTIME GetSystemTime(UINT64 real_time) {
-        
-        RealTime rt;
+        RealTime rt{};
         SecureZeroMemory(&rt, sizeof(rt));
         rt.ui.QuadPart = real_time;
 
-        SYSTEMTIME st;
+        SYSTEMTIME st{};
         SecureZeroMemory(&st, sizeof(st));
         FileTimeToSystemTime(&rt.ft, &st);
 
