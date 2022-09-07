@@ -45,35 +45,64 @@ namespace input_helper {
         
     };
 
-    class MouseData
+    class CursorData
     {
     public:
+
+        struct Position : public POINT {
+            Position() noexcept
+                : POINT({ 0, 0 })
+            {}
+            Position(const POINT& pos) noexcept
+                : POINT(pos)
+            {}
+            constexpr Position(LONG x, LONG y) noexcept
+                : POINT({ x, y })
+            {}
+            Position(const Position&) = default;
+            Position(Position&&)      = default;
+
+            // Assignment
+            Position& operator=(const POINT& pos) noexcept {
+                x = pos.x;
+                y = pos.y;
+                return *this;
+            }
+            Position& operator=(const Position& pos) noexcept {
+                x = pos.x;
+                y = pos.y;
+                return *this;
+            }
+            Position& operator=(Position&& pos) noexcept {
+                x = pos.x;
+                y = pos.y;
+                return *this;
+            }
+            Position operator+(const Position& pos) const noexcept {
+                return Position(x + pos.x, y + pos.y);
+            }
+            Position operator-(const Position& pos) const noexcept {
+                return Position(x - pos.x, y - pos.y);
+            }
+        };
         
-        MouseData(HWND hwnd = 0) noexcept
+        CursorData(HWND hwnd = 0) noexcept
             : m_hwnd(hwnd)
-            , m_point()
-            , m_beforePoint()
+            , m_position()
+            , m_beforePosition()
         {}
-
-        POINT GetPoint() const noexcept {
-            return m_point;
-        }
-
-        POINT GetBeforePoint() const noexcept {
-            return m_beforePoint;
-        }
         
-        POINT GetPosition() noexcept {
-            m_beforePoint = m_point;
-            return m_point = GetPosition(m_hwnd);
+        Position GetPosition() noexcept {
+            m_beforePosition = m_position;
+            return m_position = GetPosition(m_hwnd);
         }
 
-        POINT GetDifference() const noexcept {
-            return { m_point.x - m_beforePoint.x, m_point.y - m_beforePoint.y };
+        Position GetDifference() const noexcept {
+            return m_beforePosition - m_position;
         }
 
-        POINT GetCenterPosition() const noexcept {
-            WINDOWINFO wi;
+        Position GetCenterPosition() const noexcept {
+            WINDOWINFO wi{};
             SecureZeroMemory(&wi, sizeof(wi));
             GetWindowInfo(m_hwnd, &wi);
             LONG width = wi.rcClient.right - wi.rcClient.left;
@@ -82,18 +111,15 @@ namespace input_helper {
             return { wi.rcClient.left + width / 2, wi.rcClient.top + height / 2 };
         }
 
-        POINT GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
-            POINT center = GetCenterPosition();
-            POINT point = GetPosition(0);
-
-            POINT result = { point.x - center.x, point.y - center.y };
+        Position GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
+            Position relative = Position(GetPosition(0)) - GetCenterPosition();
             if (invert_x) {
-                result.x *= -1;
+                relative.x *= -1;
             }
             if (invert_y) {
-                result.y *= -1;
+                relative.y *= -1;
             }
-            return result;
+            return relative;
         }
 
         void LockInCenter() noexcept {
@@ -116,8 +142,11 @@ namespace input_helper {
     private:
         
         const HWND m_hwnd;
-        POINT      m_point;
-        POINT      m_beforePoint;
+        
+    public:
+
+        Position   m_position;
+        Position   m_beforePosition;
         
     };
     

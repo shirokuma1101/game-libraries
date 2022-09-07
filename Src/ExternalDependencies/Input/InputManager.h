@@ -41,7 +41,7 @@ public:
         return false;
     }
 
-    std::tuple<bool, bool, bool, bool, bool, bool> GetDirection(std::tuple<int, int, int, int, int, int> direction, bool is_press_and_hold = true) noexcept {
+    std::tuple<bool, bool, bool, bool, bool, bool> GetDirection(const std::tuple<int, int, int, int, int, int>& direction, bool is_press_and_hold = true) noexcept {
         return std::make_tuple(
             GetState(std::get<0>(direction), is_press_and_hold),
             GetState(std::get<1>(direction), is_press_and_hold),
@@ -63,40 +63,40 @@ class MouseManager
 public:
 
     MouseManager(HWND hwnd = 0)
-        : m_mouseData(hwnd)
+        : m_cursorData(hwnd)
     {}
 
     void Update() noexcept {
-        m_mouseData.GetPosition();
+        m_cursorData.GetPosition();
     }
 
-    POINT GetPosition() noexcept {
-        return m_mouseData.GetPoint();
+    input_helper::CursorData::Position GetPosition() noexcept {
+        return m_cursorData.m_position;
     }
 
-    POINT GetDifference() noexcept {
-        return m_mouseData.GetDifference();
+    input_helper::CursorData::Position GetDifference() noexcept {
+        return m_cursorData.GetDifference();
     }
 
-    POINT GetCenterPosition() const noexcept {
-        return m_mouseData.GetCenterPosition();
+    input_helper::CursorData::Position GetCenterPosition() const noexcept {
+        return m_cursorData.GetCenterPosition();
     }
 
-    POINT GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
-        return m_mouseData.GetPositionFromCenter(invert_x, invert_y);
+    input_helper::CursorData::Position GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
+        return m_cursorData.GetPositionFromCenter(invert_x, invert_y);
     }
 
     void LockInCenter() noexcept {
-        m_mouseData.LockInCenter();
+        m_cursorData.LockInCenter();
     }
 
-    void SetPosition(POINT point) noexcept {
-        m_mouseData.SetPosition(point);
+    void SetPosition(input_helper::CursorData::Position point) noexcept {
+        m_cursorData.SetPosition(point);
     }
 
 private:
 
-    input_helper::MouseData m_mouseData;
+    input_helper::CursorData m_cursorData;
 
 };
 
