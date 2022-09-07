@@ -70,11 +70,11 @@ public:
         m_cursorData.GetPosition();
     }
 
-    input_helper::CursorData::Position GetPosition() noexcept {
+    input_helper::CursorData::Position GetPosition() const noexcept {
         return m_cursorData.m_position;
     }
 
-    input_helper::CursorData::Position GetDifference() noexcept {
+    input_helper::CursorData::Position GetDifference() const noexcept {
         return m_cursorData.GetDifference();
     }
 

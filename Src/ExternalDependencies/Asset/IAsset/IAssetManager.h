@@ -46,7 +46,7 @@ public:
     //virtual const std::unique_ptr<AssetDataImpl>& operator[] (std::string_view name) const final {
     //    return GetAsset(name);
     //}
-    virtual const typename AssetDataImpl::AssetClass& operator[] (std::string_view name) const final {
+    virtual const typename AssetDataImpl::AssetClass& operator[](std::string_view name) const final {
         return *GetAsset(name)->GetData();
     }
 
