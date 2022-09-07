@@ -12,7 +12,6 @@ namespace templates {
     template <class T>
     constexpr bool false_v = false;
 
-
 #define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})
     template<class T, class Func>
     constexpr auto HasFunc(Func&& f)->decltype(f(std::declval<T>()), true) {
@@ -20,6 +19,15 @@ namespace templates {
     }
     template<class>
     constexpr bool HasFunc(...) {
+        return false;
+    }
+
+    template<class T, class U>
+    constexpr auto IsSafelyCastable()->decltype(static_cast<U>(std::declval<T>())) {
+        return true;
+    }
+    template<class>
+    constexpr bool IsSafelyCastable(...) {
         return false;
     }
 
