@@ -25,6 +25,11 @@ NAMESPACE_EXTERNAL_END
 
 namespace convert {
 
+    template<class CastTy, class T>
+    constexpr CastTy SizeOf(const T& arg) {
+        return static_cast<CastTy>(sizeof(arg));
+    }
+
     template<class T> constexpr T      ToSquare(const T& base) noexcept { return base * base; }
     template<class T> constexpr void   ToSquare(T* base)                { *base *= *base; }
     /*
