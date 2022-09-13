@@ -125,10 +125,14 @@ public:
     physx::PxShape* ConvexMesh(physx::PxConvexMesh* mesh, std::string_view material_name = "") {
         return m_pPhysics->createShape(physx::PxConvexMeshGeometry(mesh), *FindMaterial(material_name));
     }
-    physx::PxShape* TriangleMesh(physx::PxTriangleMesh* mesh, std::string_view material_name = "") {
-        return m_pPhysics->createShape(physx::PxTriangleMeshGeometry(mesh), *FindMaterial(material_name));
+    physx::PxShape* TriangleMesh(physx::PxTriangleMesh* mesh, const DirectX::SimpleMath::Vector3& scale = { 1.f, 1.f, 1.f }, std::string_view material_name = "") {
+        return m_pPhysics->createShape(physx::PxTriangleMeshGeometry(mesh, physx::PxMeshScale(physx_helper::ToPxVec3(scale))), *FindMaterial(material_name));
     }
-    
+
+    physx::PxRigidStatic* StaticPlane(std::string_view material_name = "") {
+        return physx::PxCreatePlane(*m_pPhysics, physx::PxPlane(0, 1, 0, 0), *FindMaterial(material_name));
+    }
+
     template<class VArray>
     physx::PxConvexMesh* ToPxConvexMesh(const VArray& vertices) {
         return physx_helper::ToPxConvexMesh(m_pPhysics, m_pCooking, vertices);
@@ -138,35 +142,57 @@ public:
         return physx_helper::ToPxTriangleMesh(m_pPhysics, m_pCooking, vertices, triangles);
     }
     
-    physx::PxRigidStatic* CreateStatic(const DirectX::SimpleMath::Vector3& position = {}) {
-        return physx_helper::CreateStatic(m_pPhysics, position);
+    physx::PxRigidStatic* CreateStatic(
+        const DirectX::SimpleMath::Vector3&    position   = {},
+        const DirectX::SimpleMath::Quaternion& quaternion = {}
+    ) {
+        return physx_helper::CreateStatic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
     }
     physx::PxRigidStatic* CreateStatic(
-        physx::PxShape* shape,
-        const DirectX::SimpleMath::Vector3& local_position = {},
-        const DirectX::SimpleMath::Vector3& position = {}
+        const DirectX::SimpleMath::Vector3& position,
+        const DirectX::SimpleMath::Vector3& rotation
     ) {
-        physx::PxRigidStatic* rigid_static = physx_helper::CreateStatic(m_pPhysics, position);
-        physx_helper::AttachShape(&shape, reinterpret_cast<physx::PxRigidActor**>(&rigid_static), local_position);
+        return physx_helper::CreateStatic(m_pPhysics, physx_helper::ToPxTransform(position, rotation));
+    }
+    physx::PxRigidStatic* CreateStatic(
+        physx::PxShape*                        shape,
+        const DirectX::SimpleMath::Vector3&    local_position   = {},
+        const DirectX::SimpleMath::Quaternion& local_quaternion = {},
+        const DirectX::SimpleMath::Vector3&    position         = {},
+        const DirectX::SimpleMath::Quaternion& quaternion       = {}
+    ) {
+        physx::PxRigidStatic* rigid_static = physx_helper::CreateStatic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
+        physx_helper::AttachShape(reinterpret_cast<physx::PxRigidActor**>(&rigid_static), &shape, physx_helper::ToPxTransform(local_position, local_quaternion));
         return rigid_static;
     }
 
     physx::PxRigidDynamic* CreateDynamic(
-        const DirectX::SimpleMath::Vector3& position = {},
-        const DirectX::SimpleMath::Vector3& velocity = {},
-        float damping = 0.f
+        const DirectX::SimpleMath::Vector3&    position   = {},
+        const DirectX::SimpleMath::Quaternion& quaternion = {},
+        const DirectX::SimpleMath::Vector3&    velocity   = {},
+        float                                  damping    = 0.f
     ) {
-        return physx_helper::CreateDynamic(m_pPhysics, position, velocity, damping);
+        return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion), velocity, damping);
     }
     physx::PxRigidDynamic* CreateDynamic(
-        physx::PxShape* shape,
-        const DirectX::SimpleMath::Vector3& local_position = {},
-        const DirectX::SimpleMath::Vector3& position = {},
+        const DirectX::SimpleMath::Vector3& position,
+        const DirectX::SimpleMath::Vector3& rotation,
         const DirectX::SimpleMath::Vector3& velocity = {},
-        float damping = 0.f
+        float                               damping  = 0.f
     ) {
-        physx::PxRigidDynamic* rigid_dynamic = physx_helper::CreateDynamic(m_pPhysics, position, velocity, damping);
-        physx_helper::AttachShape(&shape, reinterpret_cast<physx::PxRigidActor**>(&rigid_dynamic), local_position);
+        return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, rotation), velocity, damping);
+    }
+    physx::PxRigidDynamic* CreateDynamic(
+        physx::PxShape*                        shape,
+        const DirectX::SimpleMath::Vector3&    local_position   = {},
+        const DirectX::SimpleMath::Quaternion& local_quaternion = {},
+        const DirectX::SimpleMath::Vector3&    position         = {},
+        const DirectX::SimpleMath::Quaternion& quaternion       = {},
+        const DirectX::SimpleMath::Vector3&    velocity         = {},
+        float                                  damping          = 0.f
+    ) {
+        physx::PxRigidDynamic* rigid_dynamic = physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion), velocity, damping);
+        physx_helper::AttachShape(reinterpret_cast<physx::PxRigidActor**>(&rigid_dynamic), &shape, physx_helper::ToPxTransform(local_position, local_quaternion));
         return rigid_dynamic;
     }
     
