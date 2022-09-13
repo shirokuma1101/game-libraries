@@ -22,9 +22,6 @@
     <Filter Include="Src\ExternalDependencies\Math">
       <UniqueIdentifier>{c5e911a4-e776-4e6e-90e5-b63fe4125aed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Thread\SimpleThreadManagerEx">
-      <UniqueIdentifier>{1a51a4aa-8d4d-4228-b5b3-0ee79940e730}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test">
       <UniqueIdentifier>{b2d5d939-9d91-467d-abde-f5f2ad552c5d}</UniqueIdentifier>
     </Filter>
@@ -84,9 +81,6 @@
     <ClInclude Include="Src\Math\Random.h">
       <Filter>Src\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\Curve.h">
-      <Filter>Src\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Math\ProjectileMotion.h">
       <Filter>Src\Math</Filter>
     </ClInclude>
@@ -95,12 +89,6 @@
     </ClInclude>
     <ClInclude Include="Src\Math\Timer.h">
       <Filter>Src\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Thread\SimpleThreadManagerEx\SimpleUniqueThreadEx.h">
-      <Filter>Src\Thread\SimpleThreadManagerEx</Filter>
-    </ClInclude>
-    <ClInclude Include="Src\Thread\SimpleThreadManagerEx\SimpleThreadManagerEx.h">
-      <Filter>Src\Thread\SimpleThreadManagerEx</Filter>
     </ClInclude>
     <ClInclude Include="Src\ExternalDependencies\Math\Transform.h">
       <Filter>Src\ExternalDependencies\Math</Filter>
@@ -147,19 +135,13 @@
     <ClInclude Include="Src\ExternalDependencies\Input\InputHelper.h">
       <Filter>Src\ExternalDependencies\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Utility\Templates.h">
+      <Filter>Src\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\TestMain.cpp">
       <Filter>Test</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\ExternalDependencies\Socket\SocketHelper.cpp">
-      <Filter>Src\ExternalDependencies\Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\ExternalDependencies\Effekseer\EffekseerManager.cpp">
-      <Filter>Src\ExternalDependencies\Effekseer</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\ExternalDependencies\PhysX\PhysXManager.cpp">
-      <Filter>Src\ExternalDependencies\PhysX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
