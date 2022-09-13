@@ -58,74 +58,32 @@ private:
     
 };
 
-class MouseManager
-{
-public:
-
-    MouseManager(HWND hwnd = 0)
-        : m_cursorData(hwnd)
-    {}
-
-    void Update() noexcept {
-        m_cursorData.GetPosition();
-    }
-
-    input_helper::CursorData::Position GetPosition() const noexcept {
-        return m_cursorData.m_position;
-    }
-
-    input_helper::CursorData::Position GetDifference() const noexcept {
-        return m_cursorData.GetDifference();
-    }
-
-    input_helper::CursorData::Position GetCenterPosition() const noexcept {
-        return m_cursorData.GetCenterPosition();
-    }
-
-    input_helper::CursorData::Position GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
-        return m_cursorData.GetPositionFromCenter(invert_x, invert_y);
-    }
-
-    void LockInCenter() noexcept {
-        m_cursorData.LockInCenter();
-    }
-
-    void SetPosition(input_helper::CursorData::Position point) noexcept {
-        m_cursorData.SetPosition(point);
-    }
-
-private:
-
-    input_helper::CursorData m_cursorData;
-
-};
-
 class InputManager
 {
 public:
 
     InputManager(HWND hwnd = 0)
-        : m_spKeyMgr(std::make_shared<KeyManager>())
-        , m_spMouseMgr(std::make_shared<MouseManager>(hwnd))
+        : m_upKeyMgr(std::make_unique<KeyManager>())
+        , m_upCursorMgr(std::make_unique<input_helper::CursorData>(hwnd))
     {}
 
     void Update() noexcept {
-        m_spKeyMgr->Update();
-        m_spMouseMgr->Update();
+        m_upKeyMgr->Update();
+        m_upCursorMgr->GetPosition();
     }
 
-    auto GetKeyManager() noexcept {
-        return m_spKeyMgr;
+    const std::unique_ptr<KeyManager>& GetKeyManager() const noexcept {
+        return m_upKeyMgr;
     }
 
-    auto GetMouseManager() noexcept {
-        return m_spMouseMgr;
+    const std::unique_ptr<input_helper::CursorData>& GetCursorManager() const noexcept {
+        return m_upCursorMgr;
     }
 
 private:
 
-    std::shared_ptr<KeyManager> m_spKeyMgr;
-    std::shared_ptr<MouseManager> m_spMouseMgr;
+    std::unique_ptr<KeyManager>               m_upKeyMgr;
+    std::unique_ptr<input_helper::CursorData> m_upCursorMgr;
     
 };
 

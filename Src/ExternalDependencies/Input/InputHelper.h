@@ -139,15 +139,13 @@ namespace input_helper {
             SetCursorPos(point.x, point.y);
         }
 
+        Position   m_position;
+        Position   m_beforePosition;
+
     private:
         
         const HWND m_hwnd;
-        
-    public:
 
-        Position   m_position;
-        Position   m_beforePosition;
-        
     };
     
 }
