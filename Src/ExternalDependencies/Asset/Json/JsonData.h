@@ -4,35 +4,67 @@
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_JSON_JSONDATA_H_
 
 #include <fstream>
+#include <memory>
+#include <string>
+#include <unordered_map>
 
 #include "ExternalDependencies/Asset/IAsset/IAssetData.h"
 
-#ifndef INCLUDE_NLOHMANN_JSON_HPP_
 #include "nlohmann/json.hpp"
-#endif // !INCLUDE_NLOHMANN_JSON_HPP_
+#include "nlohmann/json-schema.hpp"
+#pragma comment(lib, "nlohmann_json_schema_validator.lib")
 
 class JsonData : public IAssetData<nlohmann::json>
 {
 public:
 
-    using json = nlohmann::json;
+    using Json          = nlohmann::json;
+    using JsonValidator = nlohmann::json_schema::json_validator;
 
-    JsonData(std::string_view file_path)
+    JsonData(std::string_view file_path, std::shared_ptr<std::unordered_map<std::string, JsonData::JsonValidator>> validators = nullptr)
         : IAssetData(file_path)
+        , m_wpValidators(validators)
     {}
     ~JsonData() override { Release(); }
 
     bool Load() const override {
         return LoadProcess([&] {
+            Json tmp_json;
             std::ifstream ifs(m_filePath);
-            if (ifs) {
-                ifs >> *m_upAssetData;
+            if (!ifs) return false;
+            ifs >> tmp_json;
+            if (ValidateJson(tmp_json)) {
+                *m_upAssetData = tmp_json;
+                return true;
             }
-            return static_cast<bool>(ifs);
+            return false;
         });
     }
 
 private:
+    
+    bool ValidateJson(const Json& data) const {
+        if (m_wpValidators.expired() || !data.count("schema") || !data.at("schema").is_string()) {
+            return true;
+        }
+        std::string schema_name = data.at("schema").get<std::string>();
+        if (m_wpValidators.lock()->count(schema_name.data())) {
+            try {
+                m_wpValidators.lock()->at(schema_name.data()).validate(data);
+                return true;
+            }
+            catch (const std::exception& e) {
+                assert::RaiseAssert("Validation of json failed: " + std::string(e.what()));
+                return false;
+            }
+        }
+        else {
+            assert::RaiseAssert("Schema name not found: " + std::string(schema_name));
+            return false;
+        }
+    }
+
+    std::weak_ptr<std::unordered_map<std::string, JsonData::JsonValidator>> m_wpValidators;
 
 };
 
