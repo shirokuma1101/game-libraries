@@ -3,6 +3,8 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXHELPER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_PHYSX_PHYSXHELPER_H_
 
+#include "Math/Convert.h"
+
 #pragma warning(push)
 #pragma warning(disable:26495) // Variable 'identifier' is uninitialized. Always initialize a member variable (type.6).
 #include "PxPhysicsAPI.h"
@@ -21,6 +23,8 @@
 
 namespace physx_helper {
 
+    // DirectX Simple Math to PhysX math
+    
     inline physx::PxVec3 ToPxVec3(const DirectX::SimpleMath::Vector3& vec3) {
         return physx::PxVec3(vec3.x, vec3.y, vec3.z);
     }
@@ -28,6 +32,15 @@ namespace physx_helper {
     inline physx::PxQuat ToPxQuat(const DirectX::SimpleMath::Quaternion& quat) {
         return physx::PxQuat(quat.x, quat.y, quat.z, quat.w);
     }
+
+    inline physx::PxTransform ToPxTransform(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Quaternion& quaternion) {
+        return physx::PxTransform(ToPxVec3(position), ToPxQuat(quaternion));
+    }
+    inline physx::PxTransform ToPxTransform(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& rotation) {
+        return physx::PxTransform(ToPxVec3(position), ToPxQuat(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(convert::ToRadians(rotation))));
+    }
+
+    // PhysX math to DirectX Simple Math
 
     inline DirectX::SimpleMath::Matrix ToMatrix(const physx::PxMat44& px_mat44) {
         return DirectX::SimpleMath::Matrix(
@@ -41,6 +54,8 @@ namespace physx_helper {
     inline DirectX::SimpleMath::Vector3 ToVector3(const physx::PxVec3& px_vec3) {
         return DirectX::SimpleMath::Vector3(static_cast<float>(px_vec3.x), static_cast<float>(px_vec3.y), static_cast<float>(px_vec3.z));
     }
+
+    // PhysX helper
 
     template<class VArray>
     inline physx::PxConvexMesh* ToPxConvexMesh(physx::PxPhysics* physics, physx::PxCooking* cooking, const VArray& vertices) {
@@ -89,27 +104,29 @@ namespace physx_helper {
         return shapes;
     }
 
-    //TODO: PxQuat
-
-    inline void AttachShape(physx::PxShape** shape, physx::PxRigidActor** actor, const DirectX::SimpleMath::Vector3& local_position = {}) {
-        (*shape)->setLocalPose(physx::PxTransform(physx_helper::ToPxVec3(local_position)));
+    inline void AttachShape(
+        physx::PxRigidActor**     actor,
+        physx::PxShape**          shape,
+        const physx::PxTransform& local_transform = physx::PxTransform(physx::PxIdentity)
+    ) {
+        (*shape)->setLocalPose(local_transform);
         (*actor)->attachShape(**shape);
     }
 
     inline physx::PxRigidStatic* CreateStatic(
-        physx::PxPhysics* physics,
-        const DirectX::SimpleMath::Vector3& position = {}
+        physx::PxPhysics*         physics,
+        const physx::PxTransform& transform = physx::PxTransform(physx::PxIdentity)
     ) {
-        return physics->createRigidStatic(physx::PxTransform(ToPxVec3(position)));
+        return physics->createRigidStatic(transform);
     }
 
     inline physx::PxRigidDynamic* CreateDynamic(
-        physx::PxPhysics* physics,
-        const DirectX::SimpleMath::Vector3& position = {},
-        const DirectX::SimpleMath::Vector3& velocity = {},
-        float damping = 0.f
+        physx::PxPhysics*                   physics,
+        const physx::PxTransform&           transform = physx::PxTransform(physx::PxIdentity),
+        const DirectX::SimpleMath::Vector3& velocity  = {},
+        float                               damping   = 0.f
     ) {
-        physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(physx::PxTransform(ToPxVec3(position)));
+        physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(transform);
         rigid_dynamic->setLinearVelocity(ToPxVec3(velocity));
         //rigid_dynamic->setAngularVelocity(ToPxVec3(velocity));
         //rigid_dynamic->setLinearDamping(damping);
@@ -152,6 +169,42 @@ namespace physx_helper {
         DirectX::SimpleMath::Vector3 cg = CalcCG(*actor, offset);
         dynamic->setCMassLocalPose(physx::PxTransform(ToPxVec3(cg)));
     }
+
+    class RigidActorHolder
+    {
+    public:
+
+        RigidActorHolder(physx::PxRigidActor* actor)
+            : m_pActor(actor)
+            , m_moveVector()
+            , m_beforePosition(physx_helper::ToVector3(actor->getGlobalPose().p))
+        {}
+
+        void Update() {
+            auto now_position = physx_helper::ToVector3(m_pActor->getGlobalPose().p);
+            m_moveVector = now_position - m_beforePosition;
+            m_beforePosition = now_position;
+        }
+
+        physx::PxRigidActor* GetRigidActor() noexcept {
+            return m_pActor;
+        }
+
+        DirectX::SimpleMath::Vector3 GetMoveVector() noexcept {
+            return m_moveVector;
+        }
+
+        DirectX::SimpleMath::Matrix GetMatrix() {
+            return ToMatrix(m_pActor->getGlobalPose());
+        }
+
+    private:
+
+        physx::PxRigidActor*         m_pActor = nullptr;
+        DirectX::SimpleMath::Vector3 m_moveVector;
+        DirectX::SimpleMath::Vector3 m_beforePosition;
+
+    };
 
 }
 
