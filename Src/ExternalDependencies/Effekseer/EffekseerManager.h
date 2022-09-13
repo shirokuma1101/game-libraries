@@ -4,6 +4,8 @@
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_EFFEKSEER_EFFEKSEERMANAGER_H_
 
 #include <memory>
+#include <string>
+#include <unordered_map>
 
 #include "ExternalDependencies/Utility/String.h"
 #include "EffekseerHelper.h"

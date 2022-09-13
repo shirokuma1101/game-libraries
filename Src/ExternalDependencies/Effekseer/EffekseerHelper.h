@@ -3,10 +3,6 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_EFFEKSEER_EFFEKSEERHELPER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_EFFEKSEER_EFFEKSEERHELPER_H_
 
-#include <unordered_map>
-#include <string>
-#include <string_view>
-
 #pragma warning(push)
 #pragma warning(disable:4100) // 'identifier' : unreferenced formal parameter
 #include "Effekseer.h" // Effekseer must set both "include" and "Effekseer" directory
