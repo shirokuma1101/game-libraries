@@ -3,6 +3,7 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETMANAGER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETMANAGER_H_
 
+#include <memory>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -21,15 +22,44 @@ public:
     IAssetManager() {}
     virtual ~IAssetManager() { Release(); }
 
-    virtual void Register(std::string_view file_path) final {
-        m_upJsonData = std::make_unique<JsonData>(file_path);
-        if (!m_upJsonData->Load()) {
+    virtual void Register(std::string_view file_path) {
+        auto json_data = std::make_unique<JsonData>(file_path);
+        if (!json_data->Load()) {
             assert::RaiseAssert(std::string("Path not found: ") + file_path.data());
+            return;
         }
-
-        for (const auto& e : *m_upJsonData->GetData()) {
+        for (const auto& e : json_data->GetData()->at("list")) {
             auto name = e.at("name").get<std::string>();
             auto path = e.at("path").get<std::string>();
+            auto asset_data = std::make_unique<AssetDataImpl>(path);
+            m_upAssets.emplace(name, std::move(asset_data));
+        }
+    }
+
+    virtual void Register(const std::unordered_map<std::string, std::unique_ptr<JsonData>>& jsons, std::initializer_list<std::string_view> keys = {}) {
+        for (const auto& e : jsons) {
+            auto& json_data = e.second;
+            if (!json_data->IsLoaded()) {
+                assert::ShowWarning("json data not loaded. Load (loading may take some time.)");
+                if (!json_data->Load()) {
+                    assert::RaiseAssert(std::string("Path not found: ") + json_data->GetFilePath());
+                    break;
+                }
+            }
+
+            if (!e.second->IsLoadSuccessed()) continue;
+            auto copy_data = *e.second->GetData();
+            if (keys.size()) {
+                for (const auto& key : keys) {
+                    if (copy_data.count(key)) {
+                        copy_data = copy_data.at(key.data());
+                    }
+                    else return;
+                }
+            }
+            
+            auto name = e.first;
+            auto path = copy_data.at("path").get<std::string>();
             auto asset_data = std::make_unique<AssetDataImpl>(path);
             m_upAssets.emplace(name, std::move(asset_data));
         }
@@ -43,43 +73,67 @@ public:
         return nullptr;
     }
 
-    //virtual const std::unique_ptr<AssetDataImpl>& operator[] (std::string_view name) const final {
-    //    return GetAsset(name);
-    //}
     virtual const typename AssetDataImpl::AssetClass& operator[](std::string_view name) const final {
         return *GetAsset(name)->GetData();
     }
 
+    virtual const std::unordered_map<std::string, std::unique_ptr<AssetDataImpl>>& GetAssets() const final {
+        return m_upAssets;
+    }
+
     virtual void Load() final {
         for (const auto& e : m_upAssets) {
-            e.second->Load();
+            if (!e.second->Load()) {
+                assert::RaiseAssert("Asset load failed: " + e.first);
+            }
         }
     }
 
-    virtual void Load(std::string_view name) final {
-        if (!GetAsset(name)->Load()) {
+    virtual bool Load(std::string_view name) const final {
+        if (auto& asset = GetAsset(name); asset) {
+            if (asset->Load()) {
+                return true;
+            }
             assert::RaiseAssert(std::string("Path not found: ") + GetFilePath(name).data());
         }
+        return false;
     }
     
-    virtual void AsyncLoad(std::string_view name, bool force = false) final {
-        return GetAsset(name)->AsyncLoad(force);
+    virtual bool AsyncLoad(std::string_view name, bool force = false) const final {
+        if (auto& asset = GetAsset(name); asset) {
+            asset->AsyncLoad(force);
+            return true;
+        }
+        return false;
     }
 
     virtual bool IsLoaded(std::string_view name) const final {
-        return GetAsset(name)->IsLoaded();
+        if (auto& asset = GetAsset(name); asset) {
+            return asset->IsLoaded();
+        }
+        return false;
     }
 
     virtual bool IsLoadedOnlyOnce(std::string_view name) const final {
-        return GetAsset(name)->IsLoadedOnlyOnce();
+        if (auto& asset = GetAsset(name); asset) {
+            return asset->IsLoadedOnlyOnce();
+        }
+        return false;
     }
 
-    virtual void LoadedOnlyOnceReset(std::string_view name) final {
-        GetAsset(name)->LoadedOnlyOnceReset();
+    virtual bool LoadedOnlyOnceReset(std::string_view name) const final {
+        if (auto& asset = GetAsset(name); asset) {
+            asset->LoadedOnlyOnceReset();
+            return true;
+        }
+        return false;
     }
 
     virtual const std::string GetFilePath(std::string_view name) const final {
-        return GetAsset(name)->GetFilePath();
+        if (auto& asset = GetAsset(name); asset) {
+            return asset->GetFilePath();
+        }
+        return std::string();
     }
 
     virtual const std::unique_ptr<typename AssetDataImpl::AssetClass>& GetData(std::string_view name) const final {
@@ -91,13 +145,11 @@ public:
     }
 
     virtual void Release() noexcept {
-        m_upJsonData.reset();
         m_upAssets.clear();
     }
 
 protected:
 
-    std::unique_ptr<JsonData>                                       m_upJsonData;
     std::unordered_map<std::string, std::unique_ptr<AssetDataImpl>> m_upAssets;
 
 private:

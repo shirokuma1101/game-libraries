@@ -3,6 +3,7 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETDATA_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_ASSET_IASSET_IASSETDATA_H_
 
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -37,6 +38,10 @@ public:
         return m_thread.IsExists() ? m_thread.IsEnd() : m_isLoaded;
     }
 
+    virtual bool IsLoadSuccessed() const final {
+        return m_isLoadSuccessed;
+    }
+
     virtual bool IsLoadedOnlyOnce() const final {
         if (IsLoaded() && !m_isLoadedOnlyOnce) {
             m_isLoadedOnlyOnce = true;
@@ -60,15 +65,15 @@ public:
 protected:
 
     template<class Func>
-    bool LoadProcess(Func func) const {
+    bool LoadProcess(Func&& func) const {
         m_isLoaded = false;
         m_isFirstTimeLoaded = true;
 
-        const bool succeeded = func();
+        m_isLoadSuccessed = func();
 
         m_isLoaded = true;
 
-        return succeeded;
+        return m_isLoadSuccessed;
     }
 
     void Release() {
@@ -81,6 +86,7 @@ protected:
 
     SimpleUniqueThread                m_thread;
     mutable bool                      m_isLoaded          = false;
+    mutable bool                      m_isLoadSuccessed   = false;
     mutable bool                      m_isFirstTimeLoaded = false;
     mutable bool                      m_isLoadedOnlyOnce  = false;
 
