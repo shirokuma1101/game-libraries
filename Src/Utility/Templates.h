@@ -8,7 +8,7 @@
 namespace templates {
 
     template <class T>
-    constexpr bool true_v = false;
+    constexpr bool true_v = true;
     template <class T>
     constexpr bool false_v = false;
 
@@ -31,6 +31,16 @@ namespace templates {
         return false;
     }
 
+    //note: "https://cpprefjp.github.io/reference/type_traits/underlying_type.html"
+    template<class T, bool is_enum>
+    struct UnderlyingTypeWrapperImpl : std::add_const<T> {};
+    template<class T>
+    struct UnderlyingTypeWrapperImpl<T, true> : std::underlying_type<T> {};
+    template<class T>
+    struct UnderlyingTypeWrapper : UnderlyingTypeWrapperImpl<T, std::is_enum<T>::value> {};
+    template<class T>
+    using UnderlyingTypeWrapperT = typename UnderlyingTypeWrapper<T>::type;
+    
 }
 
 #endif
