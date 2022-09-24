@@ -12,7 +12,9 @@
 
 #include "nlohmann/json.hpp"
 #include "nlohmann/json-schema.hpp"
+#ifndef JSONDATA_DISABLE_LINK_LIBS
 #pragma comment(lib, "nlohmann_json_schema_validator.lib")
+#endif
 
 class JsonData : public IAssetData<nlohmann::json>
 {
@@ -29,12 +31,12 @@ public:
 
     bool Load() const override {
         return LoadProcess([&] {
-            Json tmp_json;
+            Json json;
             std::ifstream ifs(m_filePath);
             if (!ifs) return false;
-            ifs >> tmp_json;
-            if (ValidateJson(tmp_json)) {
-                *m_upAssetData = tmp_json;
+            ifs >> json;
+            if (ValidateJson(json)) {
+                *m_upAssetData = json;
                 return true;
             }
             return false;

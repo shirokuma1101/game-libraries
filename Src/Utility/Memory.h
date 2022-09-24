@@ -18,7 +18,7 @@ namespace memory {
             (*p)->release();
         }
         else {
-            static_assert(templates::false_v<T>, "No [Rr]elease function defined");
+            static_assert(templates::false_v<T>, "No 'Release' or 'release' function defined");
         }
 
         *p = nullptr;

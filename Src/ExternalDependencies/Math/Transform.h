@@ -6,6 +6,9 @@
 #include "Math/Convert.h"
 
 #include "SimpleMath.h"
+#ifndef TRANSFORM_DISABLE_LINK_LIBS
+#pragma comment(lib, "DirectXTK.lib")
+#endif
 
 struct Transform {
 
@@ -35,8 +38,8 @@ struct Transform {
     void Reset() noexcept {
         position = Vector3::Zero;
         rotation = Vector3::Zero;
-        scale = { 1.f };
-        matrix = Matrix::Identity;
+        scale    = { 1.f };
+        matrix   = Matrix::Identity;
     }
 #else
     Transform() noexcept
@@ -58,12 +61,12 @@ struct Transform {
     }
 
     void Reset() noexcept {
-        position = Vector3::Zero;
+        position   = Vector3::Zero;
         quaternion = Quaternion::Identity;
-        scale = { 1.f };
-        matrix = Matrix::Identity;
+        scale      = { 1.f };
+        matrix     = Matrix::Identity;
     }
-#endif // TRANSFORM_ROTAION_USE_EULER
+#endif
 
     static Transform Identity() noexcept {
         return std::move(Transform());

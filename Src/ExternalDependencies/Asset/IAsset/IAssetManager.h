@@ -58,7 +58,7 @@ public:
                 }
             }
             
-            auto name = e.first;
+            auto& name = e.first;
             auto path = copy_data.at("path").get<std::string>();
             auto asset_data = std::make_unique<AssetDataImpl>(path);
             m_upAssets.emplace(name, std::move(asset_data));
