@@ -5,9 +5,9 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
-#include "ExternalDependencies/Utility/String.h"
 #include "EffekseerHelper.h"
 
 class EffekseerManager
@@ -19,71 +19,68 @@ public:
     }
 
     void Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max_square = 8192) {
-        m_maxSquare = max_square;
-        effekseer_helper::RendererInit(&m_renderer, dev, ctx, m_maxSquare);
-        effekseer_helper::ManagerInit(&m_manager, m_renderer, m_maxSquare);
+        effekseer_helper::RendererInit(&m_rendererRef, dev, ctx, max_square);
+        effekseer_helper::ManagerInit(&m_managerRef, m_rendererRef, max_square);
     }
 
     void Update(double delta_time) {
         static const double effect_frame = 60.0;
-        for (auto iter = m_upEmittedEffectData.begin(); iter != m_upEmittedEffectData.end();) {
-            auto& data = *iter->second;
-            auto& handle = iter->second->handle;
+        for (auto iter = m_upEffectInstances.begin(); iter != m_upEffectInstances.end();) {
+            auto& data     = *iter->second;
+            auto& handle   = iter->second->handle;
             auto& tranform = iter->second->effectTransform;
 
             if (data.elapsedTime == 0) {
-                handle = m_manager->Play(data.effect, 0, 0, 0);
-                m_manager->SetMatrix(handle, effekseer_helper::ToMatrix43(tranform.matrix));
-                m_manager->SetSpeed(handle, tranform.speed);
+                handle = m_managerRef->Play(data.GetEffectData()->GetEffectRef(), 0, 0, 0);
+                m_managerRef->SetMatrix(handle, effekseer_helper::ToMatrix43(tranform.matrix));
+                m_managerRef->SetSpeed(handle, tranform.speed);
             }
 
             if (data.elapsedTime > (tranform.maxFrame / effect_frame)) {
-                m_manager->StopEffect(handle);
+                m_managerRef->StopEffect(handle);
                 if (tranform.isLoop) {
                     data.elapsedTime = 0;
                 }
                 else {
-                    iter = m_upEmittedEffectData.erase(iter);
+                    iter = m_upEffectInstances.erase(iter);
                 }
             }
             else {
-                m_renderer->SetTime(static_cast<float>(data.elapsedTime));
+                m_rendererRef->SetTime(static_cast<float>(data.elapsedTime));
                 data.elapsedTime += delta_time;
                 ++iter;
             }
         }
 
-        m_manager->Update(static_cast<float>(delta_time * effect_frame));
+        m_managerRef->Update(static_cast<float>(delta_time * effect_frame));
     }
     
     void Draw() {
-        m_renderer->BeginRendering();
-        m_manager->Draw();
-        m_renderer->EndRendering();
+        m_rendererRef->BeginRendering();
+        m_managerRef->Draw();
+        m_rendererRef->EndRendering();
     }
 
     void SetCamera(const DirectX::SimpleMath::Matrix& proj_mat, const DirectX::SimpleMath::Matrix& view_mat) {
-        m_renderer->SetProjectionMatrix(effekseer_helper::ToMatrix44(proj_mat));
-        m_renderer->SetCameraMatrix(effekseer_helper::ToMatrix44(view_mat));
+        m_rendererRef->SetProjectionMatrix(effekseer_helper::ToMatrix44(proj_mat));
+        m_rendererRef->SetCameraMatrix(effekseer_helper::ToMatrix44(view_mat));
     }
-    
+
     void SetEffect(std::string_view effect_name, std::string_view file_path) {
-        effekseer_helper::EffectData effect_data;
-        effect_data.effect = Effekseer::Effect::Create(m_manager, string::StrToUtf16(file_path).c_str());
-        m_effectData.emplace(effect_name, effect_data);
+        m_spEffectData.emplace(effect_name, std::make_shared<effekseer_helper::EffectData>(m_managerRef, file_path));
     }
     
     effekseer_helper::EffectTransform* Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false) {
         if (is_unique) {
-            if (auto iter = m_upEmittedEffectData.find(effect_name.data()); iter != m_upEmittedEffectData.end()) {
+            if (auto iter = m_upEffectInstances.find(effect_name.data()); iter != m_upEffectInstances.end()) {
                 return &iter->second->effectTransform;
             }
         }
-        if (auto iter = m_effectData.find(effect_name.data()); iter != std::end(m_effectData)) {
-            auto data = std::make_unique<effekseer_helper::EffectData>(iter->second);
-            auto et_ptr = &data->effectTransform;
-            data->effectTransform = effect_transform;
-            m_upEmittedEffectData.emplace(effect_name, std::move(data));
+        if (auto iter = m_spEffectData.find(effect_name.data()); iter != m_spEffectData.end()) {
+            auto effect_instance = std::make_unique<effekseer_helper::EffectInstance>(iter->second);
+            auto et_ptr = &effect_instance->effectTransform;
+            effect_instance->effectTransform = effect_transform;
+            m_upEffectInstances.emplace(effect_name, std::move(effect_instance));
             return et_ptr;
         }
         return nullptr;
@@ -92,15 +89,14 @@ public:
 private:
 
     void Release() noexcept {
-        m_manager.Reset();
-        m_renderer.Reset();
+        m_managerRef.Reset();
+        m_rendererRef.Reset();
     }
 
-    int                                                                                 m_maxSquare = 0;
-    effekseer_helper::Renderer                                                          m_renderer;
-    effekseer_helper::Manager                                                           m_manager;
-    std::unordered_map<std::string, effekseer_helper::EffectData>                       m_effectData;
-    std::unordered_multimap<std::string, std::unique_ptr<effekseer_helper::EffectData>> m_upEmittedEffectData;
+    effekseer_helper::RendererRef                                                           m_rendererRef;
+    Effekseer::ManagerRef                                                                   m_managerRef;
+    std::unordered_map<std::string, std::shared_ptr<effekseer_helper::EffectData>>          m_spEffectData;
+    std::unordered_multimap<std::string, std::unique_ptr<effekseer_helper::EffectInstance>> m_upEffectInstances;
 
 };
 
