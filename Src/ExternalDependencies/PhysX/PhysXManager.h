@@ -19,7 +19,7 @@ public:
         Release();
     }
 
-    void Init(const DirectX::SimpleMath::Vector3& gravity = { 0.f, -constant::fG, 0.f }, bool enable_cuda = false, ID3D11Device* dev = nullptr) {
+    void Init(const DirectX::SimpleMath::Vector3& gravity = { 0.f, -constant::fG, 0.f }, bool create_plane = true, bool enable_cuda = false, ID3D11Device* dev = nullptr) {
         if (INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
             return;
         }
@@ -84,6 +84,9 @@ public:
         m_pScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 1.f);
 #endif // _DEBUG
 
+        if (create_plane) {
+            AddActor(StaticPlane());
+        }
     }
 
     void Update(double delta_time) {
@@ -93,6 +96,10 @@ public:
 
     void AddActor(physx::PxActor* actor) {
         m_pScene->addActor(*actor);
+    }
+
+    void RemoveActor(physx::PxActor* actor) {
+        m_pScene->removeActor(*actor);
     }
 
     void AddMaterial(std::string_view material_name, physx::PxMaterial* material) {

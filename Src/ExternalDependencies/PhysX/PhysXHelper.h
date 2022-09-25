@@ -10,6 +10,7 @@
 #include "PxPhysicsAPI.h"
 #pragma warning(pop)
 #include "PxFoundation.h"
+#ifndef PHYSXHELPER_DISABLE_LINK_LIBS
 #pragma comment(lib, "PhysX_64.lib")
 #pragma comment(lib, "PhysXCommon_64.lib")
 #pragma comment(lib, "PhysXCooking_64.lib")
@@ -19,14 +20,28 @@
 #pragma comment(lib, "PhysXTask_static_64.lib")
 #pragma comment(lib, "SceneQuery_static_64.lib")
 #pragma comment(lib, "SimulationController_static_64.lib")
+#endif
 #include "SimpleMath.h"
 
 namespace physx_helper {
 
     // DirectX Simple Math to PhysX math
-    
+
+    inline physx::PxMat44 ToPxMat44(const DirectX::SimpleMath::Matrix mat) {
+        return physx::PxMat44(
+            physx::PxVec4(mat._11, mat._12, mat._13, mat._14),
+            physx::PxVec4(mat._21, mat._22, mat._23, mat._24),
+            physx::PxVec4(mat._31, mat._32, mat._33, mat._34),
+            physx::PxVec4(mat._41, mat._42, mat._43, mat._44)
+        );
+    }
+
     inline physx::PxVec3 ToPxVec3(const DirectX::SimpleMath::Vector3& vec3) {
         return physx::PxVec3(vec3.x, vec3.y, vec3.z);
+    }
+
+    inline physx::PxVec4 ToPxVec4(const DirectX::SimpleMath::Vector4& vec4) {
+        return physx::PxVec4(vec4.x, vec4.y, vec4.z, vec4.w);
     }
 
     inline physx::PxQuat ToPxQuat(const DirectX::SimpleMath::Quaternion& quat) {
