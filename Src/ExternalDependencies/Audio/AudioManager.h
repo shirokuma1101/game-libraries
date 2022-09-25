@@ -22,8 +22,6 @@ public:
         Unique = 1 << 2,
         Play3D = 1 << 3,
     };
-    //friend bool operator|(PlayFlags lhs, PlayFlags rhs);
-    //friend bool operator&(PlayFlags lhs, PlayFlags rhs);
     friend bool operator|(PlayFlags lhs, PlayFlags rhs) {
         using UnderlyingTypeT = std::underlying_type_t<AudioManager::PlayFlags>;
         return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
@@ -123,14 +121,5 @@ private:
     std::unordered_multimap<std::string, std::shared_ptr<audio_helper::SoundInstance>> m_spSoundInstances;
 
 };
-
-//bool operator|(AudioManager::PlayFlags lhs, AudioManager::PlayFlags rhs) {
-//    using UnderlyingTypeT = std::underlying_type_t<AudioManager::PlayFlags>;
-//    return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
-//}
-//bool operator&(AudioManager::PlayFlags lhs, AudioManager::PlayFlags rhs) {
-//    using UnderlyingTypeT = std::underlying_type_t<AudioManager::PlayFlags>;
-//    return (static_cast<UnderlyingTypeT>(lhs) & static_cast<UnderlyingTypeT>(rhs));
-//}
 
 #endif
