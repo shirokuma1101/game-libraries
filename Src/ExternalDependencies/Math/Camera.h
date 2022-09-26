@@ -29,15 +29,15 @@ namespace camera {
             , aspect(aspect)
             , nearClippingDistance(near_clipping_distance)
             , farClippingDistance(far_clipping_distance)
-            , matrix(DirectX::XMMatrixPerspectiveFovLH(convert::ToRadians(fov), aspect, nearClippingDistance, farClippingDistance))
+            , matrix(SetMatrix())
         {}
 
-        DirectX::SimpleMath::Matrix Set() noexcept {
+        DirectX::SimpleMath::Matrix SetMatrix() noexcept {
             return matrix = DirectX::XMMatrixPerspectiveFovLH(convert::ToRadians(fov), aspect, nearClippingDistance, farClippingDistance);
         }
 
-        //note: https://stackoverflow.com/questions/46182845/field-of-view-aspect-ratio-view-matrix-from-projection-matrix-hmd-ost-calib
-        static std::tuple<float, float, float, float> GetProj(const DirectX::SimpleMath::Matrix& proj_mat) {
+        //note: "https://stackoverflow.com/questions/46182845/field-of-view-aspect-ratio-view-matrix-from-projection-matrix-hmd-ost-calib"
+        static std::tuple<float, float, float, float> GetProjection(const DirectX::SimpleMath::Matrix& proj_mat) {
             float fov                    = convert::ToDegrees(2.0f * std::atan(1.0f / proj_mat._22));
             float aspect                 = proj_mat._22 / proj_mat._11;
             float near_clipping_distance = -(proj_mat._43 / proj_mat._33);
@@ -80,24 +80,33 @@ namespace camera {
 
 struct Camera {
 
-    Camera(float fov, float aspect, float near_clipping_distance, float far_clipping_distance, DirectX::SimpleMath::Matrix camera_mat) noexcept
-        : m_cameraMatrix(camera_mat)
-        , m_viewMatrix(m_cameraMatrix.Invert())
-        , m_projection(camera::Projection(fov, aspect, near_clipping_distance, far_clipping_distance))
+    Camera() noexcept
+        : cameraMatrix(DirectX::SimpleMath::Matrix::Identity)
+        , viewMatrix(cameraMatrix.Invert())
+        , projection()
+    {}
+    Camera(const DirectX::SimpleMath::Matrix& camera_mat, float fov, float aspect, float near_clipping_distance, float far_clipping_distance) noexcept
+        : cameraMatrix(camera_mat)
+        , viewMatrix(cameraMatrix.Invert())
+        , projection(fov, aspect, near_clipping_distance, far_clipping_distance)
     {}
 
     void SetMatrix(DirectX::SimpleMath::Matrix camera_mat) {
-        m_cameraMatrix = camera_mat;
-        m_viewMatrix = m_cameraMatrix.Invert();
+        cameraMatrix = camera_mat;
+        viewMatrix = cameraMatrix.Invert();
     }
 
     void SetProjection(float fov, float aspect, float near_clipping_distance, float far_clipping_distance) {
-        m_projection = camera::Projection(fov, aspect, near_clipping_distance, far_clipping_distance);
+        projection.fov                  = fov;
+        projection.aspect               = aspect;
+        projection.nearClippingDistance = near_clipping_distance;
+        projection.farClippingDistance  = far_clipping_distance;
+        projection.SetMatrix();
     }
 
-    DirectX::SimpleMath::Matrix m_cameraMatrix;
-    DirectX::SimpleMath::Matrix m_viewMatrix;
-    camera::Projection          m_projection;
+    DirectX::SimpleMath::Matrix cameraMatrix;
+    DirectX::SimpleMath::Matrix viewMatrix;
+    camera::Projection          projection;
 
 };
 
