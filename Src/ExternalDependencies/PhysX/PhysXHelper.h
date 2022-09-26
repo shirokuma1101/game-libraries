@@ -25,8 +25,12 @@
 
 namespace physx_helper {
 
-    // DirectX Simple Math to PhysX math
+    /****************************************
+    * Math convert
+    ****************************************/
 
+    /* DirectX Simple Math to PhysX math */
+    
     inline physx::PxMat44 ToPxMat44(const DirectX::SimpleMath::Matrix mat) {
         return physx::PxMat44(
             physx::PxVec4(mat._11, mat._12, mat._13, mat._14),
@@ -70,7 +74,10 @@ namespace physx_helper {
         return DirectX::SimpleMath::Vector3(static_cast<float>(px_vec3.x), static_cast<float>(px_vec3.y), static_cast<float>(px_vec3.z));
     }
 
-    // PhysX helper
+    
+    /****************************************
+    * PhysX helper
+    ****************************************/
 
     template<class VArray>
     inline physx::PxConvexMesh* ToPxConvexMesh(physx::PxPhysics* physics, physx::PxCooking* cooking, const VArray& vertices) {
@@ -156,6 +163,31 @@ namespace physx_helper {
             return nullptr;
         }
         return dynamic;
+    }
+
+    inline bool IsSleeping(physx::PxRigidActor* actor) {
+        physx::PxRigidDynamic* dynamic = nullptr;
+        if (dynamic = IsDynamic(actor), dynamic) {
+            return dynamic->isSleeping();
+        }
+        return false;
+    }
+    
+    inline void PutToSleep(physx::PxRigidActor* actor) {
+        physx::PxRigidDynamic* dynamic = nullptr;
+        if (dynamic = IsDynamic(actor), dynamic) {
+            dynamic->putToSleep();
+        }
+    }
+
+    //note: "https://nekopro99.com/move-rigidbody-addforce/"
+    //note: "https://ekulabo.com/force-mode"
+    inline void AddForce(physx::PxRigidActor* actor, const DirectX::SimpleMath::Vector3& force, physx::PxForceMode::Enum mode = physx::PxForceMode::eFORCE) {
+        physx::PxRigidDynamic* dynamic = nullptr;
+        if (dynamic = IsDynamic(actor), dynamic) {
+            dynamic->isSleeping();
+            dynamic->addForce(physx_helper::ToPxVec3(force), mode);
+        }
     }
 
     inline DirectX::SimpleMath::Vector3 CalcCG(physx::PxRigidActor* actor, const DirectX::SimpleMath::Vector3& offset = {}) {

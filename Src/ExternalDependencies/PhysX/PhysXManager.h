@@ -114,8 +114,11 @@ public:
         return m_pScene;
     }
 
-    /* Geometry manual */
-    // URL:"https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Geometry.html"
+
+    /****************************************************************************************************
+    * Geometry manual
+    * URL:"https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Geometry.html"
+    *****************************************************************************************************/
     
     physx::PxShape* Sphere(float radius, std::string_view material_name = "") {
         return m_pPhysics->createShape(physx::PxSphereGeometry(radius), *FindMaterial(material_name));
@@ -202,7 +205,7 @@ public:
         physx_helper::AttachShape(reinterpret_cast<physx::PxRigidActor**>(&rigid_dynamic), &shape, physx_helper::ToPxTransform(local_position, local_quaternion));
         return rigid_dynamic;
     }
-    
+
 private:
 
     void Release() noexcept {

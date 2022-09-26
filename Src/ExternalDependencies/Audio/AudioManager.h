@@ -22,13 +22,13 @@ public:
         Unique = 1 << 2,
         Play3D = 1 << 3,
     };
-    friend bool operator|(PlayFlags lhs, PlayFlags rhs) {
-        using UnderlyingTypeT = std::underlying_type_t<AudioManager::PlayFlags>;
-        return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
-    }
     friend bool operator&(PlayFlags lhs, PlayFlags rhs) {
-        using UnderlyingTypeT = std::underlying_type_t<AudioManager::PlayFlags>;
+        using UnderlyingTypeT = std::underlying_type_t<PlayFlags>;
         return (static_cast<UnderlyingTypeT>(lhs) & static_cast<UnderlyingTypeT>(rhs));
+    }
+    friend bool operator|(PlayFlags lhs, PlayFlags rhs) {
+        using UnderlyingTypeT = std::underlying_type_t<PlayFlags>;
+        return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
     }
 
     ~AudioManager() {

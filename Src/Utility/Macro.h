@@ -17,10 +17,10 @@ public:                                  \
         return instance;                 \
     }
 
-#define VALID_POINTER(p, func) p = func; p
+#define VALID_POINTER(p, func)   p = func; p
 #define INVALID_POINTER(p, func) p = func; !p
 
-#define FAIL_CHECK(func, err) int err = func; err
-#define SUCCESS_CHECK(func, err) int err = func; !err
+#define FAIL_CHECK(func, err_code)    int err_code = func; err_code
+#define SUCCESS_CHECK(func, err_code) int err_code = func; !err_code
 
 #endif

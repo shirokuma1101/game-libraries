@@ -83,7 +83,7 @@ namespace convert {
             Iter iter;
             bool operator!=(const Iterator& other) const { return iter != other.iter; }
             void operator++()                            { ++i; ++iter; }
-            auto operator* ()                      const { return std::tuple(i, *iter); }
+            auto operator*()                       const { return std::tuple(i, *iter); }
         };
         struct IterableWrapper {
             T iterable;
