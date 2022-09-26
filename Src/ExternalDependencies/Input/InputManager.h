@@ -9,14 +9,37 @@
 
 #include "InputHelper.h"
 
+constexpr int PRESS   = 1;
+constexpr int RELEASE = 2;
+
 class KeyManager
 {
 public:
 
+    enum class KeyState {
+        None    = 1 << 0, // no pressed
+        Press   = 1 << 1, // just press
+        Hold    = 1 << 2, // pushed and hold
+        Release = 1 << 3, // just release
+    };
+    friend bool operator&(KeyState lhs, KeyState rhs) {
+        using UnderlyingTypeT = std::underlying_type_t<KeyState>;
+        return (static_cast<UnderlyingTypeT>(lhs) & static_cast<UnderlyingTypeT>(rhs));
+    }
+    friend bool operator|(KeyState lhs, KeyState rhs) {
+        using UnderlyingTypeT = std::underlying_type_t<KeyState>;
+        return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
+    }
+
     void Update() noexcept {
         for (auto iter = m_keys.begin(); iter != m_keys.end();) {
-            std::get<bool>(*iter) = false;
-            if (std::get<input_helper::KeyData>(*iter).GetState()) {
+            std::get<PRESS>(*iter) = false;
+            bool state = std::get<input_helper::KeyData>(*iter).GetState();
+            if (state) {
+                ++iter;
+            }
+            else if (!state && !std::get<RELEASE>(*iter)) {
+                std::get<RELEASE>(*iter) = true;
                 ++iter;
             }
             else {
@@ -25,36 +48,38 @@ public:
         }
     }
 
-    bool GetState(int key, bool is_press_and_hold = true) noexcept {
+    bool GetState(int key, KeyState key_state = KeyState::Hold) noexcept {
         for (const auto & e : m_keys) {
             if (std::get<input_helper::KeyData>(e).GetKey() == key) {
-                if (is_press_and_hold || std::get<bool>(e)) {
-                    return true;
-                }
-                return false;
+                return GetState(key_state, e);
             }
         }
         if (input_helper::KeyData::GetState(key)) {
-            m_keys.push_back({ input_helper::KeyData(key), true });
-            return true;
+            auto tkey = std::make_tuple(input_helper::KeyData(key), true, false);
+            m_keys.push_back(tkey);
+            return GetState(key_state, tkey);
         }
         return false;
     }
 
-    std::tuple<bool, bool, bool, bool, bool, bool> GetDirection(const std::tuple<int, int, int, int, int, int>& direction, bool is_press_and_hold = true) noexcept {
-        return std::make_tuple(
-            GetState(std::get<0>(direction), is_press_and_hold),
-            GetState(std::get<1>(direction), is_press_and_hold),
-            GetState(std::get<2>(direction), is_press_and_hold),
-            GetState(std::get<3>(direction), is_press_and_hold),
-            GetState(std::get<4>(direction), is_press_and_hold),
-            GetState(std::get<5>(direction), is_press_and_hold)
-        );
+private:
+
+    bool GetState(KeyState key_state, const std::tuple<input_helper::KeyData, bool, bool>& key) noexcept {
+        bool state = false;
+        if (key_state & KeyState::Hold) {
+            state |= true;
+        }
+        if (key_state & KeyState::Press) {
+            state |= std::get<PRESS>(key);
+        }
+        if (key_state & KeyState::Release) {
+            state |= std::get<RELEASE>(key);
+        }
+        return state;
     }
 
-private:
-    
-    std::list<std::pair<input_helper::KeyData, bool>> m_keys;
+    // { KeyData, Press, Release }
+    std::list<std::tuple<input_helper::KeyData, bool, bool>> m_keys;
     
 };
 
