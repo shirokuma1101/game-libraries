@@ -32,13 +32,25 @@ namespace collision {
     };
 
     template<class Container>
-    inline Result GetNearest(const Container& ress) {
-        Result res;
-        if (!ress.size()) return res;
-        res = *ress.begin();
+    inline const Result* GetNearest(const Container& ress, bool contains_zero = false) {
+        if (!ress.size()) return nullptr;
+        const Result* res = nullptr;
         for (const auto& e : ress) {
-            if (e.depth < res.depth) {
-                res = e;
+            if (!contains_zero && !e.depth) continue;
+            if (!res || e.depth < res->depth) {
+                res = &e;
+            }
+        }
+        return res;
+    }
+    template<class Container>
+    inline const Result* GetFarthest(const Container& ress, bool contains_zero = false) {
+        if (!ress.size()) return nullptr;
+        const Result* res = nullptr;
+        for (const auto& e : ress) {
+            if (!contains_zero && !e.depth) continue;
+            if (!res || e.depth > res->depth) {
+                res = &e;
             }
         }
         return res;
