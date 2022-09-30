@@ -51,8 +51,8 @@ namespace effekseer_helper {
         return mat44;
     }
 
-    inline void RendererInit(RendererRef* renderer, ID3D11Device& dev, ID3D11DeviceContext& ctx, int max_square) {
-        *renderer = EffekseerRendererDX11::Renderer::Create(&dev, &ctx, max_square);
+    inline void RendererInit(RendererRef* renderer, ID3D11Device* dev, ID3D11DeviceContext* ctx, int max_square) {
+        *renderer = EffekseerRendererDX11::Renderer::Create(dev, ctx, max_square);
     }
 
     inline void ManagerInit(Effekseer::ManagerRef* manager, const RendererRef& renderer, int max_square) {

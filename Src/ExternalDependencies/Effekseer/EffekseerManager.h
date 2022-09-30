@@ -18,7 +18,7 @@ public:
         Release();
     }
 
-    void Init(ID3D11Device& dev, ID3D11DeviceContext& ctx, int max_square = 8192) {
+    void Init(ID3D11Device* dev, ID3D11DeviceContext* ctx, int max_square = 8192) {
         effekseer_helper::RendererInit(&m_rendererRef, dev, ctx, max_square);
         effekseer_helper::ManagerInit(&m_managerRef, m_rendererRef, max_square);
     }
