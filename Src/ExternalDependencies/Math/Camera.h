@@ -52,7 +52,12 @@ namespace camera {
         DirectX::SimpleMath::Matrix matrix;
     };
 
-    inline std::tuple<DirectX::SimpleMath::Vector2, bool> WorldToScreen(const DirectX::SimpleMath::Viewport& vp, const DirectX::SimpleMath::Vector3& world_pos, const DirectX::SimpleMath::Matrix& proj_mat, const DirectX::SimpleMath::Matrix& view_mat) {
+    inline std::tuple<DirectX::SimpleMath::Vector2, bool> WorldToScreen(
+        const DirectX::SimpleMath::Viewport& vp,
+        const DirectX::SimpleMath::Vector3&  world_pos,
+        const DirectX::SimpleMath::Matrix&   proj_mat,
+        const DirectX::SimpleMath::Matrix&   view_mat
+    ) {
         DirectX::SimpleMath::Matrix convert_mat = DirectX::SimpleMath::Matrix::CreateTranslation(world_pos) * view_mat * proj_mat;
 
         convert_mat._41 /= convert_mat._44;
@@ -64,7 +69,12 @@ namespace camera {
         return { { screen_pos.x * convert::ToHalf(vp.width), screen_pos.y * convert::ToHalf(vp.height) }, convert_mat._44 < 0 };
     }
 
-    inline DirectX::SimpleMath::Vector3 ScreenToWorld(const DirectX::SimpleMath::Viewport& vp, const DirectX::SimpleMath::Vector3& screen_pos, const DirectX::SimpleMath::Matrix& proj_mat, const DirectX::SimpleMath::Matrix& view_mat) {
+    inline DirectX::SimpleMath::Vector3 ScreenToWorld(
+        const DirectX::SimpleMath::Viewport& vp,
+        const DirectX::SimpleMath::Vector3&  screen_pos,
+        const DirectX::SimpleMath::Matrix&   proj_mat,
+        const DirectX::SimpleMath::Matrix&   view_mat
+    ) {
         DirectX::SimpleMath::Matrix mat = DirectX::SimpleMath::Matrix::CreateTranslation(screen_pos.x / convert::ToHalf(vp.width), screen_pos.y / convert::ToHalf(vp.height), 0);
 
         DirectX::SimpleMath::Matrix convert_mat = mat * proj_mat.Invert() * view_mat.Invert();
