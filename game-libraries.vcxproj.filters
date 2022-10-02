@@ -52,6 +52,15 @@
     <Filter Include="Src\ExternalDependencies\Effekseer">
       <UniqueIdentifier>{9e151961-820d-477d-b4ff-52f73426db26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\ExternalDependencies\Audio">
+      <UniqueIdentifier>{7a69fff3-f435-4b62-b898-a077c3dfb8e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\ExternalDependencies\DirectX11">
+      <UniqueIdentifier>{018b9d7d-ab6f-48b0-8337-404503d2a947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\ExternalDependencies\ImGui">
+      <UniqueIdentifier>{3f2dc6a1-7624-4cda-b6a0-425c6666c759}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Math\Easing.h">
@@ -137,6 +146,36 @@
     </ClInclude>
     <ClInclude Include="Src\Utility\Templates.h">
       <Filter>Src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Math\Collider.h">
+      <Filter>Src\ExternalDependencies\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Math\Collision.h">
+      <Filter>Src\ExternalDependencies\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Audio\AudioManager.h">
+      <Filter>Src\ExternalDependencies\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Audio\AudioHelper.h">
+      <Filter>Src\ExternalDependencies\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Buffer.h">
+      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Helper.h">
+      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Utility\StdC++.h">
+      <Filter>Src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\ImGui\ImGuiHelper.h">
+      <Filter>Src\ExternalDependencies\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11.h">
+      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Texture.h">
+      <Filter>Src\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -78,12 +78,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CPP_LIB)\DirectXTex\DirectXTex-may2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration);$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -96,14 +97,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CPP_LIB)\DirectXTex\DirectXTex-may2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration);$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,12 +115,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CPP_LIB)\DirectXTex\DirectXTex-may2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration);$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,14 +134,14 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CPP_LIB)\DirectXTex\DirectXTex-may2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\lib\$(Platform)\$(Configuration);$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\lib\$(Platform)\$(Configuration);$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\lib\$(Platform)\$(Configuration);$(CPP_LIB)\PhysX\PhysX-4.1.2\lib\$(Platform)\$(Configuration);$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -147,6 +149,12 @@
     <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetManager.h" />
     <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonData.h" />
     <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonManager.h" />
+    <ClInclude Include="Src\ExternalDependencies\Audio\AudioHelper.h" />
+    <ClInclude Include="Src\ExternalDependencies\Audio\AudioManager.h" />
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11.h" />
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Buffer.h" />
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Helper.h" />
+    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Texture.h" />
     <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerHelper.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
@@ -165,9 +173,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\ImGui\ImGuiHelper.h" />
     <ClInclude Include="Src\ExternalDependencies\Input\InputHelper.h" />
     <ClInclude Include="Src\ExternalDependencies\Input\InputManager.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Camera.h" />
+    <ClInclude Include="Src\ExternalDependencies\Math\Collider.h" />
+    <ClInclude Include="Src\ExternalDependencies\Math\Collision.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Transform.h" />
     <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXHelper.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -202,6 +213,7 @@
     <ClInclude Include="Src\Utility\Assert.h" />
     <ClInclude Include="Src\Utility\Macro.h" />
     <ClInclude Include="Src\Utility\Memory.h" />
+    <ClInclude Include="Src\Utility\StdC++.h" />
     <ClInclude Include="Src\Utility\Templates.h" />
     <ClCompile Include="Test\TestMain.cpp" />
   </ItemGroup>
