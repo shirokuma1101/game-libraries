@@ -158,7 +158,7 @@
 // Localization library
 #include <clocale>
 #include <locale>
-#if __cplusplus >= CPP11
+#if (__cplusplus >= CPP11) && (__cplusplus < CPP17)
 #include <codecvt> // deprecated:C++17
 #endif
 
@@ -256,7 +256,6 @@
 #endif
 
 // Meaningless C headers
-#include <ciso646> // removed:C++20
 #include <iso646.h>
 #if __cplusplus >= CPP11
 #include <stdalign.h>
@@ -265,4 +264,7 @@
 #include <cstdalign> // deprecated:C++17/removed:C++20
 #include <cstdbool>  // deprecated:C++17/removed:C++20
 #endif
+#endif
+#if __cplusplus < CPP20
+#include <ciso646> // removed:C++20
 #endif
