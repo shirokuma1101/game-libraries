@@ -15,19 +15,50 @@
 #define NAMESPACE_INTERNAL_BEGIN namespace detail {
 #define NAMESPACE_INTERNAL_END   }
 
-#define SINGLETON(class_name, func_name) \
-private:                                 \
-    class_name() {}                      \
-public:                                  \
-    static class_name& func_name() {     \
-        static class_name instance;      \
-        return instance;                 \
+#define SIMPLE_SINGLETON(class_name, func_name) \
+private:                                        \
+    class_name() {}                             \
+public:                                         \
+    static class_name& func_name() noexcept {   \
+        static class_name instance;             \
+        return instance;                        \
     }
+
+#define SINGLETON(class_name, instance_func_name, destruct_func_name) \
+private:                                                              \
+    class_name() {}                                                   \
+    ~class_name() {}                                                  \
+    static class_name* instance;                                      \
+public:                                                               \
+    static class_name& Instance() noexcept {                          \
+        if (!instance) {                                              \
+            instance = new class_name;                                \
+            atexit(&Destruct);                                        \
+        }                                                             \
+        return *instance;                                             \
+    }                                                                 \
+    static void Destruct() {                                          \
+        if (!instance) return;                                        \
+        delete instance;                                              \
+        instance = nullptr;                                           \
+    }
+
 
 #define VALID_POINTER(p, func)   p = func; p
 #define INVALID_POINTER(p, func) p = func; !p
 
 #define FAIL_CHECK(func, err_code)    int err_code = func; err_code
 #define SUCCESS_CHECK(func, err_code) int err_code = func; !err_code
+
+#define ENUM_CLASS_OPERATOR_OVERLOAD_AND(class_name)                              \
+inline bool operator&(class_name lhs, class_name rhs) {                           \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;        \
+    return static_cast<UnderlyingTypeT>(lhs) & static_cast<UnderlyingTypeT>(rhs); \
+}
+#define ENUM_CLASS_OPERATOR_OVERLOAD_OR(class_name)                               \
+inline bool operator|(class_name lhs, class_name rhs) {                           \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;        \
+    return static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs); \
+}
 
 #endif
