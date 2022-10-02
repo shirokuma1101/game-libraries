@@ -17,7 +17,7 @@ public:
         : m_pDevice(dev)
         , m_pDeviceContext(ctx)
     {}
-    ~DirectX11Buffer() {
+    virtual ~DirectX11Buffer() {
         Release();
     }
 
@@ -35,8 +35,8 @@ public:
         Release();
         m_bufferSize  = buffer_size;
         m_bufferUsage = buffer_usage;
-        return Create(m_pDevice, m_pBuffer, m_bufferSize, m_bufferUsage, bind_flags, init_data);
-    }
+        return Create(m_pDevice, &m_pBuffer, m_bufferSize, m_bufferUsage, bind_flags, init_data);
+    }  
 
     void Write(const void* src_data, UINT src_size) {
         Write(m_pDeviceContext, m_pBuffer, m_bufferSize, m_bufferUsage, src_data, src_size);
@@ -48,7 +48,7 @@ public:
         m_bufferUsage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
     }
 
-    static bool Create(ID3D11Device* dev, ID3D11Buffer* buffer, UINT buffer_size, D3D11_USAGE buffer_usage, D3D11_BIND_FLAG bind_flags, const D3D11_SUBRESOURCE_DATA* init_data) {
+    static bool Create(ID3D11Device* dev, ID3D11Buffer** buffer, UINT buffer_size, D3D11_USAGE buffer_usage, D3D11_BIND_FLAG bind_flags, const D3D11_SUBRESOURCE_DATA* init_data) {
         if (bind_flags & D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER) {
             if (buffer_size % 16 != 0) {
                 assert::RaiseAssert("constant buffer size must be a multiple of 16 bytes.");
@@ -91,7 +91,7 @@ public:
             bd.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
         }
 
-        if (FAILED(dev->CreateBuffer(&bd, init_data, &buffer))) {
+        if (FAILED(dev->CreateBuffer(&bd, init_data, buffer))) {
             assert::RaiseAssert("Create buffer failed.");
             return false;
         }
@@ -142,16 +142,16 @@ public:
     DirectX11ConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_upBuffer(std::make_unique<DirectX11Buffer>(dev, ctx))
     {}
-    ~DirectX11ConstantBuffer() {
+    virtual ~DirectX11ConstantBuffer() {
         Release();
     }
 
     T* Get() {
         m_isChanged = true;
-        return m_data;
+        return &m_data;
     }
-    const T* Get() const {
-        return m_data;
+    T* const* Get() const {
+        return &m_data;
     }
     ID3D11Buffer* const* GetBufferAddress() const {
         return m_upBuffer->GetAddress();
@@ -173,8 +173,10 @@ public:
     }
 
     void Release() {
-        m_upBuffer->Release();
-        m_upBuffer = nullptr;
+        if (m_upBuffer) {
+            m_upBuffer->Release();
+            m_upBuffer = nullptr;
+        }
         m_isChanged = true;
     }
 
