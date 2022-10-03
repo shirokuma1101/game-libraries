@@ -177,6 +177,9 @@
     <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Texture.h">
       <Filter>Src\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
+    <ClInclude Include="Src\ExternalDependencies\Input\TextBox.h">
+      <Filter>Src\ExternalDependencies\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\TestMain.cpp">

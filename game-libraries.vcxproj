@@ -98,6 +98,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +136,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -176,6 +178,7 @@
     <ClInclude Include="Src\ExternalDependencies\ImGui\ImGuiHelper.h" />
     <ClInclude Include="Src\ExternalDependencies\Input\InputHelper.h" />
     <ClInclude Include="Src\ExternalDependencies\Input\InputManager.h" />
+    <ClInclude Include="Src\ExternalDependencies\Input\TextBox.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Camera.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Collider.h" />
     <ClInclude Include="Src\ExternalDependencies\Math\Collision.h" />
