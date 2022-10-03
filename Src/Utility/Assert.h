@@ -17,8 +17,12 @@ namespace assert {
         _CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, NULL, "error: %s\n", message.data());
     }
 #else
-    inline void ShowWarning(std::string_view message) {}
-    inline void RaiseAssert(std::string_view message) {}
+    inline void ShowWarning(std::string_view message) {
+        message; // C4100 'identifier' : unreferenced formal parameter
+    }
+    inline void RaiseAssert(std::string_view message) {
+        message; // C4100 'identifier' : unreferenced formal parameter
+    }
 #endif // _DEBUG
     
     inline void ExceptionThrow(std::string_view message) {
