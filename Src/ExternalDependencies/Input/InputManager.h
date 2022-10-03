@@ -17,10 +17,10 @@ class KeyManager
 public:
 
     enum class KeyState {
-        None    = 1 << 0, // no pressed
-        Press   = 1 << 1, // just press
-        Hold    = 1 << 2, // pushed and hold
-        Release = 1 << 3, // just release
+        None    = 1 << 0, // No pressed
+        Press   = 1 << 1, // Just press
+        Hold    = 1 << 2, // Pushed and hold
+        Release = 1 << 3, // Just release
     };
     friend bool operator&(KeyState lhs, KeyState rhs) {
         using UnderlyingTypeT = std::underlying_type_t<KeyState>;
