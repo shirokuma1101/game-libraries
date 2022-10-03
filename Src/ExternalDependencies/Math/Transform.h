@@ -20,11 +20,11 @@ struct Transform {
     Transform() noexcept
         : position(Vector3::Zero)
         , rotation(Vector3::Zero)
-        , scale(1.f)
+        , scale(Vector3::One)
         , matrix(Matrix::Identity)
     {}
 
-    Transform(const Vector3& p, const Vector3& r, const Vector3& s) noexcept
+    Transform(const Vector3& p, const Vector3& r = Vector3::Zero, const Vector3& s = Vector3::One) noexcept
         : position(p)
         , rotation(r)
         , scale(s)
@@ -45,11 +45,11 @@ struct Transform {
     Transform() noexcept
         : position(Vector3::Zero)
         , quaternion(Quaternion::Identity)
-        , scale(1.f)
+        , scale(Vector3::One)
         , matrix(Matrix::Identity)
     {}
 
-    Transform(const Vector3& p, const Quaternion& q, const Vector3& s) noexcept
+    Transform(const Vector3& p, const Quaternion& q = Quaternion::Identity, const Vector3& s = Vector3::One) noexcept
         : position(p)
         , quaternion(q)
         , scale(s)
