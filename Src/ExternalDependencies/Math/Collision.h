@@ -37,7 +37,7 @@ namespace collision {
         const Result* res = nullptr;
         for (const auto& e : ress) {
             if (!contains_zero && !e.depth) continue;
-            if (!res || e.depth < res->depth) {
+            if (!res || e.depth > res->depth) {
                 res = &e;
             }
         }
@@ -49,7 +49,7 @@ namespace collision {
         const Result* res = nullptr;
         for (const auto& e : ress) {
             if (!contains_zero && !e.depth) continue;
-            if (!res || e.depth > res->depth) {
+            if (!res || e.depth < res->depth) {
                 res = &e;
             }
         }
