@@ -9,12 +9,12 @@
 
 #include "Thread/SimpleThreadManager/SimpleUniqueThread.h"
 
-template<class _AssetClass>
+template<class AssetClass>
 class IAssetData
 {
 public:
 
-    using AssetClass = typename _AssetClass;
+    using AssetClassT = typename AssetClass;
 
     IAssetData(std::string_view path)
         : m_isLoaded(false)
@@ -23,7 +23,9 @@ public:
         , m_filePath(path)
         , m_upAssetData(std::make_unique<AssetClass>())
     {}
-    virtual ~IAssetData() { Release(); }
+    virtual ~IAssetData() {
+        Release();
+    }
 
     virtual bool Load() const = 0;
 

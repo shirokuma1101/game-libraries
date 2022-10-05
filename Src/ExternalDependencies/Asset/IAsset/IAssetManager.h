@@ -19,8 +19,12 @@ class IAssetManager
 {
 public:
 
+    using AssetDataImplT = typename AssetDataImpl;
+
     IAssetManager() {}
-    virtual ~IAssetManager() { Release(); }
+    virtual ~IAssetManager() {
+        Release();
+    }
 
     virtual void Register(std::string_view file_path) {
         auto json_data = std::make_unique<JsonData>(file_path);
@@ -73,7 +77,7 @@ public:
         return nullptr;
     }
 
-    virtual const typename AssetDataImpl::AssetClass& operator[](std::string_view name) const final {
+    virtual const typename AssetDataImpl::AssetClassT& operator[](std::string_view name) const final {
         return *GetAsset(name)->GetData();
     }
 
@@ -136,12 +140,12 @@ public:
         return std::string();
     }
 
-    virtual const std::unique_ptr<typename AssetDataImpl::AssetClass>& GetData(std::string_view name) const final {
+    virtual const std::unique_ptr<typename AssetDataImpl::AssetClassT>& GetData(std::string_view name) const final {
         return GetAsset(name)->GetData();
     }
 
-    std::shared_ptr<typename AssetDataImpl::AssetClass> CopyData(std::string_view name) {
-        return std::make_shared<typename AssetDataImpl::AssetClass>(*GetData(name).get());
+    std::shared_ptr<typename AssetDataImpl::AssetClassT> CopyData(std::string_view name) {
+        return std::make_shared<typename AssetDataImpl::AssetClassT>(*GetData(name).get());
     }
 
     virtual void Release() noexcept {
