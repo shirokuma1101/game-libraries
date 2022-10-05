@@ -67,12 +67,12 @@ namespace convert {
         }
         return container;
     }
-    template<class T, class U>
-    inline std::vector<T> ToVector(U iterable) {
+    template<class T>
+    inline auto ToVector(T iterable) {
         return ToContainer<std::vector>(iterable);
     }
-    template<class T, class U>
-    inline std::list<T> ToList(U iterable) {
+    template<class T>
+    inline auto ToList(T iterable) {
         return ToContainer<std::list>(iterable);
     }
 
