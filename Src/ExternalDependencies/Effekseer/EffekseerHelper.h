@@ -120,9 +120,9 @@ namespace effekseer_helper {
             return m_spEffectData;
         }
 
-        double            elapsedTime = 0;
-        Effekseer::Handle handle      = 0;
-        EffectTransform   effectTransform;
+        double                           elapsedTime = 0;
+        Effekseer::Handle                handle      = 0;
+        std::shared_ptr<EffectTransform> effectTransform;
 
     private:
 

@@ -32,13 +32,11 @@ public:
 
             if (data.elapsedTime == 0) {
                 handle = m_managerRef->Play(data.GetEffectData()->GetEffectRef(), 0, 0, 0);
-                m_managerRef->SetMatrix(handle, effekseer_helper::ToMatrix43(tranform.matrix));
-                m_managerRef->SetSpeed(handle, tranform.speed);
             }
 
-            if (data.elapsedTime > (tranform.maxFrame / effect_frame)) {
+            if (data.elapsedTime > (tranform->maxFrame / effect_frame)) {
                 m_managerRef->StopEffect(handle);
-                if (tranform.isLoop) {
+                if (tranform->isLoop) {
                     data.elapsedTime = 0;
                 }
                 else {
@@ -47,6 +45,8 @@ public:
             }
             else {
                 m_rendererRef->SetTime(static_cast<float>(data.elapsedTime));
+                m_managerRef->SetMatrix(handle, effekseer_helper::ToMatrix43(tranform->matrix));
+                m_managerRef->SetSpeed(handle, tranform->speed);
                 data.elapsedTime += delta_time;
                 ++iter;
             }
@@ -70,18 +70,18 @@ public:
         m_spEffectData.emplace(effect_name, std::make_shared<effekseer_helper::EffectData>(m_managerRef, file_path));
     }
     
-    effekseer_helper::EffectTransform* Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false) {
+    std::shared_ptr<effekseer_helper::EffectTransform> Emit(std::string_view effect_name, const effekseer_helper::EffectTransform& effect_transform, bool is_unique = false) {
         if (is_unique) {
             if (auto iter = m_upEffectInstances.find(effect_name.data()); iter != m_upEffectInstances.end()) {
-                return &iter->second->effectTransform;
+                return iter->second->effectTransform;
             }
         }
         if (auto iter = m_spEffectData.find(effect_name.data()); iter != m_spEffectData.end()) {
             auto effect_instance = std::make_unique<effekseer_helper::EffectInstance>(iter->second);
-            auto et_ptr = &effect_instance->effectTransform;
-            effect_instance->effectTransform = effect_transform;
+            effect_instance->effectTransform = std::make_shared<effekseer_helper::EffectTransform>(effect_transform);
+            auto& sp_et = effect_instance->effectTransform;
             m_upEffectInstances.emplace(effect_name, std::move(effect_instance));
-            return et_ptr;
+            return sp_et;
         }
         return nullptr;
     }
