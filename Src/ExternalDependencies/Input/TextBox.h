@@ -18,7 +18,7 @@ public:
         : m_inputMax(input_max)
         , m_pKeyManager(new KeyManager)
     {}
-    ~TextBox() {
+    virtual ~TextBox() {
         Release();
     }
 

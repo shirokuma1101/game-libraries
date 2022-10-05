@@ -18,7 +18,7 @@ public:
         m_upThreads.clear();
     }
 
-    ~SimpleThreadManager() noexcept {
+    virtual ~SimpleThreadManager() noexcept {
         Release();
     }
 

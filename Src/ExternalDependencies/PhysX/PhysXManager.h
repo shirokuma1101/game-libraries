@@ -15,7 +15,7 @@ class PhysXManager
 {
 public:
 
-    ~PhysXManager() noexcept {
+    virtual ~PhysXManager() noexcept {
         Release();
     }
 

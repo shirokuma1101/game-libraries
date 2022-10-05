@@ -24,7 +24,7 @@ public:
         , m_upThread(nullptr)
     {}
 
-    ~SimpleUniqueThread() noexcept {
+    virtual ~SimpleUniqueThread() noexcept {
         Release();
     }
 

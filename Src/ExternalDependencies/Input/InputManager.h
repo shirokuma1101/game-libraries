@@ -9,12 +9,12 @@
 
 #include "InputHelper.h"
 
-constexpr int PRESS   = 1;
-constexpr int RELEASE = 2;
-
 class KeyManager
 {
 public:
+
+    static constexpr int PRESS = 1;
+    static constexpr int RELEASE = 2;
 
     enum class KeyState {
         None    = 1 << 0, // No pressed

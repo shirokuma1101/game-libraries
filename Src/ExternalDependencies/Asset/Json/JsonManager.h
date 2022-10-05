@@ -17,7 +17,9 @@ public:
     JsonManager()
         : m_spValidators(std::make_shared<std::unordered_map<std::string, JsonData::JsonValidator>>())
     {}
-    ~JsonManager() override { Release(); }
+    virtual ~JsonManager() override {
+        Release();
+    }
 
     virtual void Register(std::string_view file_path) override {
         auto json_data = std::make_unique<JsonData>(file_path);

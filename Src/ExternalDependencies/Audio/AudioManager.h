@@ -31,7 +31,7 @@ public:
         return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
     }
 
-    ~AudioManager() {
+    virtual ~AudioManager() {
         Release();
     }
 

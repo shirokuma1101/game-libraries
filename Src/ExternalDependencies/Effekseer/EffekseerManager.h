@@ -14,7 +14,7 @@ class EffekseerManager
 {
 public:
 
-    ~EffekseerManager() noexcept {
+    virtual ~EffekseerManager() noexcept {
         Release();
     }
 

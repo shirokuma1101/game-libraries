@@ -27,7 +27,9 @@ public:
         : IAssetData(file_path)
         , m_wpValidators(validators)
     {}
-    ~JsonData() override { Release(); }
+    virtual ~JsonData() override {
+        Release();
+    }
 
     bool Load() const override {
         return LoadProcess([&] {
