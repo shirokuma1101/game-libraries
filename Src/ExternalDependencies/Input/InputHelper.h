@@ -102,12 +102,12 @@ namespace input_helper {
         }
 
         Position GetCenterPosition() const noexcept {
-            RECT client_rect{};
-            SecureZeroMemory(&client_rect, sizeof(client_rect));
-            GetClientRect(m_hwnd, &client_rect);
-            LONG width  = client_rect.right  - client_rect.left;
-            LONG height = client_rect.bottom - client_rect.top;
-            return { client_rect.left + width / 2, client_rect.top + height / 2 };
+            WINDOWINFO wi{};
+            SecureZeroMemory(&wi, sizeof(wi));
+            GetWindowInfo(m_hwnd, &wi);
+            LONG width  = wi.rcClient.right  - wi.rcClient.left;
+            LONG height = wi.rcClient.bottom - wi.rcClient.top;
+            return { wi.rcClient.left + width / 2, wi.rcClient.top + height / 2 };
         }
 
         Position GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
