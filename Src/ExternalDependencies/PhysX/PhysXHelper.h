@@ -157,25 +157,21 @@ namespace physx_helper {
     }
 
     inline physx::PxRigidDynamic* IsDynamic(physx::PxRigidActor* actor) {
-        physx::PxRigidDynamic* dynamic = actor->is<physx::PxRigidDynamic>();
-        if (!dynamic) {
-            // "actor is not dynamic assert"
-            return nullptr;
+        if (physx::PxRigidDynamic* dynamic = actor->is<physx::PxRigidDynamic>(); dynamic) {
+            return dynamic;
         }
-        return dynamic;
+        return nullptr;
     }
 
     inline bool IsSleeping(physx::PxRigidActor* actor) {
-        physx::PxRigidDynamic* dynamic = nullptr;
-        if (dynamic = IsDynamic(actor), dynamic) {
+        if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
             return dynamic->isSleeping();
         }
         return false;
     }
     
     inline void PutToSleep(physx::PxRigidActor* actor) {
-        physx::PxRigidDynamic* dynamic = nullptr;
-        if (dynamic = IsDynamic(actor), dynamic) {
+        if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
             dynamic->putToSleep();
         }
     }
@@ -183,38 +179,36 @@ namespace physx_helper {
     //note: "https://nekopro99.com/move-rigidbody-addforce/"
     //note: "https://ekulabo.com/force-mode"
     inline void AddForce(physx::PxRigidActor* actor, const DirectX::SimpleMath::Vector3& force, physx::PxForceMode::Enum mode = physx::PxForceMode::eFORCE) {
-        physx::PxRigidDynamic* dynamic = nullptr;
-        if (dynamic = IsDynamic(actor), dynamic) {
+        if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
             dynamic->isSleeping();
             dynamic->addForce(physx_helper::ToPxVec3(force), mode);
         }
     }
 
     inline DirectX::SimpleMath::Vector3 CalcCG(physx::PxRigidActor* actor, const DirectX::SimpleMath::Vector3& offset = {}) {
-        physx::PxRigidDynamic* dynamic = IsDynamic(actor);
-        if (!dynamic) {
-            return DirectX::SimpleMath::Vector3();
+        if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
+            physx::PxU32 shape_count = dynamic->getNbShapes();
+            physx::PxShape** shapes = new physx::PxShape * [shape_count];
+
+            physx::PxVec3 cg = dynamic->getCMassLocalPose().p;
+            dynamic->getShapes(shapes, shape_count);
+            for (physx::PxU32 i = 0; i < shape_count; ++i) {
+                physx::PxShape* shape = shapes[i];
+                physx::PxVec3 local = shape->getLocalPose().p;
+                cg += local;
+            }
+            delete[] shapes;
+
+            return (ToVector3(cg) / static_cast<float>(shape_count)) + offset;
         }
-
-        physx::PxU32 shape_count = dynamic->getNbShapes();
-        physx::PxShape** shapes = new physx::PxShape*[shape_count];
-
-        physx::PxVec3 cg = dynamic->getCMassLocalPose().p;
-        dynamic->getShapes(shapes, shape_count);
-        for (physx::PxU32 i = 0; i < shape_count; ++i) {
-            physx::PxShape* shape = shapes[i];
-            physx::PxVec3 local = shape->getLocalPose().p;
-            cg += local;
-        }
-        delete[] shapes;
-
-        return (ToVector3(cg) / static_cast<float>(shape_count)) + offset;
+        return DirectX::SimpleMath::Vector3();
     }
 
     inline void CalcCG(physx::PxRigidActor** actor, const DirectX::SimpleMath::Vector3& offset = {}) {
-        physx::PxRigidDynamic* dynamic = IsDynamic(*actor);
-        DirectX::SimpleMath::Vector3 cg = CalcCG(*actor, offset);
-        dynamic->setCMassLocalPose(physx::PxTransform(ToPxVec3(cg)));
+        if (physx::PxRigidDynamic* dynamic = IsDynamic(*actor); dynamic) {
+            DirectX::SimpleMath::Vector3 cg = CalcCG(*actor, offset);
+            dynamic->setCMassLocalPose(physx::PxTransform(ToPxVec3(cg)));
+        }
     }
 
     class RigidActorHolder
