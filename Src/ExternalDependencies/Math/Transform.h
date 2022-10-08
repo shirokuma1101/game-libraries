@@ -31,7 +31,7 @@ struct Transform {
     {}
     
     // CreateMatrix
-    Matrix Composition() & noexcept {
+    Matrix Composition() noexcept {
         return matrix = Matrix::CreateScale(scale) * Matrix::CreateFromYawPitchRoll(convert::ToRadians(rotation)) * Matrix::CreateTranslation(position);
     }
 
