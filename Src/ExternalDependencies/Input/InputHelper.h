@@ -138,13 +138,32 @@ namespace input_helper {
             SetCursorPos(point.x, point.y);
         }
 
+        static void ShowCursor(bool show) noexcept {
+            CURSORINFO ci{};
+            SecureZeroMemory(&ci, sizeof(ci));
+            ci.cbSize = sizeof(ci);
+            GetCursorInfo(&ci);
+            if (show) {
+                // When the cursor is hidden
+                if (!ci.flags) {
+                    ::ShowCursor(TRUE);
+                }
+            }
+            else {
+                // When the cursor is showing
+                if (ci.flags || CURSOR_SHOWING) {
+                    ::ShowCursor(FALSE);
+                }
+            }
+        }
+
         Position   m_position;
         Position   m_beforePosition;
 
     private:
         
         const HWND m_hwnd;
-
+        
     };
     
 }
