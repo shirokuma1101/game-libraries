@@ -17,15 +17,18 @@ using Microsoft::WRL::ComPtr;
 
 namespace directx11_helper {
 
-    constexpr DirectX::SimpleMath::Color white  = { 1.0f, 1.0f, 1.0f, 1.0f };
-    constexpr DirectX::SimpleMath::Color black  = { 0.0f, 0.0f, 0.0f, 1.0f };
-    constexpr DirectX::SimpleMath::Color alpha  = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-    constexpr DirectX::SimpleMath::Color red    = { 1.0f, 0.0f, 0.0f, 1.0f };
-    constexpr DirectX::SimpleMath::Color green  = { 0.0f, 1.0f, 0.0f, 1.0f };
-    constexpr DirectX::SimpleMath::Color blue   = { 0.0f, 0.0f, 1.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color white   = { 1.0f, 1.0f, 1.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color black   = { 0.0f, 0.0f, 0.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color alpha   = { 0.0f, 0.0f, 0.0f, 0.0f };
     
-    constexpr DirectX::SimpleMath::Color normal = { 0.5f, 0.5f, 1.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color red     = { 1.0f, 0.0f, 0.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color green   = { 0.0f, 1.0f, 0.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color blue    = { 0.0f, 0.0f, 1.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color yellow  = { 1.0f, 1.0f, 0.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color cyan    = { 0.0f, 1.0f, 1.0f, 1.0f };
+    constexpr DirectX::SimpleMath::Color magenta = { 1.0f, 0.0f, 1.0f, 1.0f };
+    
+    constexpr DirectX::SimpleMath::Color normal  = { 0.5f, 0.5f, 1.0f, 1.0f };
 
     enum class SamplerFilterMode {
         Point,       // ポイントサンプリング
@@ -61,14 +64,16 @@ namespace directx11_helper {
         md->Scaling                 = DXGI_MODE_SCALING_UNSPECIFIED;
 
         ComPtr<IDXGIOutput> output = nullptr;
-        if (DXGI_ERROR_NOT_FOUND == adapter->EnumOutputs(0, &output)) {
-            assert::RaiseAssert("adapter output not found");
-        }
         DXGI_MODE_DESC matched_md{};
-        if (FAILED(output->FindClosestMatchingMode(md, &matched_md, dev))) {
-            assert::RaiseAssert("Get display mode failed");
+        if (DXGI_ERROR_NOT_FOUND != adapter->EnumOutputs(0, &output)) {
+            if (FAILED(output->FindClosestMatchingMode(md, &matched_md, dev))) {
+                assert::ShowWarning("Get display mode failed");
+            }
         }
-        *md = matched_md;
+        else {
+            assert::ShowWarning("Adapter output not found");
+        }
+        //*md = matched_md;
     }
 
     inline void SetUpSampleDesc(DXGI_SAMPLE_DESC* sd, ID3D11Device* dev) {
