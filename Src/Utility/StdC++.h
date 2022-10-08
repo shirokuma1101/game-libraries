@@ -258,7 +258,7 @@
 // Meaningless C headers
 #include <iso646.h>
 #if __cplusplus >= CPP11
-#include <stdalign.h>
+//#include <stdalign.h> // 環境による?
 #include <stdbool.h>
 #if __cplusplus < CPP17
 #include <cstdalign> // deprecated:C++17/removed:C++20
