@@ -23,18 +23,21 @@ public:
 
     virtual ~DirectX11() {
         Release();
-        m_cpDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+        if (m_cpDebug) {
+            m_cpDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+        }
     }
 
-    virtual bool Init(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool is_debug, bool enable_msaa = false) {
+    virtual bool Init(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool is_debug, bool detailed_memory_infomation, bool enable_msaa = false) {
         CreateFactory();
-        CreateDevice(is_debug);
+        CreateDevice(is_debug, detailed_memory_infomation);
         CreateSwapChain(hWnd, size, enable_msaa);
         SetState();
         CreateBackBuffer();
         CreateDepthStencilView(size);
         CreateViewport(size);
 
+        // Create 1x1 white texture
         {
             D3D11_SUBRESOURCE_DATA sd{};
             SecureZeroMemory(&sd, sizeof(sd));
@@ -45,6 +48,7 @@ public:
             m_spWhiteTexture = std::make_shared<DirectX11Texture>(m_cpDev.Get(), m_cpCtx.Get());
             m_spWhiteTexture->Create({ 1, 1 }, 1, DXGI_FORMAT_R8G8B8A8_UNORM, &sd);
         }
+        // Create 1x1 normal texture
         {
             D3D11_SUBRESOURCE_DATA sd{};
             SecureZeroMemory(&sd, sizeof(sd));
@@ -132,7 +136,7 @@ protected:
             assert::RaiseAssert("Enumerate adapters failed");
         }
     }
-    void CreateDevice(bool is_debug = false) {
+    void CreateDevice(bool is_debug = false, bool detailed_memory_infomation = false) {
         /* ドライバーの種類 */
         D3D_DRIVER_TYPE driver_type = D3D_DRIVER_TYPE_HARDWARE;
         // アダプタが指定されていた場合はD3D_DRIVER_TYPE_UNKNOWNを指定する
@@ -185,7 +189,7 @@ protected:
             assert::RaiseAssert("Create device failed");
         }
 
-        if (is_debug) {
+        if (detailed_memory_infomation) {
             /* デバッグインターフェースを取得 */
             if (FAILED(m_cpDev->QueryInterface(IID_PPV_ARGS(&m_cpDebug)))) {
                 assert::RaiseAssert("Query debug interface failed");
