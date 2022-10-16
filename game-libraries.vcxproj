@@ -209,7 +209,7 @@
     <ClInclude Include="Src\Math\Easing.h" />
     <ClInclude Include="Src\Math\ProjectileMotion.h" />
     <ClInclude Include="Src\Math\Random.h" />
-    <ClInclude Include="Src\Math\Time.h" />
+    <ClInclude Include="Src\Math\DeltaTime.h" />
     <ClInclude Include="Src\Math\Timer.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h" />
     <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleUniqueThread.h" />
