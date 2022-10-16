@@ -39,7 +39,7 @@ namespace audio_helper {
                 return true;
             }
             catch (...) {
-                assert::RaiseAssert("Failed to load sound effect.");
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Failed to load sound effect.");
                 return false;
             }
         }

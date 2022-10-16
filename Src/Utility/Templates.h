@@ -7,9 +7,9 @@
 
 namespace templates {
 
-    template <class T>
+    template <class>
     constexpr bool true_v = true;
-    template <class T>
+    template <class>
     constexpr bool false_v = false;
 
 #define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})

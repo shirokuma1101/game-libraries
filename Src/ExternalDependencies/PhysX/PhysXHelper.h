@@ -59,7 +59,7 @@ namespace physx_helper {
         return physx::PxTransform(ToPxVec3(position), ToPxQuat(DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(convert::ToRadians(rotation))));
     }
 
-    // PhysX math to DirectX Simple Math
+    /* PhysX math to DirectX Simple Math */
 
     inline DirectX::SimpleMath::Matrix ToMatrix(const physx::PxMat44& px_mat44) {
         return DirectX::SimpleMath::Matrix(
@@ -144,15 +144,9 @@ namespace physx_helper {
 
     inline physx::PxRigidDynamic* CreateDynamic(
         physx::PxPhysics*                   physics,
-        const physx::PxTransform&           transform = physx::PxTransform(physx::PxIdentity),
-        const DirectX::SimpleMath::Vector3& velocity  = {},
-        float                               damping   = 0.f
+        const physx::PxTransform&           transform = physx::PxTransform(physx::PxIdentity)
     ) {
         physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(transform);
-        rigid_dynamic->setLinearVelocity(ToPxVec3(velocity));
-        //rigid_dynamic->setAngularVelocity(ToPxVec3(velocity));
-        //rigid_dynamic->setLinearDamping(damping);
-        rigid_dynamic->setAngularDamping(damping);
         return rigid_dynamic;
     }
 

@@ -66,31 +66,16 @@ public:
     auto GetDev() {
         return m_cpDev;
     }
-    auto GetDev() const {
-        return m_cpDev;
-    }
     auto GetCtx() {
-        return m_cpCtx;
-    }
-    auto GetCtx() const {
         return m_cpCtx;
     }
     auto GetSwapChain() {
         return m_cpSwapChain;
     }
-    auto GetSwapChain() const {
-        return m_cpSwapChain;
-    }
     auto GetBackBuffer() {
         return m_spBackBuffer;
     }
-    auto GetBackBuffer() const {
-        return m_spBackBuffer;
-    }
     auto GetZBuffer() {
-        return m_spZBuffer;
-    }
-    auto GetZBuffer() const {
         return m_spZBuffer;
     }
     auto GetWhiteTexture() {
@@ -104,7 +89,7 @@ protected:
 
     void CreateFactory() {
         if (FAILED(CreateDXGIFactory(IID_PPV_ARGS(&m_cpFactory)))) {
-            assert::RaiseAssert("Create factory failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Create factory failed");
         }
 
         UINT   limit          = 100; // 列挙上限
@@ -133,7 +118,7 @@ protected:
 
         /* 決定したGPUを設定する */
         if (FAILED(m_cpFactory->EnumAdapters(gpu_number, &m_cpAdapter))) {
-            assert::RaiseAssert("Enumerate adapters failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Enumerate adapters failed");
         }
     }
     void CreateDevice(bool is_debug = false, bool detailed_memory_infomation = false) {
@@ -147,7 +132,7 @@ protected:
         /* ソフトウェアラスタライザを実装するDLLハンドル */
         HMODULE software{};
         if (driver_type == D3D_DRIVER_TYPE_SOFTWARE) {
-            if (!software) assert::RaiseAssert("Software rasterizer not found");
+            if (!software) assert::RaiseAssert(ASSERT_FILE_LINE, "Software rasterizer not found");
         }
 
         /* ランタイムレイヤのフラグ */
@@ -186,13 +171,13 @@ protected:
             &feature_level,           // D3D_FEATURE_LEVELの出力先
             &m_cpCtx                  // DeviceContextの出力先
         ))) {
-            assert::RaiseAssert("Create device failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Create device failed");
         }
 
         if (detailed_memory_infomation) {
             /* デバッグインターフェースを取得 */
             if (FAILED(m_cpDev->QueryInterface(IID_PPV_ARGS(&m_cpDebug)))) {
-                assert::RaiseAssert("Query debug interface failed");
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Query debug interface failed");
             }
         }
     }
@@ -201,18 +186,18 @@ protected:
         SecureZeroMemory(&sd, sizeof(sd));
         directx11_helper::SetUpSwapChainDesc(&sd, size, m_cpDev.Get(), m_cpAdapter.Get(), hWnd, enable_msaa);
         if (FAILED(m_cpFactory->CreateSwapChain(m_cpDev.Get(), &sd, &m_cpSwapChain))) {
-            assert::RaiseAssert("Create swap chain failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Create swap chain failed");
         }
     }
     bool CreateBackBuffer() {
         ID3D11Texture2D* back_buffer = nullptr;
         m_spBackBuffer = std::make_shared<DirectX11Texture>(m_cpDev.Get(), m_cpCtx.Get());
         if (FAILED(m_cpSwapChain->GetBuffer(0, IID_PPV_ARGS(&back_buffer)))) {
-            assert::RaiseAssert("Get back buffer failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Get back buffer failed");
             return false;
         }
         if (!m_spBackBuffer->Create(back_buffer)) {
-            assert::RaiseAssert("Create back buffer failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Create back buffer failed");
             return false;
         }
         memory::SafeRelease(&back_buffer);
@@ -233,7 +218,7 @@ protected:
         m_spZBuffer = std::make_shared<DirectX11Texture>(m_cpDev.Get(), m_cpCtx.Get());
         
         if (!m_spZBuffer->Create(td)) {
-            assert::RaiseAssert("Create depth stencil view failed");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Create depth stencil view failed");
             return false;
         }
     

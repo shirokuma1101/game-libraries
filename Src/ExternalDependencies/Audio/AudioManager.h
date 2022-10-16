@@ -37,7 +37,7 @@ public:
 
     void Init(DirectX::AUDIO_ENGINE_REVERB reverb_flag = DirectX::AUDIO_ENGINE_REVERB::Reverb_Default) {
         if (FAILED(CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED))) {
-            assert::RaiseAssert("Failed to initialize COM.");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Failed to initialize COM.");
         }
         
         DirectX::AUDIO_ENGINE_FLAGS flags = DirectX::AUDIO_ENGINE_FLAGS::AudioEngine_Default;
@@ -52,7 +52,7 @@ public:
     void Update(const DirectX::SimpleMath::Vector3& position = {}, const DirectX::SimpleMath::Vector3& direction = {}) {
         if (!m_upAudioEngine->Update()) {
             if (m_upAudioEngine->IsCriticalError()) {
-                assert::RaiseAssert("Audio engine critical error.");
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Audio engine critical error.");
             }
         }
         m_listener.Position = position;

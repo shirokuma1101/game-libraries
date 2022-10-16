@@ -51,7 +51,7 @@ public:
     static bool Create(ID3D11Device* dev, ID3D11Buffer** buffer, UINT buffer_size, D3D11_USAGE buffer_usage, D3D11_BIND_FLAG bind_flags, const D3D11_SUBRESOURCE_DATA* init_data) {
         if (bind_flags & D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER) {
             if (buffer_size % 16 != 0) {
-                assert::RaiseAssert("constant buffer size must be a multiple of 16 bytes.");
+                assert::RaiseAssert(ASSERT_FILE_LINE, "constant buffer size must be a multiple of 16 bytes.");
                 return false;
             }
         }
@@ -65,24 +65,24 @@ public:
         bd.StructureByteStride = 0;
 
         /* Static buffer */
-        //  from GPU | Write ○ Read ○
         //  from CPU | Write × Read × (however, UpdateSubresource () is possible to update)
+        //  from GPU | Write ○ Read ○
         // Video memory buffer Frequent updates are not suitable, but drawing is fast
         if (bd.Usage == D3D11_USAGE::D3D11_USAGE_DEFAULT) {
             bd.CPUAccessFlags = 0;
         }
 
         /* Dynamic buffer */
-        //  from GPU | Write × Read ○
         //  from CPU | Write ○ Read ×
+        //  from GPU | Write × Read ○
         // Buffers that are frequently updated are efficient, but the speed is a little slower than DEFAULT
         else if (bd.Usage == D3D11_USAGE::D3D11_USAGE_DYNAMIC) {
             bd.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
         }
 
         /* Staging buffer */
-        //  from GPU | Write × Read ×
         //  from CPU | Write ○ Read ○
+        //  from GPU | Write × Read ×
         // Direct3D can not be bound, but reading and writing transfer is possible for DEFAULT or DYNAMIC buffers
         // (Example) I want to get the contents of the DEFAULT buffer!
         //  -> Create a STAGING buffer, copy it from the DEFAULT buffer (CopyResource function). Then access the STAGING buffer (Map / Unmap).
@@ -92,7 +92,7 @@ public:
         }
 
         if (FAILED(dev->CreateBuffer(&bd, init_data, buffer))) {
-            assert::RaiseAssert("Create buffer failed.");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Create buffer failed.");
             return false;
         }
 
@@ -139,8 +139,9 @@ class DirectX11ConstantBuffer
 {
 public:
 
-    DirectX11ConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx)
+    DirectX11ConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx, UINT start_slot)
         : m_upBuffer(std::make_unique<DirectX11Buffer>(dev, ctx))
+        , m_startSlot(start_slot)
     {}
     virtual ~DirectX11ConstantBuffer() {
         Release();
@@ -150,11 +151,11 @@ public:
         m_isChanged = true;
         return &m_data;
     }
-    T* const* Get() const {
-        return &m_data;
-    }
     ID3D11Buffer* const* GetBufferAddress() const {
         return m_upBuffer->GetAddress();
+    }
+    UINT GetStartSlot() const {
+        return m_startSlot;
     }
 
     bool Create() {
@@ -185,8 +186,9 @@ private:
     DirectX11ConstantBuffer(const DirectX11ConstantBuffer& src) = delete;
     void operator=(const DirectX11ConstantBuffer& src)          = delete;
 
-    std::unique_ptr<DirectX11Buffer> m_upBuffer;
     T                                m_data;
+    std::unique_ptr<DirectX11Buffer> m_upBuffer  = nullptr;
+    const UINT                       m_startSlot = 0;
     bool                             m_isChanged = true;
 
 };

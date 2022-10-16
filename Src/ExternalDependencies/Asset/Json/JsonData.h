@@ -58,12 +58,12 @@ private:
                 return true;
             }
             catch (const std::exception& e) {
-                assert::RaiseAssert("Validation of json failed: " + std::string(e.what()));
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Validation of json failed: " + std::string(e.what()));
                 return false;
             }
         }
         else {
-            assert::RaiseAssert("Schema name not found: " + std::string(schema_name));
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Schema name not found: " + std::string(schema_name));
             return false;
         }
     }

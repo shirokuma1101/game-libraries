@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#ifndef GAME_LIBRARIES_MATH_TIME_H_
-#define GAME_LIBRARIES_MATH_TIME_H_
+#ifndef GAME_LIBRARIES_MATH_DELTATIME_H_
+#define GAME_LIBRARIES_MATH_DELTATIME_H_
 
 #include <chrono>
 
@@ -9,7 +9,7 @@
 #include "Math/Convert.h"
 #include "Math/Timer.h"
 
-struct Time {
+struct DeltaTime {
 
     enum class Precision {
         NS,
@@ -17,7 +17,7 @@ struct Time {
         MS,
     };
 
-    Time() noexcept
+    DeltaTime() noexcept
         : timer(Timer())
         , deltaTime(0)
     {
@@ -25,7 +25,7 @@ struct Time {
         timer.End();
     }
 
-    void CalcDeltaTime(Precision precision = Precision::NS) {
+    void Calc(Precision precision = Precision::NS) {
         timer.End();
         switch (precision) {
         case Precision::NS:

@@ -24,7 +24,7 @@ public:
     virtual void Register(std::string_view file_path) override {
         auto json_data = std::make_unique<JsonData>(file_path);
         if (!json_data->Load()) {
-            assert::RaiseAssert(std::string("Path not found: ") + file_path.data());
+            assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + file_path.data());
             return;
         }
         for (const auto& e : json_data->GetData()->at("schema")) {
@@ -32,7 +32,7 @@ public:
             auto path = e.at("path").get<std::string>();
             JsonData schema(path);
             if (!schema.Load()) {
-                assert::RaiseAssert("Path not found: " + std::string(path));
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Path not found: " + std::string(path));
                 return;
             }
             JsonData::JsonValidator validator;
@@ -40,7 +40,7 @@ public:
                 validator.set_root_schema(*schema.GetData());
             }
             catch (const std::exception& e) {
-                assert::RaiseAssert("Validation of schema failed: " + std::string(e.what()));
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Validation of schema failed: " + std::string(e.what()));
                 return;
             }
             m_spValidators->emplace(name, std::move(validator));

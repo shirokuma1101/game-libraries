@@ -30,6 +30,7 @@ struct Timer {
     void End() noexcept {
         end = GetPoint();
     }
+    
     template<class Unit>
     Time Duration() const noexcept {
         return std::chrono::duration_cast<Unit>(end - start).count();

@@ -67,11 +67,11 @@ namespace directx11_helper {
         DXGI_MODE_DESC matched_md{};
         if (DXGI_ERROR_NOT_FOUND != adapter->EnumOutputs(0, &output)) {
             if (FAILED(output->FindClosestMatchingMode(md, &matched_md, dev))) {
-                assert::ShowWarning("Get display mode failed");
+                assert::ShowWarning(ASSERT_FILE_LINE, "Get display mode failed");
             }
         }
         else {
-            assert::ShowWarning("Adapter output not found");
+            assert::ShowWarning(ASSERT_FILE_LINE, "Adapter output not found");
         }
         //*md = matched_md;
     }
@@ -136,6 +136,7 @@ namespace directx11_helper {
         }
         return state;
     }
+    
     inline ID3D11RasterizerState* CreateRasterizerState(ID3D11Device* dev, D3D11_FILL_MODE fill_mode, D3D11_CULL_MODE cull_mode, bool depth_clip_enable, bool scissor_enable) {
         D3D11_RASTERIZER_DESC rd{};
         rd.FillMode              = fill_mode; // ポリゴンの描画モード
@@ -310,54 +311,6 @@ namespace directx11_helper {
             }
         }
         
-        if (srv && td.BindFlags & D3D11_BIND_SHADER_RESOURCE) {
-            D3D11_SHADER_RESOURCE_VIEW_DESC srvd{};
-            SecureZeroMemory(&srvd, sizeof(srvd));
-            
-            if (td.BindFlags & D3D11_BIND_RENDER_TARGET) {
-                srvd.Format = td.Format;
-            }
-            if (td.BindFlags & D3D11_BIND_DEPTH_STENCIL) {
-                switch (td.Format) {
-                case DXGI_FORMAT_R16_TYPELESS:
-                    srvd.Format = DXGI_FORMAT_R16_UNORM;
-                    break;
-                case DXGI_FORMAT_R32_TYPELESS:
-                    srvd.Format = DXGI_FORMAT_R32_FLOAT;
-                    break;
-                case DXGI_FORMAT_R24G8_TYPELESS:
-                    srvd.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
-                    break;
-                default:
-                    break;
-                }
-            }
-            if (td.ArraySize == 1) {
-                srvd.ViewDimension             = D3D11_SRV_DIMENSION_TEXTURE2D;
-                srvd.Texture2D.MostDetailedMip = 0;
-                srvd.Texture2D.MipLevels       = td.MipLevels;
-                if (srvd.Texture2D.MipLevels <= 0) {
-                    srvd.Texture2D.MipLevels = static_cast<UINT>(-1);
-                }
-            }
-            else {
-                if (td.MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE) {
-                    srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
-                }
-                else {
-                    srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
-                }
-                srvd.Texture2DArray.MostDetailedMip = 0;
-                srvd.Texture2DArray.MipLevels       = td.MipLevels;
-                srvd.Texture2DArray.ArraySize       = td.ArraySize;
-                srvd.Texture2DArray.FirstArraySlice = 0;
-            }
-
-            if (FAILED(dev->CreateShaderResourceView(resource, &srvd, srv))) {
-                return false;
-            }
-        }
-        
         if (td.BindFlags & D3D11_BIND_DEPTH_STENCIL) {
             D3D11_DEPTH_STENCIL_VIEW_DESC dsvd{};
             SecureZeroMemory(&dsvd, sizeof(dsvd));
@@ -388,6 +341,54 @@ namespace directx11_helper {
             }
 
             if (FAILED(dev->CreateDepthStencilView(resource, &dsvd, dsv))) {
+                return false;
+            }
+        }
+
+        if (srv && td.BindFlags & D3D11_BIND_SHADER_RESOURCE) {
+            D3D11_SHADER_RESOURCE_VIEW_DESC srvd{};
+            SecureZeroMemory(&srvd, sizeof(srvd));
+
+            if (td.BindFlags & D3D11_BIND_RENDER_TARGET) {
+                srvd.Format = td.Format;
+            }
+            if (td.BindFlags & D3D11_BIND_DEPTH_STENCIL) {
+                switch (td.Format) {
+                case DXGI_FORMAT_R16_TYPELESS:
+                    srvd.Format = DXGI_FORMAT_R16_UNORM;
+                    break;
+                case DXGI_FORMAT_R32_TYPELESS:
+                    srvd.Format = DXGI_FORMAT_R32_FLOAT;
+                    break;
+                case DXGI_FORMAT_R24G8_TYPELESS:
+                    srvd.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (td.ArraySize == 1) {
+                srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+                srvd.Texture2D.MostDetailedMip = 0;
+                srvd.Texture2D.MipLevels = td.MipLevels;
+                if (srvd.Texture2D.MipLevels <= 0) {
+                    srvd.Texture2D.MipLevels = static_cast<UINT>(-1);
+                }
+            }
+            else {
+                if (td.MiscFlags & D3D11_RESOURCE_MISC_TEXTURECUBE) {
+                    srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+                }
+                else {
+                    srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+                }
+                srvd.Texture2DArray.MostDetailedMip = 0;
+                srvd.Texture2DArray.MipLevels = td.MipLevels;
+                srvd.Texture2DArray.ArraySize = td.ArraySize;
+                srvd.Texture2DArray.FirstArraySlice = 0;
+            }
+
+            if (FAILED(dev->CreateShaderResourceView(resource, &srvd, srv))) {
                 return false;
             }
         }

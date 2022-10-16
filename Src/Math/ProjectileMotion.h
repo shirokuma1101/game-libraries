@@ -11,7 +11,6 @@
 #include "Math/Convert.h"
 
 #pragma warning(push)
-#pragma warning(disable:4100) // 'identifier' : unreferenced formal parameter
 #pragma warning(disable:4201) // nonstandard extension used : nameless struct/union
 
 struct ProjectileMotion {
@@ -48,7 +47,6 @@ struct ProjectileMotion {
         , height(0.f)
         , gravity(constant::fPI)
     {}
-
     constexpr ProjectileMotion(float velocity, float vectorx, float vectory, float theta, float time, float length, float height, float gravity = constant::fPI) noexcept
         : velocity(velocity)
         , vectorx(vectorx)
@@ -61,8 +59,7 @@ struct ProjectileMotion {
     {}
 
     std::tuple<float, float> DisplacementPosition(float _time) const noexcept {
-        using convert::ToSquare;
-        return { vx * _time, vy * _time - (1.f / 2.f) * g * ToSquare(_time) };
+        return { vx * _time, vy * _time - (1.f / 2.f) * g * convert::ToSquare(_time) };
     }
 
     std::tuple<float, float> DisplacementVector(float _time) const noexcept {
@@ -74,16 +71,14 @@ struct ProjectileMotionFromTimeLength : public ProjectileMotion {
     ProjectileMotionFromTimeLength() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f,  0.f, 0.f, 0.f, 0.f)
     {}
-
     ProjectileMotionFromTimeLength(float time, float length, float gravity = constant::fG)
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, time, length, 0.f, gravity)
     {
-        using convert::ToSquare;
-        v0 = std::sqrt(ToSquare(l / t) + ToSquare(g * t / 2.f));
-        theta = std::atan((g * ToSquare(t)) / (2.f * l));
-        vx = v0 * std::cos(theta);
-        vy = v0 * std::sin(theta);
-        h = g * ToSquare(t) / 8.0f; //(1.f / 2.f) * g * ToSquare(t / 2.f);
+        v0    = std::sqrt(convert::ToSquare(l / t) + convert::ToSquare(g * t / 2.f));
+        theta = std::atan((g * convert::ToSquare(t)) / (2.f * l));
+        vx    = v0 * std::cos(theta);
+        vy    = v0 * std::sin(theta);
+        h     = g * convert::ToSquare(t) / 8.0f; //(1.f / 2.f) * g * convert::ToSquare(t / 2.f);
     }
 };
 
@@ -91,16 +86,14 @@ struct ProjectileMotionFromVelocityTheta : public ProjectileMotion {
     ProjectileMotionFromVelocityTheta() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
-
     ProjectileMotionFromVelocityTheta(float velocity, float theta, float gravity = constant::fG)
         : ProjectileMotion(velocity, 0.f, 0.f, theta, 0.f, 0.f, 0.f, gravity)
     {
-        using convert::ToSquare;
         vx = v0 * std::cos(theta);
         vy = v0 * std::sin(theta);
-        t = 2.f * (vy / g);
-        l = vx * t;
-        h = ToSquare(vy) / (2.f * g);
+        t  = 2.f * (vy / g);
+        l  = vx * t;
+        h  = convert::ToSquare(vy) / (2.f * g);
     }
 };
 
@@ -112,10 +105,7 @@ struct ProjectileMotionFromVelocityLength {
     std::array<ParabolicMotion, 2> parabolicMotions;
 
     ProjectileMotionFromVelocityLength() = default;
-
     ProjectileMotionFromVelocityLength(float velocity, float length, float gravity = constant::fG) {
-        using convert::ToSquare;
-
         for (int i = 0; i < 2; ++i) {
             parabolicMotions[i].isEnable                          = false;
             parabolicMotions[i].projectileMotionFromVelocityTheta = { velocity, 0.f, gravity };
@@ -129,11 +119,11 @@ struct ProjectileMotionFromVelocityLength {
             parabolicMotions[1].isEnable = true;
         }
         else {
-            float a = (-gravity * ToSquare(length)) / (2.f * ToSquare(velocity));
-            float b = length / a;
-            float c = 1.f; // a / a; // 高さを考慮する場合: (a - pos_vec) / a;
-            float root = std::sqrt(-c + ToSquare(b) / 4.f);
-            float t = ToSquare(b) / 4.f - c;
+            float a    = (-gravity * convert::ToSquare(length)) / (2.f * convert::ToSquare(velocity));
+            float b    = length / a;
+            float c    = 1.f; // a / a; // 高さを考慮する場合: (a - pos_vec) / a;
+            float root = std::sqrt(-c + convert::ToSquare(b) / 4.f);
+            float t    = convert::ToSquare(b) / 4.f - c;
 
             if (t < 0.f) {
                 parabolicMotions[0].isEnable = false;
@@ -148,6 +138,15 @@ struct ProjectileMotionFromVelocityLength {
         }
     }
 
+    ProjectileMotionFromVelocityTheta NarrowAngleDisplacement() const {
+        return
+            NarrowAngleDisplacement(
+                [&](int i, float) {
+                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
+                },
+                0
+                    );
+    }
     std::tuple<float, float> NarrowAngleDisplacementPosition(float time) const {
         return
             NarrowAngleDisplacement(
@@ -157,7 +156,6 @@ struct ProjectileMotionFromVelocityLength {
                 time
             );
     }
-
     std::tuple<float, float> NarrowAngleDisplacementVector(float time) const {
         return
             NarrowAngleDisplacement(
@@ -168,6 +166,15 @@ struct ProjectileMotionFromVelocityLength {
             );
     }
 
+    ProjectileMotionFromVelocityTheta WideAngleDisplacement() const {
+        return
+            WideAngleDisplacement(
+                [&](int i, float) {
+                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
+                },
+                0
+                    );
+    }
     std::tuple<float, float> WideAngleDisplacementPosition(float time) const {
         return
             WideAngleDisplacement(
@@ -177,8 +184,6 @@ struct ProjectileMotionFromVelocityLength {
                 time
             );
     }
-
-
     std::tuple<float, float> WideAngleDisplacementVector(float time) const {
         return
             WideAngleDisplacement(
@@ -188,27 +193,7 @@ struct ProjectileMotionFromVelocityLength {
                 time
             );
     }
-
-    ProjectileMotionFromVelocityTheta NarrowAngleDisplacement() const {
-        return
-            NarrowAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
-                },
-                0
-                    );
-    }
-
-    ProjectileMotionFromVelocityTheta WideAngleDisplacement() const {
-        return
-            WideAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
-                },
-                0
-            );
-    }
-
+    
     bool IsEnable() const noexcept {
         return parabolicMotions[0].isEnable || parabolicMotions[1].isEnable;
     }

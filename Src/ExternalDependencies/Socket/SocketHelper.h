@@ -32,9 +32,8 @@ namespace socket_helper {
     constexpr int TCP    = SOCK_STREAM;
     constexpr int UDP    = SOCK_DGRAM;
 
-    NAMESPACE_EXTERNAL_BEGIN
-    
-    NAMESPACE_INTERNAL_BEGIN
+    MACRO_NAMESPACE_EXTERNAL_BEGIN
+    MACRO_NAMESPACE_INTERNAL_BEGIN
     inline std::string GetWSAErrorDetail() {
         LPVOID msg_buf = nullptr;
         FormatMessage(
@@ -51,31 +50,31 @@ namespace socket_helper {
     inline std::string CheckRecvData(char* buf, int recv_byte) {
         if (recv_byte) {
             if (recv_byte > BUFFER) {
-                assert::RaiseAssert("Buffer overflow.");
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Buffer overflow.");
             }
             buf[recv_byte] = '\0';
             return std::string(buf, recv_byte);
         }
         return std::string();
     }
-    NAMESPACE_INTERNAL_END
+    MACRO_NAMESPACE_INTERNAL_END
     
     inline SOCKET Create(int family = IPv4, int type = TCP, int protocol = 0) {
         WSADATA wsa_data{};
         SecureZeroMemory(&wsa_data, sizeof(wsa_data));
 
-        if (FAIL_CHECK(WSAStartup(WINSOCK_VERSION, &wsa_data), err)) {
+        if (MACRO_FAIL_CHECK(WSAStartup(WINSOCK_VERSION, &wsa_data), err)) {
             switch (err) {
             case WSAEFAULT:
             case WSAEINPROGRESS:
             case WSAEPROCLIM:
             case WSASYSNOTREADY:
             case WSAVERNOTSUPPORTED:
-                assert::ShowWarning("https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup");
-                assert::RaiseAssert(detail::MakeErrorDetails("WSAStartup failed.", err));
+                assert::ShowWarning(ASSERT_FILE_LINE, "https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup");
+                assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("WSAStartup failed.", err));
                 break;
             default:
-                assert::RaiseAssert(detail::MakeErrorDetails("Unknown error.", err));
+                assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unknown error.", err));
                 break;
             }
             return SOCKET();
@@ -94,40 +93,40 @@ namespace socket_helper {
     }
     
     inline void Close(SOCKET* sock, bool wsa_cleanup = true) {
-        if (FAIL_CHECK(closesocket(*sock), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("closesocket failed.", err));
+        if (MACRO_FAIL_CHECK(closesocket(*sock), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("closesocket failed.", err));
             return;
         }
         *sock = SOCKET();
         if (!wsa_cleanup) return;
-        if (FAIL_CHECK(WSACleanup(), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("WSACleanup failed.", err));
+        if (MACRO_FAIL_CHECK(WSACleanup(), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("WSACleanup failed.", err));
         }
     }
 
     inline void SetNonBlocking(SOCKET* sock) {
         u_long mode = 1;
-        if (FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("non-blocking mode failed.", err));
+        if (MACRO_FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("non-blocking mode failed.", err));
         }
     }
     
     inline void SetBlocking(SOCKET* sock) {
         u_long mode = 0;
-        if (FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("blocking mode failed.", err));
+        if (MACRO_FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("blocking mode failed.", err));
         }
     }
 
     inline void Bind(SOCKET* sock, const ADDRINFO& addr_info) {
-        if (FAIL_CHECK(bind(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("bind failed.", err));
+        if (MACRO_FAIL_CHECK(bind(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("bind failed.", err));
         }
     }
     
     inline void Listen(SOCKET* sock, int backlog) {
-        if (FAIL_CHECK(listen(*sock, backlog), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("listen failed.", err));
+        if (MACRO_FAIL_CHECK(listen(*sock, backlog), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("listen failed.", err));
         }
     }
     
@@ -140,17 +139,17 @@ namespace socket_helper {
     inline bool Connect(SOCKET* sock, const ADDRINFO& addr_info, int time_out_ms = 0) {
         if (time_out_ms) {
             SetNonBlocking(sock);
-            if (FAIL_CHECK(connect(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
+            if (MACRO_FAIL_CHECK(connect(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
                 if (err == SOCKET_ERROR) {
                     err = WSAGetLastError();
                     SetBlocking(sock);
                     if (err != WSAEWOULDBLOCK) {
-                        assert::RaiseAssert(detail::MakeErrorDetails("Unexpected error occurred.", err));
+                        assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unexpected error occurred.", err));
                         return false;
                     }
                 }
                 else {
-                    assert::RaiseAssert(detail::MakeErrorDetails("Unexpected socket error occurred.", err));
+                    assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unexpected socket error occurred.", err));
                     return false;
                 }
             }
@@ -167,8 +166,8 @@ namespace socket_helper {
             timeout.tv_usec = convert::MSToUS(time_out_ms);
 
             // if return 0 timeout
-            if (SUCCESS_CHECK(select(convert::SizeOf<int>(*sock + 1), &readfds, &writefds, &exceptfds, &timeout), err)) {
-                assert::ShowWarning("Timeout: " + std::string(addr_info.ai_canonname));
+            if (MACRO_SUCCESS_CHECK(select(convert::SizeOf<int>(*sock + 1), &readfds, &writefds, &exceptfds, &timeout), err)) {
+                assert::ShowWarning(ASSERT_FILE_LINE, "Timeout: " + std::string(addr_info.ai_canonname));
                 return false;
             }
             if (FD_ISSET(*sock, &readfds) || FD_ISSET(*sock, &writefds)) {
@@ -176,8 +175,8 @@ namespace socket_helper {
             }
         }
         else {
-            if (FAIL_CHECK(connect(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
-                assert::RaiseAssert(detail::MakeErrorDetails("Cannot connect.", err));
+            if (MACRO_FAIL_CHECK(connect(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
+                assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Cannot connect.", err));
                 return false;
             }
             else {
@@ -217,13 +216,13 @@ namespace socket_helper {
         hints.ai_socktype = SOCK_STREAM; // TCPで送信
         hints.ai_protocol = IPPROTO_TCP; // 受け取りをTCPに限定
 
-        if (FAIL_CHECK(getaddrinfo(host.data(), std::to_string(port).c_str(), &hints, &result), err)) {
-            assert::RaiseAssert(detail::MakeErrorDetails("Domain not found.", err));
+        if (MACRO_FAIL_CHECK(getaddrinfo(host.data(), std::to_string(port).c_str(), &hints, &result), err)) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Domain not found.", err));
             return false;
         }
 
         if (!result) {
-            assert::RaiseAssert("Domain not found.");
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Domain not found.");
             return false;
         }
         
@@ -252,7 +251,7 @@ namespace socket_helper {
         return std::string(dst);
     }
     
-    NAMESPACE_EXTERNAL_END
+    MACRO_NAMESPACE_EXTERNAL_END
 }
 
 #endif

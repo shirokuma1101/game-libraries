@@ -32,7 +32,7 @@ public:
     virtual void AsyncLoad(bool force = false) final {
         if (!m_thread.IsEnd()) return;
         if ((!m_thread.IsExists() && !m_isFirstTimeLoaded) || force) {
-            m_thread.CreateAuto(&IAssetData::Load, this);
+            m_thread.CreateAutoEnd(&IAssetData::Load, this);
         }
     }
 

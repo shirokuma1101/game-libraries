@@ -10,9 +10,20 @@
 
 namespace easing {
 
-    NAMESPACE_EXTERNAL_BEGIN
+    namespace Sine {
+        inline float In(float n) noexcept {
+            return 1.f - std::cos((n * constant::fPI) / 2.f);
+        }
+        inline float Out(float n) noexcept {
+            return std::sin((n * constant::fPI) / 2.f);
+        }
+        inline float InOut(float n) noexcept {
+            return -(std::cos(constant::fPI * n) - 1.f) / 2.f;
+        }
+    }
 
-    NAMESPACE_INTERNAL_BEGIN
+    MACRO_NAMESPACE_EXTERNAL_BEGIN
+    MACRO_NAMESPACE_INTERNAL_BEGIN
     inline float In(float n, float pow) noexcept {
         return std::pow(n, pow);
     }
@@ -25,19 +36,7 @@ namespace easing {
             ? std::pow(2.f, pow - 1.f) * std::pow(n, pow)
             : 1.f - std::pow(-2.f * n + 2.f, pow) / 2.f;
     }
-    NAMESPACE_INTERNAL_END
-
-    namespace Sine {
-        inline float In(float n) noexcept {
-            return 1.f - std::cos((n * constant::fPI) / 2.f);
-        }
-        inline float Out(float n) noexcept {
-            return std::sin((n * constant::fPI) / 2.f);
-        }
-        inline float InOut(float n) noexcept {
-            return -(std::cos(constant::fPI * n) - 1.f) / 2.f;
-        }
-    }
+    MACRO_NAMESPACE_INTERNAL_END
 
     namespace Quad {
         inline float In(float n) noexcept {
@@ -103,7 +102,7 @@ namespace easing {
         );
     }
 
-    NAMESPACE_EXTERNAL_END
+    MACRO_NAMESPACE_EXTERNAL_END
 }
 
 #endif

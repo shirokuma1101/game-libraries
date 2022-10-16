@@ -4,6 +4,7 @@
 #define GAME_LIBRARIES_UTILITY_ASSERT_H_
 
 #include <crtdbg.h>
+#include <stdexcept>
 #include <string_view>
 
 namespace assert {
@@ -28,7 +29,7 @@ namespace assert {
     inline void RaiseAssert(char const*, int = 0, std::string_view = "") {}
 #endif // _DEBUG
     inline void ExceptionThrow(std::string_view message) {
-        throw std::exception(message.data());
+        throw std::runtime_error(message.data());
     }
 
 }

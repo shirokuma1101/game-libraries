@@ -20,16 +20,16 @@ public:
     }
 
     void Init(const DirectX::SimpleMath::Vector3& gravity = { 0.f, -constant::fG, 0.f }, bool create_plane = true, bool enable_cuda = false, ID3D11Device* dev = nullptr) {
-        if (INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
+        if (MACRO_INVALID_POINTER(m_pFoundation, PxCreateFoundation(PX_PHYSICS_VERSION, m_defaultAllocator, m_defaultErrorCallback))) {
             return;
         }
 
-        if (VALID_POINTER(m_pPvd, physx::PxCreatePvd(*m_pFoundation))) {
+        if (MACRO_VALID_POINTER(m_pPvd, physx::PxCreatePvd(*m_pFoundation))) {
             physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
             m_pPvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
         }
 
-        if (INVALID_POINTER(m_pPhysics, PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd))) {
+        if (MACRO_INVALID_POINTER(m_pPhysics, PxCreatePhysics(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxTolerancesScale(), true, m_pPvd))) {
             return;
         }
 
@@ -38,7 +38,7 @@ public:
         }
         PxCloseExtensions();
 
-        if (INVALID_POINTER(m_pCooking, PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(physx::PxTolerancesScale())))) {
+        if (MACRO_INVALID_POINTER(m_pCooking, PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, physx::PxCookingParams(physx::PxTolerancesScale())))) {
             return;
         }
 
@@ -54,7 +54,7 @@ public:
             cuda_ctx_mgr_desc.interopMode = physx::PxCudaInteropMode::D3D11_INTEROP;
             cuda_ctx_mgr_desc.graphicsDevice = dev;
 
-            if (VALID_POINTER(m_pCudaCtxMgr, PxCreateCudaContextManager(*m_pFoundation, cuda_ctx_mgr_desc, PxGetProfilerCallback()))) {
+            if (MACRO_VALID_POINTER(m_pCudaCtxMgr, PxCreateCudaContextManager(*m_pFoundation, cuda_ctx_mgr_desc, PxGetProfilerCallback()))) {
                 if (!m_pCudaCtxMgr->contextIsValid()) {
                     memory::SafeRelease(&m_pCudaCtxMgr);
                 }
@@ -71,7 +71,7 @@ public:
         m_pScene = m_pPhysics->createScene(scene_desc);
 
         physx::PxPvdSceneClient* pvd_client;
-        if (VALID_POINTER(pvd_client, m_pScene->getScenePvdClient())) {
+        if (MACRO_VALID_POINTER(pvd_client, m_pScene->getScenePvdClient())) {
             pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
             pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
             pvd_client->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
@@ -178,30 +178,24 @@ public:
 
     physx::PxRigidDynamic* CreateDynamic(
         const DirectX::SimpleMath::Vector3&    position   = {},
-        const DirectX::SimpleMath::Quaternion& quaternion = {},
-        const DirectX::SimpleMath::Vector3&    velocity   = {},
-        float                                  damping    = 0.f
+        const DirectX::SimpleMath::Quaternion& quaternion = {}
     ) {
-        return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion), velocity, damping);
+        return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
     }
     physx::PxRigidDynamic* CreateDynamic(
         const DirectX::SimpleMath::Vector3& position,
-        const DirectX::SimpleMath::Vector3& rotation,
-        const DirectX::SimpleMath::Vector3& velocity = {},
-        float                               damping  = 0.f
+        const DirectX::SimpleMath::Vector3& rotation
     ) {
-        return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, rotation), velocity, damping);
+        return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, rotation));
     }
     physx::PxRigidDynamic* CreateDynamic(
         physx::PxShape*                        shape,
         const DirectX::SimpleMath::Vector3&    local_position   = {},
         const DirectX::SimpleMath::Quaternion& local_quaternion = {},
         const DirectX::SimpleMath::Vector3&    position         = {},
-        const DirectX::SimpleMath::Quaternion& quaternion       = {},
-        const DirectX::SimpleMath::Vector3&    velocity         = {},
-        float                                  damping          = 0.f
+        const DirectX::SimpleMath::Quaternion& quaternion       = {}
     ) {
-        physx::PxRigidDynamic* rigid_dynamic = physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion), velocity, damping);
+        physx::PxRigidDynamic* rigid_dynamic = physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
         physx_helper::AttachShape(reinterpret_cast<physx::PxRigidActor**>(&rigid_dynamic), &shape, physx_helper::ToPxTransform(local_position, local_quaternion));
         return rigid_dynamic;
     }

@@ -35,26 +35,17 @@ public:
     const D3D11_TEXTURE2D_DESC& GetTextureDesc() const noexcept {
         return m_texture2dDesc;
     }
-    ID3D11ShaderResourceView* GetSrv() noexcept {
-        return m_pSrv;
-    }
     ID3D11ShaderResourceView* GetSrv() const noexcept {
         return m_pSrv;
     }
     ID3D11ShaderResourceView* const* GetSrvAddress() const noexcept {
         return &m_pSrv;
     }
-    ID3D11RenderTargetView* GetRtv() noexcept {
-        return m_pRtv;
-    }
     ID3D11RenderTargetView* GetRtv() const noexcept {
         return m_pRtv;
     }
     ID3D11RenderTargetView* const* GetRtvAddress() const noexcept {
         return &m_pRtv;
-    }
-    ID3D11DepthStencilView* GetDsv() noexcept {
-        return m_pDsv;
     }
     ID3D11DepthStencilView* GetDsv() const noexcept {
         return m_pDsv;
@@ -77,7 +68,6 @@ public:
             return nullptr;
         }
         memory::SafeRelease(&resource);
-        //memory::SafeRelease(&texture2d);
         texture2d->Release();
 
         return texture2d;

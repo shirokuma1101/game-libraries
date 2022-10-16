@@ -23,7 +23,6 @@ struct Transform {
         , scale(Vector3::One)
         , matrix(Matrix::Identity)
     {}
-
     Transform(const Vector3& p, const Vector3& r = Vector3::Zero, const Vector3& s = Vector3::One) noexcept
         : position(p)
         , rotation(r)
@@ -48,7 +47,6 @@ struct Transform {
         , scale(Vector3::One)
         , matrix(Matrix::Identity)
     {}
-
     Transform(const Vector3& p, const Quaternion& q = Quaternion::Identity, const Vector3& s = Vector3::One) noexcept
         : position(p)
         , quaternion(q)
@@ -56,7 +54,7 @@ struct Transform {
     {}
     
     // CreateMatrix
-    Matrix Composition() & noexcept {
+    Matrix Composition() noexcept {
         return matrix = Matrix::CreateScale(scale) * Matrix::CreateFromQuaternion(quaternion) * Matrix::CreateTranslation(position);
     }
 

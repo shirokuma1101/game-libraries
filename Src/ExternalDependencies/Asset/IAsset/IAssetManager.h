@@ -29,7 +29,7 @@ public:
     virtual void Register(std::string_view file_path) {
         auto json_data = std::make_unique<JsonData>(file_path);
         if (!json_data->Load()) {
-            assert::RaiseAssert(std::string("Path not found: ") + file_path.data());
+            assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + file_path.data());
             return;
         }
         for (const auto& e : json_data->GetData()->at("list")) {
@@ -44,9 +44,9 @@ public:
         for (const auto& e : jsons) {
             auto& json_data = e.second;
             if (!json_data->IsLoaded()) {
-                assert::ShowWarning("json data not loaded. Load (loading may take some time.)");
+                assert::ShowWarning(ASSERT_FILE_LINE, "json data not loaded. Load (loading may take some time.)");
                 if (!json_data->Load()) {
-                    assert::RaiseAssert(std::string("Path not found: ") + json_data->GetFilePath());
+                    assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + json_data->GetFilePath());
                     break;
                 }
             }
@@ -73,7 +73,7 @@ public:
         if (auto iter = m_upAssets.find(name.data()); iter != m_upAssets.end()) {
             return iter->second;
         }
-        assert::RaiseAssert(std::string("Asset not found: ") + name.data());
+        assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Asset not found: ") + name.data());
         return nullptr;
     }
 
@@ -88,7 +88,7 @@ public:
     virtual void Load() final {
         for (const auto& e : m_upAssets) {
             if (!e.second->Load()) {
-                assert::RaiseAssert("Asset load failed: " + e.first);
+                assert::RaiseAssert(ASSERT_FILE_LINE, "Asset load failed: " + e.first);
             }
         }
     }
@@ -98,7 +98,7 @@ public:
             if (asset->Load()) {
                 return true;
             }
-            assert::RaiseAssert(std::string("Path not found: ") + GetFilePath(name).data());
+            assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + GetFilePath(name).data());
         }
         return false;
     }
