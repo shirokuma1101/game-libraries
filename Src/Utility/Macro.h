@@ -46,23 +46,30 @@ public:                                               \
         static class_name instance;                   \
         return instance;                              \
     }
-#define MACRO_SINGLETON(class_name, instance_func_name, destruct_func_name) \
-private:                                                                    \
-    class_name() {}                                                         \
-    ~class_name() {}                                                        \
-    static class_name* instance;                                            \
-public:                                                                     \
-    static class_name& instance_func_name() noexcept {                      \
-        if (!instance) {                                                    \
-            instance = new class_name;                                      \
-            atexit(&destruct_func_name);                                    \
-        }                                                                   \
-        return *instance;                                                   \
-    }                                                                       \
-    static void destruct_func_name() {                                      \
-        if (!instance) return;                                              \
-        delete instance;                                                    \
-        instance = nullptr;                                                 \
+#define MACRO_SINGLETON(class_name, work_instance_func_name, instance_func_name, destruct_func_name) \
+private:                                                                                             \
+    class_name() {}                                                                                  \
+    inline static class_name* instance;                                                              \
+public:                                                                                              \
+    static class_name& work_instance_func_name() noexcept {                                          \
+        if (!instance) {                                                                             \
+            instance = new class_name;                                                               \
+            atexit(&destruct_func_name);                                                             \
+        }                                                                                            \
+        return *instance;                                                                            \
+    }                                                                                                \
+    static const class_name& instance_func_name() noexcept {                                         \
+        if (!instance) {                                                                             \
+            instance = new class_name;                                                               \
+            atexit(&destruct_func_name);                                                             \
+        }                                                                                            \
+        return *instance;                                                                            \
+    }                                                                                                \
+    static void destruct_func_name() {                                                               \
+        if (!instance) return;                                                                       \
+        delete instance;                                                                             \
+        instance = nullptr;                                                                          \
+        return;                                                                                      \
     }
 
 #endif
