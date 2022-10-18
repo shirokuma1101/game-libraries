@@ -17,6 +17,10 @@ using Microsoft::WRL::ComPtr;
 
 namespace directx11_helper {
 
+    /**************************************************
+    * Constant helper
+    **************************************************/
+
     constexpr DirectX::SimpleMath::Color white   = { 1.0f, 1.0f, 1.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color black   = { 0.0f, 0.0f, 0.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color alpha   = { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -29,6 +33,21 @@ namespace directx11_helper {
     constexpr DirectX::SimpleMath::Color magenta = { 1.0f, 0.0f, 1.0f, 1.0f };
     
     constexpr DirectX::SimpleMath::Color normal  = { 0.5f, 0.5f, 1.0f, 1.0f };
+
+#define DIRECTX11_HELPER_PADDING1BYTE(num) const int8_t  padding1byte##num = 0
+#define DIRECTX11_HELPER_PADDING2BYTE(num) const int16_t padding2byte##num = 0
+#define DIRECTX11_HELPER_PADDING4BYTE(num) const int32_t padding4byte##num = 0
+#define DIRECTX11_HELPER_PADDING8BYTE(num) const int64_t padding8byte##num = 0
+#ifdef _MSC_VER
+#define DIRECTX11_HELPER_PADDING16BYTE(num) const __m128 padding16byte##num
+#define DIRECTX11_HELPER_PADDING32BYTE(num) const __m256 padding32byte##num
+#define DIRECTX11_HELPER_PADDING64BYTE(num) const __m512 padding64byte##num
+#endif
+    
+    
+    /**************************************************
+    * enum class
+    **************************************************/
 
     enum class SamplerFilterMode {
         Point,       // ポイントサンプリング
@@ -44,12 +63,14 @@ namespace directx11_helper {
     };
     enum class BlendMode {
         NoBlend, // ブレンドしない
-        Opaque,  // 不透明
         Alpha,   // アルファブレンド
         Add,     // 加算
-        Sub,     // 減算
-        Mul,     // 乗算
     };
+
+    
+    /**************************************************
+    * Setup desc
+    **************************************************/
 
     inline void SetUpModeDesc(DXGI_MODE_DESC* md, const std::pair<int32_t, int32_t>& size, ID3D11Device* dev, IDXGIAdapter* adapter) {
         SecureZeroMemory(md, sizeof(*md));
@@ -112,6 +133,11 @@ namespace directx11_helper {
         sd->SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;                                  // SwapEffectの指定
         sd->Flags        = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;                    // SwapChainの設定フラグの指定
     }
+
+    
+    /**************************************************
+    * State helper
+    **************************************************/
 
     inline ID3D11DepthStencilState* CreateDepthStencilState(ID3D11Device* dev, bool enable_depth, bool enable_write_depth) {
         D3D11_DEPTH_STENCIL_DESC dsd{};
@@ -269,6 +295,11 @@ namespace directx11_helper {
         }
         return state;
     }
+
+    
+    /**************************************************
+    * Texture helper
+    **************************************************/
     
     inline D3D11_TEXTURE2D_DESC GetTextureInfo(ID3D11View* view) {
         D3D11_TEXTURE2D_DESC td{};
