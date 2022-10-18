@@ -63,31 +63,32 @@ public:
         return true;
     }
 
-    auto GetDev() {
+    auto GetDev() const {
         return m_cpDev;
     }
-    auto GetCtx() {
+    auto GetCtx() const {
         return m_cpCtx;
     }
-    auto GetSwapChain() {
+    auto GetSwapChain() const {
         return m_cpSwapChain;
     }
-    auto GetBackBuffer() {
+    auto GetBackBuffer() const {
         return m_spBackBuffer;
     }
-    auto GetZBuffer() {
+    auto GetZBuffer() const {
         return m_spZBuffer;
     }
-    auto GetWhiteTexture() {
+    auto GetWhiteTexture() const {
         return m_spWhiteTexture;
     }
-    auto GetNormalTexture() {
+    auto GetNormalTexture() const {
         return m_spNormalTexture;
     }
 
+
 protected:
 
-    void CreateFactory() {
+    virtual void CreateFactory() {
         if (FAILED(CreateDXGIFactory(IID_PPV_ARGS(&m_cpFactory)))) {
             assert::RaiseAssert(ASSERT_FILE_LINE, "Create factory failed");
         }
@@ -121,7 +122,7 @@ protected:
             assert::RaiseAssert(ASSERT_FILE_LINE, "Enumerate adapters failed");
         }
     }
-    void CreateDevice(bool is_debug = false, bool detailed_memory_infomation = false) {
+    virtual void CreateDevice(bool is_debug = false, bool detailed_memory_infomation = false) {
         /* ドライバーの種類 */
         D3D_DRIVER_TYPE driver_type = D3D_DRIVER_TYPE_HARDWARE;
         // アダプタが指定されていた場合はD3D_DRIVER_TYPE_UNKNOWNを指定する
@@ -181,7 +182,7 @@ protected:
             }
         }
     }
-    void CreateSwapChain(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool enable_msaa) {
+    virtual void CreateSwapChain(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool enable_msaa) {
         DXGI_SWAP_CHAIN_DESC sd{};
         SecureZeroMemory(&sd, sizeof(sd));
         directx11_helper::SetUpSwapChainDesc(&sd, size, m_cpDev.Get(), m_cpAdapter.Get(), hWnd, enable_msaa);
@@ -189,7 +190,7 @@ protected:
             assert::RaiseAssert(ASSERT_FILE_LINE, "Create swap chain failed");
         }
     }
-    bool CreateBackBuffer() {
+    virtual bool CreateBackBuffer() {
         ID3D11Texture2D* back_buffer = nullptr;
         m_spBackBuffer = std::make_shared<DirectX11Texture>(m_cpDev.Get(), m_cpCtx.Get());
         if (FAILED(m_cpSwapChain->GetBuffer(0, IID_PPV_ARGS(&back_buffer)))) {
@@ -203,7 +204,7 @@ protected:
         memory::SafeRelease(&back_buffer);
         return true;
     }
-    bool CreateDepthStencilView(const std::pair<int32_t, int32_t>& size) {
+    virtual bool CreateDepthStencilView(const std::pair<int32_t, int32_t>& size) {
         D3D11_TEXTURE2D_DESC td{};
         td.Width              = static_cast<UINT>(size.first);
         td.Height             = static_cast<UINT>(size.second);
@@ -228,7 +229,7 @@ protected:
         m_cpCtx->OMSetRenderTargets(1, rtvs, m_spZBuffer->GetDsv());
         return true;
     }
-    void CreateViewport(const std::pair<int32_t, int32_t>& size) {
+    virtual void CreateViewport(const std::pair<int32_t, int32_t>& size) {
         D3D11_VIEWPORT vp{};
         vp.TopLeftX = 0.f;
         vp.TopLeftY = 0.f;
@@ -238,13 +239,25 @@ protected:
         vp.MaxDepth = 1.f;
         m_cpCtx->RSSetViewports(1, &vp);
     }
-    void SetState() {
+    virtual void SetState() {
+        /* 深度ステンシルステート */
+        ID3D11DepthStencilState* dss = directx11_helper::CreateDepthStencilState(m_cpDev.Get(), true, true);
+        m_cpCtx->OMSetDepthStencilState(dss, 0);
+        memory::SafeRelease(&dss);
+        
         /* ブレンドステート */
         ID3D11BlendState* bs = directx11_helper::CreateBlendState(m_cpDev.Get(), directx11_helper::BlendMode::Alpha);
         FLOAT blend_factor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
         m_cpCtx->OMSetBlendState(bs, blend_factor, 0xFFFFFFFF);
         memory::SafeRelease(&bs);
 
+        /* ラスタライザーステート */
+        ID3D11RasterizerState* rs = directx11_helper::CreateRasterizerState(
+            m_cpDev.Get(), D3D11_FILL_MODE::D3D11_FILL_SOLID, D3D11_CULL_MODE::D3D11_CULL_BACK, true, false
+        );
+        m_cpCtx->RSSetState(rs);
+        memory::SafeRelease(&rs);
+        
         /* サンプラーステートセット */
         ID3D11SamplerState* ss0 = directx11_helper::CreateSamplerState(
             m_cpDev.Get(), directx11_helper::SamplerFilterMode::Anisotropic, 4, directx11_helper::SamplerAddressMode::Wrap, false
@@ -262,18 +275,6 @@ protected:
         m_cpCtx->CSSetSamplers(1, 1, &ss1);
         memory::SafeRelease(&ss0);
         memory::SafeRelease(&ss1);
-
-        /* ラスタライザーステート */
-        ID3D11RasterizerState* rs = directx11_helper::CreateRasterizerState(
-            m_cpDev.Get(), D3D11_FILL_MODE::D3D11_FILL_SOLID, D3D11_CULL_MODE::D3D11_CULL_BACK, true, false
-        );
-        m_cpCtx->RSSetState(rs);
-        memory::SafeRelease(&rs);
-
-        /* 深度ステンシルステート */
-        ID3D11DepthStencilState* dss = directx11_helper::CreateDepthStencilState(m_cpDev.Get(), true, true);
-        m_cpCtx->OMSetDepthStencilState(dss, 0);
-        memory::SafeRelease(&dss);
     }
 
     void Release() {

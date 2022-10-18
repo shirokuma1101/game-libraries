@@ -21,6 +21,9 @@ public:
         Release();
     }
 
+    ID3D11Buffer* Get() {
+        return m_pBuffer;
+    }
     ID3D11Buffer* Get() const {
         return m_pBuffer;
     }
@@ -149,6 +152,9 @@ public:
 
     T* Get() {
         m_isChanged = true;
+        return &m_data;
+    }
+    const T* Get() const {
         return &m_data;
     }
     ID3D11Buffer* const* GetBufferAddress() const {
