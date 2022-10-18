@@ -46,10 +46,19 @@ public:
         }
         return false;
     }
+    bool IsNoExists(bool enable_assert = false) const noexcept {
+        if (!m_upThread) {
+            return true;
+        }
+        if (enable_assert) {
+            assert::RaiseAssert(ASSERT_FILE_LINE, "thread is exists");
+        }
+        return false;
+    }
 
     template<class Func, class Inst, class... Args>
     void Create(Func func, Inst inst, Args... args) {
-        if (!IsExists(true)) {
+        if (IsNoExists(true)) {
             m_isEnd = false;
             m_upThread = std::make_unique<std::thread>(
                 &SimpleUniqueThread::Run<Func, Inst, Args...>,
@@ -60,7 +69,7 @@ public:
     }
     template<class Func, class Inst, class... Args>
     void CreateAutoEnd(Func func, Inst inst, Args... args) {
-        if (!IsExists(true)) {
+        if (IsNoExists(true)) {
             m_isEnd = false;
             m_upThread = std::make_unique<std::thread>(
                 &SimpleUniqueThread::RunAutoEnd<Func, Inst, Args...>,
