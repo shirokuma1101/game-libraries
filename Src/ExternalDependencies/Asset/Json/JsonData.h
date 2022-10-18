@@ -31,18 +31,20 @@ public:
         Release();
     }
 
-    bool Load() const override {
-        return LoadProcess([&] {
-            Json json;
-            std::ifstream ifs(m_filePath);
-            if (!ifs) return false;
-            ifs >> json;
-            if (ValidateJson(json)) {
-                *m_upAssetData = json;
-                return true;
+    bool Load() override {
+        return
+            LoadProcess([&] {
+                Json json;
+                std::ifstream ifs(m_filePath);
+                if (!ifs) return false;
+                ifs >> json;
+                if (ValidateJson(json)) {
+                    *m_upAssetData = json;
+                    return true;
+                }
+                return false;
             }
-            return false;
-        });
+        );
     }
 
 private:

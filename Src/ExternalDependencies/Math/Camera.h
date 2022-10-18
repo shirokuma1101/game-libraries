@@ -101,12 +101,12 @@ struct Camera {
         , projection(fov, aspect, near_clipping_distance, far_clipping_distance)
     {}
 
-    void SetMatrix(DirectX::SimpleMath::Matrix camera_mat) {
+    void SetMatrix(DirectX::SimpleMath::Matrix camera_mat) noexcept {
         cameraMatrix = camera_mat;
         viewMatrix = cameraMatrix.Invert();
     }
 
-    void SetProjection(float fov, float aspect, float near_clipping_distance, float far_clipping_distance) {
+    void SetProjection(float fov, float aspect, float near_clipping_distance, float far_clipping_distance) noexcept {
         projection.fov                  = fov;
         projection.aspect               = aspect;
         projection.nearClippingDistance = near_clipping_distance;

@@ -70,10 +70,6 @@ struct Transform {
         return std::move(Transform());
     }
 
-    static Matrix CreateFromYawPitchRoll(const Vector3& rot) noexcept {
-        return Matrix::CreateFromYawPitchRoll(rot.y, rot.x, rot.z);
-    }
-
     Vector3    position;
     Vector3    scale;
 #ifdef TRANSFORM_ROTATION_USE_EULER

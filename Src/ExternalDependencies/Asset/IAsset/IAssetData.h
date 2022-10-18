@@ -27,7 +27,7 @@ public:
         Release();
     }
 
-    virtual bool Load() const = 0;
+    virtual bool Load() = 0;
 
     virtual void AsyncLoad(bool force = false) final {
         if (!m_thread.IsEnd()) return;
@@ -36,38 +36,38 @@ public:
         }
     }
 
-    virtual bool IsLoaded() const final {
+    virtual bool IsLoaded() const noexcept final {
         return m_thread.IsExists() ? m_thread.IsEnd() : m_isLoaded;
     }
 
-    virtual bool IsLoadSuccessed() const final {
+    virtual bool IsLoadSuccessed() const noexcept final {
         return m_isLoadSuccessed;
     }
 
-    virtual bool IsLoadedOnlyOnce() const final {
+    virtual bool IsLoadedOnlyOnce() noexcept final {
         if (IsLoaded() && !m_isLoadedOnlyOnce) {
             m_isLoadedOnlyOnce = true;
             return true;
         }
-        else return false;
+        return false;
     }
 
-    virtual void LoadedOnlyOnceReset() final {
+    virtual void LoadedOnlyOnceReset() noexcept final {
         m_isLoadedOnlyOnce = false;
     }
 
-    virtual std::string GetFilePath() const final {
+    virtual const std::string& GetFilePath() const noexcept final {
         return m_filePath;
     }
 
-    const auto& GetData() const {
+    const auto& GetData() const noexcept {
         return m_upAssetData;
     }
 
 protected:
 
     template<class Func>
-    bool LoadProcess(Func&& func) const {
+    bool LoadProcess(Func&& func) {
         m_isLoaded = false;
         m_isFirstTimeLoaded = true;
 
@@ -87,10 +87,10 @@ protected:
     }
 
     SimpleUniqueThread                m_thread;
-    mutable bool                      m_isLoaded          = false;
-    mutable bool                      m_isLoadSuccessed   = false;
-    mutable bool                      m_isFirstTimeLoaded = false;
-    mutable bool                      m_isLoadedOnlyOnce  = false;
+    bool                              m_isLoaded          = false;
+    bool                              m_isLoadSuccessed   = false;
+    bool                              m_isFirstTimeLoaded = false;
+    bool                              m_isLoadedOnlyOnce  = false;
 
     const std::string                 m_filePath;
     const std::unique_ptr<AssetClass> m_upAssetData       = nullptr;

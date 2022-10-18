@@ -31,7 +31,7 @@ namespace physx_helper {
 
     /* DirectX Simple Math to PhysX math */
     
-    inline physx::PxMat44 ToPxMat44(const DirectX::SimpleMath::Matrix mat) {
+    inline physx::PxMat44 ToPxMat44(const DirectX::SimpleMath::Matrix& mat) {
         return physx::PxMat44(
             physx::PxVec4(mat._11, mat._12, mat._13, mat._14),
             physx::PxVec4(mat._21, mat._22, mat._23, mat._24),
@@ -61,7 +61,7 @@ namespace physx_helper {
 
     /* PhysX math to DirectX Simple Math */
 
-    inline DirectX::SimpleMath::Matrix ToMatrix(const physx::PxMat44& px_mat44) {
+    inline DirectX::SimpleMath::Matrix ToMatrix(const physx::PxMat44& px_mat44) noexcept {
         return DirectX::SimpleMath::Matrix(
             px_mat44.column0.x, px_mat44.column0.y, px_mat44.column0.z, px_mat44.column0.w,
             px_mat44.column1.x, px_mat44.column1.y, px_mat44.column1.z, px_mat44.column1.w,
@@ -70,8 +70,8 @@ namespace physx_helper {
         );
     }
 
-    inline DirectX::SimpleMath::Vector3 ToVector3(const physx::PxVec3& px_vec3) {
-        return DirectX::SimpleMath::Vector3(static_cast<float>(px_vec3.x), static_cast<float>(px_vec3.y), static_cast<float>(px_vec3.z));
+    inline DirectX::SimpleMath::Vector3 ToVector3(const physx::PxVec3& px_vec3) noexcept {
+        return DirectX::SimpleMath::Vector3(px_vec3.x, px_vec3.y, px_vec3.z);
     }
 
     
@@ -82,10 +82,10 @@ namespace physx_helper {
     template<class VArray>
     inline physx::PxConvexMesh* ToPxConvexMesh(physx::PxPhysics* physics, physx::PxCooking* cooking, const VArray& vertices) {
         physx::PxConvexMeshDesc px_mesh_desc;
-        px_mesh_desc.points.count = static_cast<physx::PxU32>(vertices.size());;
+        px_mesh_desc.points.count  = static_cast<physx::PxU32>(vertices.size());;
         px_mesh_desc.points.stride = sizeof(VArray::value_type);
-        px_mesh_desc.points.data = &vertices[0];;
-        px_mesh_desc.flags = physx::PxConvexFlag::eCOMPUTE_CONVEX;
+        px_mesh_desc.points.data   = &vertices[0];;
+        px_mesh_desc.flags         = physx::PxConvexFlag::eCOMPUTE_CONVEX;
 
         physx::PxDefaultMemoryOutputStream write_buffer;
         cooking->cookConvexMesh(px_mesh_desc, write_buffer);
@@ -225,11 +225,11 @@ namespace physx_helper {
             return m_pActor;
         }
 
-        DirectX::SimpleMath::Vector3 GetMoveVector() noexcept {
+        const DirectX::SimpleMath::Vector3& GetMoveVector() const noexcept {
             return m_moveVector;
         }
 
-        DirectX::SimpleMath::Matrix GetMatrix() {
+        DirectX::SimpleMath::Matrix GetMatrix() const {
             return ToMatrix(m_pActor->getGlobalPose());
         }
 

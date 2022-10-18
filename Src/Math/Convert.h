@@ -77,7 +77,7 @@ MACRO_NAMESPACE_EXTERNAL_END
     **************************************************/
 
     template<template<class> class Container, class T>
-    inline auto ToContainer(T iterable) {
+    inline auto ToContainer(const T& iterable) {
         Container<typename T::value_type> container;
         for (auto&& e : iterable) {
             container.insert(container.end(), e);
@@ -85,11 +85,11 @@ MACRO_NAMESPACE_EXTERNAL_END
         return container;
     }
     template<class T>
-    inline auto ToVector(T iterable) {
+    inline auto ToVector(const T& iterable) {
         return ToContainer<std::vector>(iterable);
     }
     template<class T>
-    inline auto ToList(T iterable) {
+    inline auto ToList(const T& iterable) {
         return ToContainer<std::list>(iterable);
     }
 

@@ -86,7 +86,7 @@ namespace effekseer_helper {
             m_effectRef = Effekseer::Effect::Create(manager, string::StrToUtf16(m_filePath).c_str());
         }
 
-        std::string GetFilePath() const noexcept {
+        const std::string& GetFilePath() const noexcept {
             return m_filePath;
         }
 

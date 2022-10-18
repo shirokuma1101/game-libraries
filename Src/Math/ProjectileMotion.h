@@ -71,7 +71,7 @@ struct ProjectileMotionFromTimeLength : public ProjectileMotion {
     ProjectileMotionFromTimeLength() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f,  0.f, 0.f, 0.f, 0.f)
     {}
-    ProjectileMotionFromTimeLength(float time, float length, float gravity = constant::fG)
+    ProjectileMotionFromTimeLength(float time, float length, float gravity = constant::fG) noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, time, length, 0.f, gravity)
     {
         v0    = std::sqrt(convert::ToSquare(l / t) + convert::ToSquare(g * t / 2.f));
@@ -86,7 +86,7 @@ struct ProjectileMotionFromVelocityTheta : public ProjectileMotion {
     ProjectileMotionFromVelocityTheta() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
-    ProjectileMotionFromVelocityTheta(float velocity, float theta, float gravity = constant::fG)
+    ProjectileMotionFromVelocityTheta(float velocity, float theta, float gravity = constant::fG) noexcept
         : ProjectileMotion(velocity, 0.f, 0.f, theta, 0.f, 0.f, 0.f, gravity)
     {
         vx = v0 * std::cos(theta);
@@ -105,7 +105,7 @@ struct ProjectileMotionFromVelocityLength {
     std::array<ParabolicMotion, 2> parabolicMotions;
 
     ProjectileMotionFromVelocityLength() = default;
-    ProjectileMotionFromVelocityLength(float velocity, float length, float gravity = constant::fG) {
+    ProjectileMotionFromVelocityLength(float velocity, float length, float gravity = constant::fG) noexcept {
         for (int i = 0; i < 2; ++i) {
             parabolicMotions[i].isEnable                          = false;
             parabolicMotions[i].projectileMotionFromVelocityTheta = { velocity, 0.f, gravity };
@@ -145,7 +145,7 @@ struct ProjectileMotionFromVelocityLength {
                     return parabolicMotions[i].projectileMotionFromVelocityTheta;
                 },
                 0
-                    );
+            );
     }
     std::tuple<float, float> NarrowAngleDisplacementPosition(float time) const {
         return
@@ -173,7 +173,7 @@ struct ProjectileMotionFromVelocityLength {
                     return parabolicMotions[i].projectileMotionFromVelocityTheta;
                 },
                 0
-                    );
+            );
     }
     std::tuple<float, float> WideAngleDisplacementPosition(float time) const {
         return

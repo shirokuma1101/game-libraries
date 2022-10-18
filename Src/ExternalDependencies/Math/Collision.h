@@ -144,6 +144,7 @@ public:
     virtual T GetCollisionType() const noexcept final {
         return m_collisitonType;
     }
+    
     virtual bool Intersects(const collision::Ray&            target, const DirectX::SimpleMath::Matrix& mat, collision::Result* res) const = 0;
     virtual bool Intersects(const collision::BoundingSphere& target, const DirectX::SimpleMath::Matrix& mat, collision::Result* res) const = 0;
 
