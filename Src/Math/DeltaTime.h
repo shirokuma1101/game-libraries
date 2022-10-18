@@ -19,7 +19,7 @@ struct DeltaTime {
 
     DeltaTime() noexcept
         : timer(Timer())
-        , deltaTime(0)
+        , time(0)
     {
         timer.Start();
         timer.End();
@@ -29,19 +29,19 @@ struct DeltaTime {
         timer.End();
         switch (precision) {
         case Precision::NS:
-            deltaTime = convert::NSToS(static_cast<double>(timer.Duration<Timer::NS>()));
+            time = convert::NSToS(static_cast<double>(timer.Duration<Timer::NS>()));
             break;
         case Precision::US:
-            deltaTime = convert::USToS(static_cast<double>(timer.Duration<Timer::US>()));
+            time = convert::USToS(static_cast<double>(timer.Duration<Timer::US>()));
             break;
         case Precision::MS:
-            deltaTime = convert::MSToS(static_cast<double>(timer.Duration<Timer::MS>()));
+            time = convert::MSToS(static_cast<double>(timer.Duration<Timer::MS>()));
             break;
         }
         timer.Start();
     }
 
-    double deltaTime;
+    double time;
 
 private:
 
