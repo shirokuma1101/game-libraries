@@ -142,9 +142,8 @@ class DirectX11ConstantBuffer
 {
 public:
 
-    DirectX11ConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx, UINT start_slot)
+    DirectX11ConstantBuffer(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_upBuffer(std::make_unique<DirectX11Buffer>(dev, ctx))
-        , m_startSlot(start_slot)
     {}
     virtual ~DirectX11ConstantBuffer() {
         Release();
@@ -159,9 +158,6 @@ public:
     }
     ID3D11Buffer* const* GetBufferAddress() const {
         return m_upBuffer->GetAddress();
-    }
-    UINT GetStartSlot() const {
-        return m_startSlot;
     }
 
     bool Create() {
@@ -194,7 +190,6 @@ private:
 
     T                                m_data;
     std::unique_ptr<DirectX11Buffer> m_upBuffer  = nullptr;
-    const UINT                       m_startSlot = 0;
     bool                             m_isChanged = true;
 
 };
