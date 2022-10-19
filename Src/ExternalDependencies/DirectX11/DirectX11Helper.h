@@ -33,17 +33,20 @@ namespace directx11_helper {
     constexpr DirectX::SimpleMath::Color magenta = { 1.0f, 0.0f, 1.0f, 1.0f };
     
     constexpr DirectX::SimpleMath::Color normal  = { 0.5f, 0.5f, 1.0f, 1.0f };
-
-#define DIRECTX11_HELPER_PADDING1BYTE(num) const int8_t  padding1byte##num = 0
-#define DIRECTX11_HELPER_PADDING2BYTE(num) const int16_t padding2byte##num = 0
-#define DIRECTX11_HELPER_PADDING4BYTE(num) const int32_t padding4byte##num = 0
-#define DIRECTX11_HELPER_PADDING8BYTE(num) const int64_t padding8byte##num = 0
-#ifdef _MSC_VER
-#define DIRECTX11_HELPER_PADDING16BYTE(num) const __m128 padding16byte##num
-#define DIRECTX11_HELPER_PADDING32BYTE(num) const __m256 padding32byte##num
-#define DIRECTX11_HELPER_PADDING64BYTE(num) const __m512 padding64byte##num
-#endif
     
+#define DIRECTX11_HELPER_PADDING_1BYTE(num)  const int8_t padding1byte##num[1]   = { 0 }
+#define DIRECTX11_HELPER_PADDING_2BYTE(num)  const int8_t padding2byte##num[2]   = { 0, 0 }
+#define DIRECTX11_HELPER_PADDING_3BYTE(num)  const int8_t padding3byte##num[3]   = { 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_4BYTE(num)  const int8_t padding4byte##num[4]   = { 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_5BYTE(num)  const int8_t padding5byte##num[5]   = { 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_6BYTE(num)  const int8_t padding6byte##num[6]   = { 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_7BYTE(num)  const int8_t padding7byte##num[7]   = { 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_8BYTE(num)  const int8_t padding8byte##num[8]   = { 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_9BYTE(num)  const int8_t padding9byte##num[9]   = { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_10BYTE(num) const int8_t padding10byte##num[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_11BYTE(num) const int8_t padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_12BYTE(num) const int8_t padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+
     
     /**************************************************
     * enum class
