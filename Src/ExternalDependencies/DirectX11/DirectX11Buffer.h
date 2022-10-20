@@ -169,8 +169,8 @@ public:
         return m_upBuffer->Create(sizeof(m_data), D3D11_USAGE::D3D11_USAGE_DYNAMIC, D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER, &sd);
     }
 
-    void Write() {
-        if (!m_isChanged) return;
+    void Write(bool force_change = false) {
+        if (!m_isChanged && !force_change) return;
         m_upBuffer->Write(&m_data, sizeof(m_data));
         m_isChanged = false;
     }
