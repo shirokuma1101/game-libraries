@@ -85,6 +85,25 @@ public:
         return m_spNormalTexture;
     }
 
+    bool Resize(const std::pair<int32_t, int32_t>& size) {
+        DXGI_SWAP_CHAIN_DESC scd{};
+        SecureZeroMemory(&scd, sizeof(scd));
+        m_cpSwapChain->GetDesc(&scd);
+        
+        m_spBackBuffer.reset();
+        m_spZBuffer.reset();
+        m_cpCtx->OMSetRenderTargets(0, nullptr, nullptr);
+        
+        if (FAILED(m_cpSwapChain->ResizeBuffers(scd.BufferCount, size.first, size.second, scd.BufferDesc.Format, scd.Flags))) {
+            return false;
+        }
+
+        CreateBackBuffer();
+        CreateDepthStencilView(size);
+        CreateViewport(size);
+
+        return true;
+    }
 
 protected:
 
