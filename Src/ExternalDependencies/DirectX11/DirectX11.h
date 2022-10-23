@@ -84,6 +84,12 @@ public:
     auto GetNormalTexture() const {
         return m_spNormalTexture;
     }
+    D3D11_VIEWPORT GetViewport() const {
+        D3D11_VIEWPORT v{};
+        UINT num = 1;
+        m_cpCtx->RSGetViewports(&num, &v);
+        return v;
+    }
 
     bool Resize(const std::pair<int32_t, int32_t>& size) {
         DXGI_SWAP_CHAIN_DESC scd{};
@@ -249,14 +255,14 @@ protected:
         return true;
     }
     virtual void CreateViewport(const std::pair<int32_t, int32_t>& size) {
-        D3D11_VIEWPORT vp{};
-        vp.TopLeftX = 0.f;
-        vp.TopLeftY = 0.f;
-        vp.Width    = static_cast<FLOAT>(size.first);
-        vp.Height   = static_cast<FLOAT>(size.second);
-        vp.MinDepth = 0.f;
-        vp.MaxDepth = 1.f;
-        m_cpCtx->RSSetViewports(1, &vp);
+        D3D11_VIEWPORT v{};
+        v.TopLeftX = 0.f;
+        v.TopLeftY = 0.f;
+        v.Width    = static_cast<FLOAT>(size.first);
+        v.Height   = static_cast<FLOAT>(size.second);
+        v.MinDepth = 0.f;
+        v.MaxDepth = 1.f;
+        m_cpCtx->RSSetViewports(1, &v);
     }
     virtual void SetState() {
         /* 深度ステンシルステート */
