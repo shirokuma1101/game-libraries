@@ -83,6 +83,9 @@ public:
             m_upEffectInstances.emplace(effect_name, std::move(effect_instance));
             return sp_et;
         }
+        else {
+            assert::RaiseAssert(ASSERT_FILE_LINE, "EffectData is not found.");
+        }
         return nullptr;
     }
 
