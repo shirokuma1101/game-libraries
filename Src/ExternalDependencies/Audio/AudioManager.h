@@ -100,12 +100,26 @@ public:
             m_spSoundInstances.emplace(sound_name, sound_instance);
             return sound_instance;
         }
+        else {
+            assert::RaiseAssert(ASSERT_FILE_LINE, "Failed to find sound data.");
+        }
         return nullptr;
     }
 
-    void StopAllSound() {
+    float GetMasterVolume() const noexcept {
+        return m_upAudioEngine->GetMasterVolume();
+    }
+    void SetMasterVolume(float volume) const noexcept {
+        m_upAudioEngine->SetMasterVolume(volume);
+    }
+    void StopAllSound() noexcept {
         for (auto&& e : m_spSoundInstances) {
             e.second->GetSoundEffectInstance()->Stop();
+        }
+    }
+    void SetAllVolume(float volume) {
+        for (auto&& e : m_spSoundInstances) {
+            e.second->GetSoundEffectInstance()->SetVolume(volume);
         }
     }
 
