@@ -47,6 +47,8 @@ MACRO_NAMESPACE_EXTERNAL_END
     template<class T> constexpr void    ToSquare(T* base)                { *base *= *base; }
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToHalf,    num, num * 0.5f,  num * 0.5);
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToQuarter, num, num * 0.25f, num * 0.25);
+    template<class T> constexpr T       ToPercent(const T& num)     noexcept { return num * 100; }
+    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToUndoPercent, num, num * 0.01f, num * 0.01);
     
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToRadians, deg, deg * (constant::fPI / 180.f), deg * (constant::dPI / 180.0));
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToDegrees, rad, rad * (180.f / constant::fPI), rad * (180.0 / constant::dPI));
