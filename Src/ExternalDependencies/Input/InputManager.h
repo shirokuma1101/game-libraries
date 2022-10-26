@@ -6,6 +6,7 @@
 #include <list>
 #include <memory>
 #include <tuple>
+#include <unordered_map>
 
 #include "InputHelper.h"
 
@@ -81,6 +82,33 @@ private:
     // { KeyData, Press, Release }
     std::list<std::tuple<input_helper::KeyData, bool, bool>> m_keys;
     
+};
+
+template<class T>
+class KeyConfigManager
+{
+public:
+
+    void Update() noexcept {
+        m_keyMgr.Update();
+    }
+
+    bool GetState(T config, KeyManager::KeyState key_state = KeyManager::KeyState::Hold) noexcept {
+        if (auto iter = m_configuredKeys.find(config); iter != m_configuredKeys.end()) {
+            return m_keyMgr.GetState(iter->second, key_state);
+        }
+        return false;
+    }
+
+    void AddKeyConfig(T config, int key) {
+        m_configuredKeys.emplace(config, key);
+    }
+
+private:
+
+    KeyManager                 m_keyMgr;
+    std::unordered_map<T, int> m_configuredKeys;
+
 };
 
 class InputManager
