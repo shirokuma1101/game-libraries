@@ -29,28 +29,34 @@ public:
         Release();
     }
 
-    std::string GetFilePath() const noexcept {
+    const std::string& GetFilePath() const noexcept {
         return m_filePath;
     }
     const D3D11_TEXTURE2D_DESC& GetTextureDesc() const noexcept {
         return m_texture2dDesc;
     }
-    
+
     ID3D11ShaderResourceView* GetSrv() noexcept {
         return m_pSrv;
     }
     const ID3D11ShaderResourceView* GetSrv() const noexcept {
         return m_pSrv;
     }
+    ID3D11ShaderResourceView** GetSrvAddress() noexcept {
+        return &m_pSrv;
+    }
     ID3D11ShaderResourceView* const* GetSrvAddress() const noexcept {
         return &m_pSrv;
     }
-    
+
     ID3D11RenderTargetView* GetRtv() noexcept {
         return m_pRtv;
     }
     const ID3D11RenderTargetView* GetRtv() const noexcept {
         return m_pRtv;
+    }
+    ID3D11RenderTargetView** GetRtvAddress() noexcept {
+        return &m_pRtv;
     }
     ID3D11RenderTargetView* const* GetRtvAddress() const noexcept {
         return &m_pRtv;
@@ -61,6 +67,9 @@ public:
     }
     const ID3D11DepthStencilView* GetDsv() const noexcept {
         return m_pDsv;
+    }
+    ID3D11DepthStencilView** GetDsvAddress() noexcept {
+        return &m_pDsv;
     }
     ID3D11DepthStencilView* const* GetDsvAddress() const noexcept {
         return &m_pDsv;
@@ -142,10 +151,10 @@ public:
             memory::SafeRelease(&texture2d);
             return false;
         }
-        
+
         texture2d->GetDesc(&m_texture2dDesc);
         memory::SafeRelease(&texture2d);
-        
+
         return true;
     }
 
@@ -208,8 +217,8 @@ public:
 
         return true;
     }
-    
-    bool CreateRenderTarget(const std::pair<int32_t, int32_t>& size, UINT array_size, DXGI_FORMAT format, const D3D11_SUBRESOURCE_DATA* sd = nullptr) {
+
+    bool CreateRenderTarget(const std::pair<int32_t, int32_t>& size, UINT array_size = 1, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM, const D3D11_SUBRESOURCE_DATA* sd = nullptr) {
         Release();
 
         D3D11_TEXTURE2D_DESC td{};
@@ -218,13 +227,6 @@ public:
         td.MiscFlags          = 0;
         td.ArraySize          = array_size;
         td.Format             = format;
-        td.SampleDesc.Count   = 1;
-        td.SampleDesc.Quality = 0;
-        td.Usage              = D3D11_USAGE_DEFAULT;
-        td.BindFlags          = D3D11_BIND_SHADER_RESOURCE;
-        td.CPUAccessFlags     = 0;
-        td.MipLevels          = 1;
-
         td.SampleDesc.Count   = 1;
         td.SampleDesc.Quality = 0;
         td.Usage              = D3D11_USAGE_DEFAULT;
@@ -237,7 +239,7 @@ public:
         }
         return true;
     }
-    bool CreateDepthStencil(const std::pair<int32_t, int32_t>& size, UINT array_size, DXGI_FORMAT format, const D3D11_SUBRESOURCE_DATA* sd = nullptr) {
+    bool CreateDepthStencil(const std::pair<int32_t, int32_t>& size, UINT array_size = 1, DXGI_FORMAT format = DXGI_FORMAT_R24G8_TYPELESS, const D3D11_SUBRESOURCE_DATA* sd = nullptr) {
         Release();
 
         D3D11_TEXTURE2D_DESC td{};
@@ -246,13 +248,6 @@ public:
         td.MiscFlags          = 0;
         td.ArraySize          = array_size;
         td.Format             = format;
-        td.SampleDesc.Count   = 1;
-        td.SampleDesc.Quality = 0;
-        td.Usage              = D3D11_USAGE_DEFAULT;
-        td.BindFlags          = D3D11_BIND_SHADER_RESOURCE;
-        td.CPUAccessFlags     = 0;
-        td.MipLevels          = 1;
-
         td.SampleDesc.Count   = 1;
         td.SampleDesc.Quality = 0;
         td.Usage              = D3D11_USAGE_DEFAULT;
@@ -283,13 +278,155 @@ private:
 
     ID3D11Device*             m_pDev = nullptr;
     ID3D11DeviceContext*      m_pCtx = nullptr;
-    
+
     std::string               m_filePath;
     D3D11_TEXTURE2D_DESC      m_texture2dDesc{};
     ID3D11ShaderResourceView* m_pSrv = nullptr;
     ID3D11RenderTargetView*   m_pRtv = nullptr;
     ID3D11DepthStencilView*   m_pDsv = nullptr;
 
+};
+
+class DirectX11RenderTarget
+{
+public:
+    
+    DirectX11RenderTarget(ID3D11Device* dev, ID3D11DeviceContext* ctx)
+        : m_pDev(dev)
+        , m_pCtx(ctx)
+    {}
+    virtual ~DirectX11RenderTarget() noexcept {
+        Release();
+    }
+
+    std::shared_ptr<DirectX11Texture> GetBackBuffer() noexcept {
+        return m_spBackBuffer;
+    }
+    std::shared_ptr<const DirectX11Texture> GetBackBuffer() const noexcept {
+        return m_spBackBuffer;
+    }
+    std::shared_ptr<DirectX11Texture> GetZBuffer() noexcept {
+        return m_spZBuffer;
+    }
+    std::shared_ptr<const DirectX11Texture> GetZBuffer() const noexcept {
+        return m_spZBuffer;
+    }
+    const D3D11_VIEWPORT& GetViewport() const noexcept {
+        return m_viewport;
+    }
+    
+    void Release() noexcept {
+        m_spBackBuffer.reset();
+        m_spBackBuffer = nullptr;
+        m_spZBuffer.reset();
+        m_spZBuffer = nullptr;
+    }
+
+    void GetFromCurrent() {
+        Release();
+
+        m_spBackBuffer = std::make_shared<DirectX11Texture>(m_pDev, m_pCtx);
+        m_spZBuffer = std::make_shared<DirectX11Texture>(m_pDev, m_pCtx);
+        m_pCtx->OMGetRenderTargets(1, m_spBackBuffer->GetRtvAddress(), m_spZBuffer->GetDsvAddress());
+        D3D11_VIEWPORT v{};
+        UINT num = 1;
+        m_pCtx->RSGetViewports(&num, &v);
+        m_viewport = v;
+    }
+    
+    void Set() {
+        if (m_spBackBuffer) {
+            m_pCtx->OMSetRenderTargets(1, m_spBackBuffer->GetRtvAddress(), m_spZBuffer ? m_spZBuffer->GetDsv() : nullptr);
+        }
+        m_pCtx->RSSetViewports(1, &m_viewport);
+    }
+
+    void Create(const std::pair<int32_t, int32_t>& size, bool zbuffer, DXGI_FORMAT rt_format, DXGI_FORMAT ds_format, const D3D11_VIEWPORT& v) {
+        Release();
+        
+        m_spBackBuffer = std::make_shared<DirectX11Texture>(m_pDev, m_pCtx);
+        m_spBackBuffer->CreateRenderTarget(size, 1, rt_format);
+        if (zbuffer) {
+            m_spZBuffer = std::make_shared<DirectX11Texture>(m_pDev, m_pCtx);
+            m_spZBuffer->CreateDepthStencil(size, 1, ds_format);
+        }
+        m_viewport = v;
+    }
+    void Create(const std::pair<int32_t, int32_t>& size, bool zbuffer = false, DXGI_FORMAT rt_format = DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_FORMAT ds_format = DXGI_FORMAT_R24G8_TYPELESS) {
+        D3D11_VIEWPORT v{};
+        v.TopLeftX = 0.f;
+        v.TopLeftY = 0.f;
+        v.Width    = static_cast<float>(size.first);
+        v.Height   = static_cast<float>(size.second);
+        v.MinDepth = 0.f;
+        v.MaxDepth = 1.f;
+        
+        Create(size, zbuffer, rt_format, ds_format, v);
+    }
+
+    void Clear(const FLOAT color[4] = directx11_helper::alpha) {
+        if (m_spBackBuffer) {
+            m_pCtx->ClearRenderTargetView(m_spBackBuffer->GetRtv(), color);
+        }
+        if (m_spZBuffer) {
+            m_pCtx->ClearDepthStencilView(m_spZBuffer->GetDsv(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+        }
+    }
+
+private:
+
+    ID3D11Device*                     m_pDev         = nullptr;
+    ID3D11DeviceContext*              m_pCtx         = nullptr;
+
+    std::shared_ptr<DirectX11Texture> m_spBackBuffer = nullptr;
+    std::shared_ptr<DirectX11Texture> m_spZBuffer    = nullptr;
+    D3D11_VIEWPORT                    m_viewport     = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
+
+};
+
+class DirectX11RenderTargetChanger
+{
+public:
+
+    DirectX11RenderTargetChanger(ID3D11Device* dev, ID3D11DeviceContext* ctx)
+        : m_pDev(dev)
+        , m_pCtx(ctx)
+    {}
+    ~DirectX11RenderTargetChanger() noexcept {
+        Release();
+    }
+
+    void Change(DirectX11RenderTarget* rt) {
+        if (!m_spSaveRT) {
+            m_spSaveRT = std::make_shared<DirectX11RenderTarget>(m_pDev, m_pCtx);
+            m_spSaveRT->GetFromCurrent();
+        }
+        if (rt) {
+            rt->Set();
+        }
+    }
+
+    void Undo(bool release = false) {
+        if (m_spSaveRT) {
+            m_spSaveRT->Set();
+            if (release) {
+                Release();
+            }
+        }
+    }
+
+    void Release() noexcept {
+        m_spSaveRT.reset();
+        m_spSaveRT = nullptr;
+    }
+    
+private:
+
+    ID3D11Device*                          m_pDev = nullptr;
+    ID3D11DeviceContext*                   m_pCtx = nullptr;
+    
+    std::shared_ptr<DirectX11RenderTarget> m_spSaveRT = nullptr;
+    
 };
 
 #endif
