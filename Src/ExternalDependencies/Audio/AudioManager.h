@@ -49,14 +49,14 @@ public:
         m_listener.OrientFront = { 0.f, 0.f, 1.f };
     }
 
-    void Update(const DirectX::SimpleMath::Vector3& position = {}, const DirectX::SimpleMath::Vector3& direction = {}) {
+    void Update(const DirectX::SimpleMath::Vector3& position = {}, const DirectX::SimpleMath::Vector3& front_direction = {}) {
         if (!m_upAudioEngine->Update()) {
             if (m_upAudioEngine->IsCriticalError()) {
                 assert::RaiseAssert(ASSERT_FILE_LINE, "Audio engine critical error.");
             }
         }
         m_listener.Position = position;
-        m_listener.OrientFront = direction;
+        m_listener.OrientFront = front_direction;
 
         for (auto iter = m_spSoundInstances.begin(); iter != m_spSoundInstances.end();) {
             if (iter->second->IsState(DirectX::SoundState::STOPPED)) {
@@ -68,7 +68,7 @@ public:
         }
     }
 
-    std::shared_ptr<audio_helper::SoundInstance> GetSoundInstance(std::string_view sound_name) {
+    std::shared_ptr<const audio_helper::SoundInstance> GetSoundInstance(std::string_view sound_name) const {
         if (auto iter = m_spSoundInstances.find(sound_name.data()); iter != m_spSoundInstances.end()) {
             return iter->second;
         }

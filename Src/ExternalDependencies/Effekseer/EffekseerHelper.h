@@ -116,7 +116,7 @@ namespace effekseer_helper {
             : m_spEffectData(effect_data)
         {}
 
-        const std::shared_ptr<EffectData>& GetEffectData() const noexcept {
+        std::shared_ptr<const EffectData> GetEffectData() const noexcept {
             return m_spEffectData;
         }
 

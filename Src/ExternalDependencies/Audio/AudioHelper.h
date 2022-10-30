@@ -83,7 +83,7 @@ namespace audio_helper {
             return static_cast<bool>(m_upSoundEffectInstance);
         }
 
-        const std::shared_ptr<SoundData>& GetSoundData() const noexcept {
+        std::shared_ptr<const SoundData> GetSoundData() const noexcept {
             return m_spSoundData;
         }
 
