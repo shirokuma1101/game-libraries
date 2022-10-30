@@ -24,16 +24,16 @@ namespace directx11_helper {
     constexpr DirectX::SimpleMath::Color white   = { 1.0f, 1.0f, 1.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color black   = { 0.0f, 0.0f, 0.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color alpha   = { 0.0f, 0.0f, 0.0f, 0.0f };
-    
+
     constexpr DirectX::SimpleMath::Color red     = { 1.0f, 0.0f, 0.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color green   = { 0.0f, 1.0f, 0.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color blue    = { 0.0f, 0.0f, 1.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color yellow  = { 1.0f, 1.0f, 0.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color cyan    = { 0.0f, 1.0f, 1.0f, 1.0f };
     constexpr DirectX::SimpleMath::Color magenta = { 1.0f, 0.0f, 1.0f, 1.0f };
-    
+
     constexpr DirectX::SimpleMath::Color normal  = { 0.5f, 0.5f, 1.0f, 1.0f };
-    
+
 #define DIRECTX11_HELPER_PADDING_1BYTE(num)  const int8_t padding1byte##num[1]   = { 0 }
 #define DIRECTX11_HELPER_PADDING_2BYTE(num)  const int8_t padding2byte##num[2]   = { 0, 0 }
 #define DIRECTX11_HELPER_PADDING_3BYTE(num)  const int8_t padding3byte##num[3]   = { 0, 0, 0 }
@@ -47,7 +47,7 @@ namespace directx11_helper {
 #define DIRECTX11_HELPER_PADDING_11BYTE(num) const int8_t padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 #define DIRECTX11_HELPER_PADDING_12BYTE(num) const int8_t padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
-    
+
     /**************************************************
     * enum class
     **************************************************/
@@ -70,7 +70,7 @@ namespace directx11_helper {
         Add,     // 加算
     };
 
-    
+
     /**************************************************
     * Setup desc
     **************************************************/
@@ -137,7 +137,7 @@ namespace directx11_helper {
         sd->Flags        = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;                    // SwapChainの設定フラグの指定
     }
 
-    
+
     /**************************************************
     * State helper
     **************************************************/
@@ -165,7 +165,7 @@ namespace directx11_helper {
         }
         return state;
     }
-    
+
     inline ID3D11RasterizerState* CreateRasterizerState(ID3D11Device* dev, D3D11_FILL_MODE fill_mode, D3D11_CULL_MODE cull_mode, bool depth_clip_enable, bool scissor_enable) {
         D3D11_RASTERIZER_DESC rd{};
         rd.FillMode              = fill_mode; // ポリゴンの描画モード
@@ -190,25 +190,34 @@ namespace directx11_helper {
         D3D11_SAMPLER_DESC sd{};
 
         if (comparison_model) {
-            sd.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+            switch (sampler_filter_mode) {
+            case SamplerFilterMode::Point:
+                sd.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT;
+                break;
+            case SamplerFilterMode::Linear:
+                sd.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+                break;
+            case SamplerFilterMode::Anisotropic:
+                sd.Filter = D3D11_FILTER_COMPARISON_ANISOTROPIC;
+                break;
+            }
             sd.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
         }
         else {
+            switch (sampler_filter_mode) {
+            case SamplerFilterMode::Point:
+                sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+                break;
+            case SamplerFilterMode::Linear:
+                sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+                break;
+            case SamplerFilterMode::Anisotropic:
+                sd.Filter = D3D11_FILTER_ANISOTROPIC;
+                sd.MaxAnisotropy = max_anisotropy;
+                break;
+            }
             sd.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-        }
-        
-        switch (sampler_filter_mode) {
-        case SamplerFilterMode::Point:
-            sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-            break;
-        case SamplerFilterMode::Linear:
-            sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-            break;
-        case SamplerFilterMode::Anisotropic:
-            sd.Filter = D3D11_FILTER_ANISOTROPIC;
-            sd.MaxAnisotropy = max_anisotropy;
-            break;
-        }
+        }        
 
         switch (sampler_address_mode) {
         case SamplerAddressMode::Wrap:
@@ -252,7 +261,7 @@ namespace directx11_helper {
 
     inline ID3D11BlendState* CreateBlendState(ID3D11Device* dev, BlendMode blend_mode) {
         D3D11_BLEND_DESC bd{};
-        
+
         bd.AlphaToCoverageEnable                 = FALSE;
         bd.IndependentBlendEnable                = FALSE;
         bd.RenderTarget[0].BlendEnable           = TRUE; // ブレンドを有効にするかどうか
@@ -299,16 +308,16 @@ namespace directx11_helper {
         return state;
     }
 
-    
+
     /**************************************************
     * Texture helper
     **************************************************/
-    
+
     inline D3D11_TEXTURE2D_DESC GetTextureInfo(ID3D11View* view) {
         D3D11_TEXTURE2D_DESC td{};
         ID3D11Resource*      resource  = nullptr;
         ID3D11Texture2D*     texture2d = nullptr;
-        
+
         SecureZeroMemory(&td, sizeof(td));
         view->GetResource(&resource);
         if (SUCCEEDED(resource->QueryInterface<ID3D11Texture2D>(&texture2d))) {
@@ -328,7 +337,7 @@ namespace directx11_helper {
         if (rtv && td.BindFlags & D3D11_BIND_RENDER_TARGET) {
             D3D11_RENDER_TARGET_VIEW_DESC rtvd{};
             SecureZeroMemory(&rtvd, sizeof(rtvd));
-            
+
             rtvd.Format = td.Format;
             if (td.ArraySize == 1) {
                 rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
@@ -344,11 +353,11 @@ namespace directx11_helper {
                 return false;
             }
         }
-        
+
         if (td.BindFlags & D3D11_BIND_DEPTH_STENCIL) {
             D3D11_DEPTH_STENCIL_VIEW_DESC dsvd{};
             SecureZeroMemory(&dsvd, sizeof(dsvd));
-            
+
             switch (td.Format) {
             case DXGI_FORMAT_R16_TYPELESS:
                 dsvd.Format = DXGI_FORMAT_D16_UNORM;
