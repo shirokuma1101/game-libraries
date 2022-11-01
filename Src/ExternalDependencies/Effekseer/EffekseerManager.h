@@ -24,7 +24,7 @@ public:
     }
 
     void Update(double delta_time) {
-        static const double effect_frame = 60.0;
+        constexpr double effect_frame = 60.0;
         for (auto iter = m_upEffectInstances.begin(); iter != m_upEffectInstances.end();) {
             auto& data     = *iter->second;
             auto& handle   = iter->second->handle;
@@ -84,7 +84,7 @@ public:
             return sp_et;
         }
         else {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "EffectData is not found.");
+            assert::ShowError(ASSERT_FILE_LINE, "EffectData is not found.");
         }
         return nullptr;
     }

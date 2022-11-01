@@ -9,7 +9,7 @@
 #include <string_view>
 #ifdef _WINSOCKAPI_
 #error Please include SocketHelper.h before winsock.h (Maybe in Windows.h)
-#endif // _WINSOCKAPI_
+#endif
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
@@ -50,7 +50,7 @@ namespace socket_helper {
     inline std::string CheckRecvData(char* buf, int recv_byte) {
         if (recv_byte) {
             if (recv_byte > BUFFER) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Buffer overflow.");
+                assert::ShowError(ASSERT_FILE_LINE, "Buffer overflow.");
             }
             buf[recv_byte] = '\0';
             return std::string(buf, recv_byte);
@@ -71,10 +71,10 @@ namespace socket_helper {
             case WSASYSNOTREADY:
             case WSAVERNOTSUPPORTED:
                 assert::ShowWarning(ASSERT_FILE_LINE, "https://docs.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup");
-                assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("WSAStartup failed.", err));
+                assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("WSAStartup failed.", err));
                 break;
             default:
-                assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unknown error.", err));
+                assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unknown error.", err));
                 break;
             }
             return SOCKET();
@@ -94,39 +94,38 @@ namespace socket_helper {
     
     inline void Close(SOCKET* sock, bool wsa_cleanup = true) {
         if (MACRO_FAIL_CHECK(closesocket(*sock), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("closesocket failed.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("closesocket failed.", err));
             return;
         }
         *sock = SOCKET();
         if (!wsa_cleanup) return;
         if (MACRO_FAIL_CHECK(WSACleanup(), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("WSACleanup failed.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("WSACleanup failed.", err));
         }
     }
 
     inline void SetNonBlocking(SOCKET* sock) {
         u_long mode = 1;
         if (MACRO_FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("non-blocking mode failed.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("non-blocking mode failed.", err));
         }
     }
-    
     inline void SetBlocking(SOCKET* sock) {
         u_long mode = 0;
         if (MACRO_FAIL_CHECK(ioctlsocket(*sock, FIONBIO, &mode), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("blocking mode failed.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("blocking mode failed.", err));
         }
     }
 
     inline void Bind(SOCKET* sock, const ADDRINFO& addr_info) {
         if (MACRO_FAIL_CHECK(bind(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("bind failed.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("bind failed.", err));
         }
     }
     
     inline void Listen(SOCKET* sock, int backlog) {
         if (MACRO_FAIL_CHECK(listen(*sock, backlog), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("listen failed.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("listen failed.", err));
         }
     }
     
@@ -144,12 +143,12 @@ namespace socket_helper {
                     err = WSAGetLastError();
                     SetBlocking(sock);
                     if (err != WSAEWOULDBLOCK) {
-                        assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unexpected error occurred.", err));
+                        assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unexpected error occurred.", err));
                         return false;
                     }
                 }
                 else {
-                    assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unexpected socket error occurred.", err));
+                    assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("Unexpected socket error occurred.", err));
                     return false;
                 }
             }
@@ -176,7 +175,7 @@ namespace socket_helper {
         }
         else {
             if (MACRO_FAIL_CHECK(connect(*sock, addr_info.ai_addr, convert::SizeOf<int>(*addr_info.ai_addr)), err)) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Cannot connect.", err));
+                assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("Cannot connect.", err));
                 return false;
             }
             else {
@@ -189,7 +188,6 @@ namespace socket_helper {
     inline int Send(SOCKET sock, std::string_view data) {
         return send(sock, data.data(), static_cast<int>(data.size()), 0);
     }
-    
     inline int Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr) {
         return sendto(sock, data.data(), static_cast<int>(data.size()), 0, &sock_addr, sizeof(sock_addr));
     }
@@ -198,7 +196,6 @@ namespace socket_helper {
         char buf[BUFFER];
         return detail::CheckRecvData(buf, recv(sock, buf, BUFFER, 0));
     }
-    
     inline std::string Recv(SOCKET sock, ADDRINFO* addr_info) {
         char buf[BUFFER];
         int size = convert::SizeOf<int>(*addr_info->ai_addr);
@@ -217,12 +214,12 @@ namespace socket_helper {
         hints.ai_protocol = IPPROTO_TCP; // 受け取りをTCPに限定
 
         if (MACRO_FAIL_CHECK(getaddrinfo(host.data(), std::to_string(port).c_str(), &hints, &result), err)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, detail::MakeErrorDetails("Domain not found.", err));
+            assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("Domain not found.", err));
             return false;
         }
 
         if (!result) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Domain not found.");
+            assert::ShowError(ASSERT_FILE_LINE, "Domain not found.");
             return false;
         }
         

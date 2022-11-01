@@ -9,6 +9,11 @@
 
 #include "SimpleUniqueThread.h"
 
+/**************************************************
+* 
+* Manage SimpleUniqueThread
+* 
+**************************************************/
 class SimpleThreadManager {
 public:
 
@@ -32,7 +37,7 @@ public:
         if (auto iter = m_upThreads.find(id); iter != m_upThreads.end()) {
             return iter->second->IsEnd();
         }
-        assert::RaiseAssert(ASSERT_FILE_LINE, "thread is not exists");
+        assert::ShowError(ASSERT_FILE_LINE, "thread is not exists");
         return false;
     }
 
@@ -43,7 +48,7 @@ public:
             *id = ID();
             return;
         }
-        assert::RaiseAssert(ASSERT_FILE_LINE, "thread is not exists");
+        assert::ShowError(ASSERT_FILE_LINE, "thread is not exists");
     }
 
 private:

@@ -7,12 +7,12 @@
 
 namespace templates {
 
-    template <class>
+    template<class>
     constexpr bool true_v = true;
-    template <class>
+    template<class>
     constexpr bool false_v = false;
 
-#define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})
+    /* Function to check if the target function is defined in the specified class */
     template<class T, class Func>
     constexpr auto HasFunc(Func&& f) noexcept ->decltype(f(std::declval<T>()), true) {
         return true;
@@ -21,13 +21,16 @@ namespace templates {
     constexpr bool HasFunc(...) noexcept {
         return false;
     }
+    // Macros to simplify access to HasFunc
+#define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})
 
+    /* Possible to cast */
     template<class T, class U>
-    constexpr auto IsSafelyCastable() noexcept ->decltype(static_cast<U>(std::declval<T>())) {
+    constexpr auto IsCastable() noexcept ->decltype(static_cast<U>(std::declval<T>())) {
         return true;
     }
     template<class>
-    constexpr bool IsSafelyCastable(...) noexcept {
+    constexpr bool IsCastable(...) noexcept {
         return false;
     }
 

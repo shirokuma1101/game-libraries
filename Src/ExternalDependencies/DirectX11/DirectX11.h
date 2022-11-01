@@ -6,8 +6,7 @@
 #include <memory>
 #include <utility>
 
-#include <windows.h>
-#include <wrl/client.h>
+#include <Windows.h>
 #include <d3d11_4.h>
 #include <dxgi1_6.h>
 #pragma comment(lib,"d3d11.lib")
@@ -28,11 +27,10 @@ public:
         }
     }
 
-    virtual bool Init(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool is_debug, bool detailed_memory_infomation, bool enable_msaa = false) {
+    virtual bool Init(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool enable_debug, bool detailed_memory_infomation, bool enable_msaa = false) {
         CreateFactory();
-        CreateDevice(is_debug, detailed_memory_infomation);
+        CreateDevice(enable_debug, detailed_memory_infomation);
         CreateSwapChain(hWnd, size, enable_msaa);
-        SetState();
         CreateBackBuffer();
         CreateDepthStencilView(size);
         CreateViewport(size);
@@ -115,7 +113,7 @@ protected:
 
     virtual void CreateFactory() {
         if (FAILED(CreateDXGIFactory(IID_PPV_ARGS(&m_cpFactory)))) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Create factory failed");
+            assert::ShowError(ASSERT_FILE_LINE, "Create factory failed");
         }
 
         UINT   limit          = 100; // 列挙上限
@@ -144,10 +142,10 @@ protected:
 
         /* 決定したGPUを設定する */
         if (FAILED(m_cpFactory->EnumAdapters(gpu_number, &m_cpAdapter))) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Enumerate adapters failed");
+            assert::ShowError(ASSERT_FILE_LINE, "Enumerate adapters failed");
         }
     }
-    virtual void CreateDevice(bool is_debug = false, bool detailed_memory_infomation = false) {
+    virtual void CreateDevice(bool enable_debug = false, bool detailed_memory_infomation = false) {
         /* ドライバーの種類 */
         D3D_DRIVER_TYPE driver_type = D3D_DRIVER_TYPE_HARDWARE;
         // アダプタが指定されていた場合はD3D_DRIVER_TYPE_UNKNOWNを指定する
@@ -158,13 +156,13 @@ protected:
         /* ソフトウェアラスタライザを実装するDLLハンドル */
         HMODULE software{};
         if (driver_type == D3D_DRIVER_TYPE_SOFTWARE) {
-            if (!software) assert::RaiseAssert(ASSERT_FILE_LINE, "Software rasterizer not found");
+            if (!software) assert::ShowError(ASSERT_FILE_LINE, "Software rasterizer not found");
         }
 
         /* ランタイムレイヤのフラグ */
         UINT flags = 0;
         // デバッグレイヤーを有効にする
-        if (is_debug) {
+        if (enable_debug) {
             flags |= D3D11_CREATE_DEVICE_DEBUG;
         }
 
@@ -197,33 +195,33 @@ protected:
             &feature_level,           // D3D_FEATURE_LEVELの出力先
             &m_cpCtx                  // DeviceContextの出力先
         ))) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Create device failed");
+            assert::ShowError(ASSERT_FILE_LINE, "Create device failed");
         }
 
         if (detailed_memory_infomation) {
             /* デバッグインターフェースを取得 */
             if (FAILED(m_cpDev->QueryInterface(IID_PPV_ARGS(&m_cpDebug)))) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Query debug interface failed");
+                assert::ShowError(ASSERT_FILE_LINE, "Query debug interface failed");
             }
         }
     }
     virtual void CreateSwapChain(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool enable_msaa) {
-        DXGI_SWAP_CHAIN_DESC sd{};
-        SecureZeroMemory(&sd, sizeof(sd));
-        directx11_helper::SetUpSwapChainDesc(&sd, size, m_cpDev.Get(), m_cpAdapter.Get(), hWnd, enable_msaa);
-        if (FAILED(m_cpFactory->CreateSwapChain(m_cpDev.Get(), &sd, &m_cpSwapChain))) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Create swap chain failed");
+        DXGI_SWAP_CHAIN_DESC scd{};
+        SecureZeroMemory(&scd, sizeof(scd));
+        directx11_helper::SetUpSwapChainDesc(&scd, size, m_cpDev.Get(), m_cpAdapter.Get(), hWnd, enable_msaa);
+        if (FAILED(m_cpFactory->CreateSwapChain(m_cpDev.Get(), &scd, &m_cpSwapChain))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create swap chain failed");
         }
     }
     virtual bool CreateBackBuffer() {
         ID3D11Texture2D* back_buffer = nullptr;
         m_spBackBuffer = std::make_shared<DirectX11Texture>(m_cpDev.Get(), m_cpCtx.Get());
         if (FAILED(m_cpSwapChain->GetBuffer(0, IID_PPV_ARGS(&back_buffer)))) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Get back buffer failed");
+            assert::ShowError(ASSERT_FILE_LINE, "Get back buffer failed");
             return false;
         }
         if (!m_spBackBuffer->Create(back_buffer)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Create back buffer failed");
+            assert::ShowError(ASSERT_FILE_LINE, "Create back buffer failed");
             return false;
         }
         memory::SafeRelease(&back_buffer);
@@ -244,7 +242,7 @@ protected:
         m_spZBuffer = std::make_shared<DirectX11Texture>(m_cpDev.Get(), m_cpCtx.Get());
         
         if (!m_spZBuffer->Create(td)) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Create depth stencil view failed");
+            assert::ShowError(ASSERT_FILE_LINE, "Create depth stencil view failed");
             return false;
         }
     
@@ -263,43 +261,6 @@ protected:
         v.MinDepth = 0.f;
         v.MaxDepth = 1.f;
         m_cpCtx->RSSetViewports(1, &v);
-    }
-    virtual void SetState() {
-        /* 深度ステンシルステート */
-        ID3D11DepthStencilState* dss = directx11_helper::CreateDepthStencilState(m_cpDev.Get(), true, true);
-        m_cpCtx->OMSetDepthStencilState(dss, 0);
-        memory::SafeRelease(&dss);
-        
-        /* ブレンドステート */
-        ID3D11BlendState* bs = directx11_helper::CreateBlendState(m_cpDev.Get(), directx11_helper::BlendMode::Alpha);
-        FLOAT blend_factor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-        m_cpCtx->OMSetBlendState(bs, blend_factor, 0xFFFFFFFF);
-        memory::SafeRelease(&bs);
-
-        /* ラスタライザーステート */
-        ID3D11RasterizerState* rs = directx11_helper::CreateRasterizerState(
-            m_cpDev.Get(), D3D11_FILL_MODE::D3D11_FILL_SOLID, D3D11_CULL_MODE::D3D11_CULL_BACK, true, false
-        );
-        m_cpCtx->RSSetState(rs);
-        memory::SafeRelease(&rs);
-        
-        /* サンプラーステートセット */
-        ID3D11SamplerState* ss0 = directx11_helper::CreateSamplerState(
-            m_cpDev.Get(), directx11_helper::SamplerFilterMode::Anisotropic, 4, directx11_helper::SamplerAddressMode::Wrap, false
-        );
-        ID3D11SamplerState* ss1 = directx11_helper::CreateSamplerState(
-            m_cpDev.Get(), directx11_helper::SamplerFilterMode::Anisotropic, 4, directx11_helper::SamplerAddressMode::Clamp, false
-        );
-        m_cpCtx->VSSetSamplers(0, 1, &ss0);
-        m_cpCtx->PSSetSamplers(0, 1, &ss0);
-        m_cpCtx->GSSetSamplers(0, 1, &ss0);
-        m_cpCtx->CSSetSamplers(0, 1, &ss0);
-        m_cpCtx->VSSetSamplers(1, 1, &ss1);
-        m_cpCtx->PSSetSamplers(1, 1, &ss1);
-        m_cpCtx->GSSetSamplers(1, 1, &ss1);
-        m_cpCtx->CSSetSamplers(1, 1, &ss1);
-        memory::SafeRelease(&ss0);
-        memory::SafeRelease(&ss1);
     }
 
     void Release() {

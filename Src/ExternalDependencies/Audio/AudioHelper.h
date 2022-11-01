@@ -13,10 +13,9 @@
 #include "SimpleMath.h"
 #include "strconv.h"
 
-#ifndef AUDIOHELPER_DISABLE_LINK_LIBS
 #pragma comment(lib, "DirectXTK.lib")
 #pragma comment(lib, "DirectXTKAudioWin8.lib")
-#endif
+
 
 namespace audio_helper {
     
@@ -39,7 +38,7 @@ namespace audio_helper {
                 return true;
             }
             catch (...) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Failed to load sound effect.");
+                assert::ShowError(ASSERT_FILE_LINE, "Failed to load sound effect.");
                 return false;
             }
         }
@@ -91,6 +90,7 @@ namespace audio_helper {
             return m_upSoundEffectInstance;
         }
 
+        
         /**************************************************
         * DirectX::SoundEffectInstance function wrap
         **************************************************/

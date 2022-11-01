@@ -8,8 +8,11 @@
 
 #include "Utility/Assert.h"
 
-//TODO future, promise
-
+/**************************************************
+* 
+* Single instance of std::thread
+* 
+**************************************************/
 class SimpleUniqueThread
 {
 public:
@@ -33,7 +36,7 @@ public:
             return true;
         }
         if (enable_assert) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "thread is not end");
+            assert::ShowError(ASSERT_FILE_LINE, "thread is not end");
         }
         return false;
     }
@@ -42,7 +45,7 @@ public:
             return true;
         }
         if (enable_assert) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "thread is not exists");
+            assert::ShowError(ASSERT_FILE_LINE, "thread is not exists");
         }
         return false;
     }
@@ -51,7 +54,7 @@ public:
             return true;
         }
         if (enable_assert) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "thread is exists");
+            assert::ShowError(ASSERT_FILE_LINE, "thread is exists");
         }
         return false;
     }

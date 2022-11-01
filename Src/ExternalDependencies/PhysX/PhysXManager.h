@@ -78,12 +78,7 @@ public:
         }
 
         m_pMaterials.emplace("default", m_pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
-
-#ifdef _DEBUG
-        m_pScene->setVisualizationParameter(physx::PxVisualizationParameter::eSCALE, 1.f);
-        m_pScene->setVisualizationParameter(physx::PxVisualizationParameter::eACTOR_AXES, 1.f);
-#endif // _DEBUG
-
+        
         if (create_plane) {
             AddActor(StaticPlane());
         }
@@ -97,7 +92,6 @@ public:
     void AddActor(physx::PxActor* actor) {
         m_pScene->addActor(*actor);
     }
-
     void RemoveActor(physx::PxActor* actor) {
         m_pScene->removeActor(*actor);
     }
@@ -153,8 +147,8 @@ public:
     }
     
     physx::PxRigidStatic* CreateStatic(
-        const DirectX::SimpleMath::Vector3&    position   = {},
-        const DirectX::SimpleMath::Quaternion& quaternion = {}
+        const DirectX::SimpleMath::Vector3&    position   = DirectX::SimpleMath::Vector3::Zero,
+        const DirectX::SimpleMath::Quaternion& quaternion = DirectX::SimpleMath::Quaternion::Identity
     ) {
         return physx_helper::CreateStatic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
     }
@@ -166,10 +160,10 @@ public:
     }
     physx::PxRigidStatic* CreateStatic(
         physx::PxShape*                        shape,
-        const DirectX::SimpleMath::Vector3&    local_position   = {},
-        const DirectX::SimpleMath::Quaternion& local_quaternion = {},
-        const DirectX::SimpleMath::Vector3&    position         = {},
-        const DirectX::SimpleMath::Quaternion& quaternion       = {}
+        const DirectX::SimpleMath::Vector3&    local_position   = DirectX::SimpleMath::Vector3::Zero,
+        const DirectX::SimpleMath::Quaternion& local_quaternion = DirectX::SimpleMath::Quaternion::Identity,
+        const DirectX::SimpleMath::Vector3&    position         = DirectX::SimpleMath::Vector3::Zero,
+        const DirectX::SimpleMath::Quaternion& quaternion       = DirectX::SimpleMath::Quaternion::Identity
     ) {
         physx::PxRigidStatic* rigid_static = physx_helper::CreateStatic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
         physx_helper::AttachShape(reinterpret_cast<physx::PxRigidActor**>(&rigid_static), &shape, physx_helper::ToPxTransform(local_position, local_quaternion));
@@ -177,8 +171,8 @@ public:
     }
 
     physx::PxRigidDynamic* CreateDynamic(
-        const DirectX::SimpleMath::Vector3&    position   = {},
-        const DirectX::SimpleMath::Quaternion& quaternion = {}
+        const DirectX::SimpleMath::Vector3&    position   = DirectX::SimpleMath::Vector3::Zero,
+        const DirectX::SimpleMath::Quaternion& quaternion = DirectX::SimpleMath::Quaternion::Identity
     ) {
         return physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
     }
@@ -190,10 +184,10 @@ public:
     }
     physx::PxRigidDynamic* CreateDynamic(
         physx::PxShape*                        shape,
-        const DirectX::SimpleMath::Vector3&    local_position   = {},
-        const DirectX::SimpleMath::Quaternion& local_quaternion = {},
-        const DirectX::SimpleMath::Vector3&    position         = {},
-        const DirectX::SimpleMath::Quaternion& quaternion       = {}
+        const DirectX::SimpleMath::Vector3&    local_position   = DirectX::SimpleMath::Vector3::Zero,
+        const DirectX::SimpleMath::Quaternion& local_quaternion = DirectX::SimpleMath::Quaternion::Identity,
+        const DirectX::SimpleMath::Vector3&    position         = DirectX::SimpleMath::Vector3::Zero,
+        const DirectX::SimpleMath::Quaternion& quaternion       = DirectX::SimpleMath::Quaternion::Identity
     ) {
         physx::PxRigidDynamic* rigid_dynamic = physx_helper::CreateDynamic(m_pPhysics, physx_helper::ToPxTransform(position, quaternion));
         physx_helper::AttachShape(reinterpret_cast<physx::PxRigidActor**>(&rigid_dynamic), &shape, physx_helper::ToPxTransform(local_position, local_quaternion));

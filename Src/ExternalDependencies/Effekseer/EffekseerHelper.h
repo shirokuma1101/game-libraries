@@ -12,14 +12,12 @@
 #include "Effekseer.h" // Effekseer must set both "include" and "Effekseer" directory
 #include "EffekseerRendererDX11/EffekseerRendererDX11.h"
 #pragma warning(pop)
-#ifndef EFFEKSEERHELPER_DISABLE_LINK_LIBS
 #ifdef _DEBUG
 #pragma comment(lib, "Effekseerd.lib")
 #pragma comment(lib, "EffekseerRendererDX11d.lib")
 #else
 #pragma comment(lib, "Effekseer.lib")
 #pragma comment(lib, "EffekseerRendererDX11.lib")
-#endif
 #endif
 #include "SimpleMath.h"
 
@@ -30,7 +28,6 @@ namespace effekseer_helper {
     inline Effekseer::Vector3D ToVector3D(const DirectX::SimpleMath::Vector3& vec3) {
         return Effekseer::Vector3D(vec3.x, vec3.y, vec3.z);
     }
-
     inline Effekseer::Matrix43 ToMatrix43(const DirectX::SimpleMath::Matrix& mat) {
         Effekseer::Matrix43 mat43{};
         for (int i = 0; i < 4; ++i) {
@@ -40,7 +37,6 @@ namespace effekseer_helper {
         }
         return mat43;
     }
-
     inline Effekseer::Matrix44 ToMatrix44(const DirectX::SimpleMath::Matrix& mat) {
         Effekseer::Matrix44 mat44{};
         for (int i = 0; i < 4; ++i) {

@@ -45,9 +45,9 @@ struct ProjectileMotion {
         , time(0.f)
         , length(0.f)
         , height(0.f)
-        , gravity(constant::fPI)
+        , gravity(constant::fG)
     {}
-    constexpr ProjectileMotion(float velocity, float vectorx, float vectory, float theta, float time, float length, float height, float gravity = constant::fPI) noexcept
+    constexpr ProjectileMotion(float velocity, float vectorx, float vectory, float theta, float time, float length, float height, float gravity = constant::fG) noexcept
         : velocity(velocity)
         , vectorx(vectorx)
         , vectory(vectory)
@@ -139,59 +139,47 @@ struct ProjectileMotionFromVelocityLength {
     }
 
     ProjectileMotionFromVelocityTheta NarrowAngleDisplacement() const {
-        return
-            NarrowAngleDisplacement(
-                [&](int i, float) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
-                },
-                0
-            );
+        return NarrowAngleDisplacement([&](int i, float) {
+            return parabolicMotions[i].projectileMotionFromVelocityTheta;
+        },
+        0
+        );
     }
     std::tuple<float, float> NarrowAngleDisplacementPosition(float time) const {
-        return
-            NarrowAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementPosition(time);
-                },
-                time
-            );
+        return NarrowAngleDisplacement([&](int i, float time) {
+            return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementPosition(time);
+        },
+        time
+        );
     }
     std::tuple<float, float> NarrowAngleDisplacementVector(float time) const {
-        return
-            NarrowAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementVector(time);
-                },
-                time
-            );
+        return NarrowAngleDisplacement([&](int i, float time) {
+            return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementVector(time);
+        },
+        time
+        );
     }
 
     ProjectileMotionFromVelocityTheta WideAngleDisplacement() const {
-        return
-            WideAngleDisplacement(
-                [&](int i, float) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta;
-                },
-                0
-            );
+        return WideAngleDisplacement([&](int i, float) {
+            return parabolicMotions[i].projectileMotionFromVelocityTheta;
+        },
+        0
+        );
     }
     std::tuple<float, float> WideAngleDisplacementPosition(float time) const {
-        return
-            WideAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementPosition(time);
-                },
-                time
-            );
+        return WideAngleDisplacement([&](int i, float time) {
+            return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementPosition(time);
+        },
+        time
+        );
     }
     std::tuple<float, float> WideAngleDisplacementVector(float time) const {
-        return
-            WideAngleDisplacement(
-                [&](int i, float time) {
-                    return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementVector(time);
-                },
-                time
-            );
+        return WideAngleDisplacement([&](int i, float time) {
+            return parabolicMotions[i].projectileMotionFromVelocityTheta.DisplacementVector(time);
+        },
+        time
+        );
     }
     
     bool IsEnable() const noexcept {
@@ -206,9 +194,7 @@ private:
             if (parabolicMotions[0].projectileMotionFromVelocityTheta.theta < parabolicMotions[1].projectileMotionFromVelocityTheta.theta) {
                 return func(0, time);
             }
-            else {
-                return func(1, time);
-            }
+            return func(1, time);
         }
         else if (parabolicMotions[0].isEnable) {
             return func(0, time);
@@ -216,9 +202,7 @@ private:
         else if (parabolicMotions[1].isEnable) {
             return func(1, time);
         }
-        else {
-            return decltype(func(0, 0))();
-        }
+        return decltype(func(0, 0))();
     }
 
     template<class Func>
@@ -227,9 +211,7 @@ private:
             if (parabolicMotions[0].projectileMotionFromVelocityTheta.theta > parabolicMotions[1].projectileMotionFromVelocityTheta.theta) {
                 return func(0, time);
             }
-            else {
-                return func(1, time);
-            }
+            return func(1, time);
         }
         else if (parabolicMotions[0].isEnable) {
             return func(0, time);
@@ -237,9 +219,7 @@ private:
         else if (parabolicMotions[1].isEnable) {
             return func(1, time);
         }
-        else {
-            return decltype(func(0, 0))();
-        }
+        return decltype(func(0, 0))();
     }
 };
 

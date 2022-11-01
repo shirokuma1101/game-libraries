@@ -10,6 +10,12 @@
 #include "ExternalDependencies/Asset/IAsset/IAssetManager.h"
 #include "ExternalDependencies/Asset/Json/JsonData.h"
 
+
+/**************************************************
+*
+* Manage JsonData
+*
+**************************************************/
 class JsonManager : public IAssetManager<JsonData>
 {
 public:
@@ -24,7 +30,7 @@ public:
     virtual void Register(std::string_view file_path) override {
         auto json_data = std::make_unique<JsonData>(file_path);
         if (!json_data->Load()) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + file_path.data());
+            assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + std::string(file_path.data()));
             return;
         }
         for (const auto& e : json_data->GetData()->at("schema")) {
@@ -32,7 +38,7 @@ public:
             auto path = e.at("path").get<std::string>();
             JsonData schema(path);
             if (!schema.Load()) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Path not found: " + std::string(path));
+                assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + std::string(path));
                 return;
             }
             JsonData::JsonValidator validator;
@@ -40,7 +46,7 @@ public:
                 validator.set_root_schema(*schema.GetData());
             }
             catch (const std::exception& e) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Validation of schema failed: " + std::string(e.what()));
+                assert::ShowError(ASSERT_FILE_LINE, "Validation of schema failed: " + std::string(e.what()));
                 return;
             }
             m_spValidators->emplace(name, std::move(validator));

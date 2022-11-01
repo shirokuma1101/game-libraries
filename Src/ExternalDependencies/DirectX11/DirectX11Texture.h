@@ -100,13 +100,13 @@ public:
         DirectX::ScratchImage image{};
         std::string ext = std::filesystem::path(m_filePath).extension().string();
 
-        UINT bind_flags = D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
-        if (render_target) bind_flags |= D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET;
-        if (depth_stencil) bind_flags |= D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
+        UINT bind_flags = D3D11_BIND_SHADER_RESOURCE;
+        if (render_target) bind_flags |= D3D11_BIND_RENDER_TARGET;
+        if (depth_stencil) bind_flags |= D3D11_BIND_DEPTH_STENCIL;
 
         // .dds
         if (ext == ".dds") {
-            if (FAILED(LoadFromDDSFile(sjis_to_wide(m_filePath).data(), DirectX::DDS_FLAGS::DDS_FLAGS_NONE, &metadeta, image))) {
+            if (FAILED(LoadFromDDSFile(sjis_to_wide(m_filePath).data(), DirectX::DDS_FLAGS_NONE, &metadeta, image))) {
                 return false;
             }
         }
@@ -137,7 +137,7 @@ public:
             image.GetImages(),
             image.GetImageCount(),
             image.GetMetadata(),
-            D3D11_USAGE::D3D11_USAGE_DEFAULT,
+            D3D11_USAGE_DEFAULT,
             bind_flags,
             0,
             0,

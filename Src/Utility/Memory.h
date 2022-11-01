@@ -5,8 +5,13 @@
 
 #include "Utility/Templates.h"
 
+/**************************************************
+* 
+* Memory
+* 
+**************************************************/
 namespace memory {
-
+    
     template<class T>
     inline void SafeRelease(T** p) {
         if (!*p) return;
@@ -23,7 +28,7 @@ namespace memory {
 
         *p = nullptr;
     }
-
+    
     template<class T>
     inline void SafeDelete(T** p) {
         if (!*p) return;

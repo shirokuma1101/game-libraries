@@ -12,10 +12,14 @@
 
 #include "nlohmann/json.hpp"
 #include "nlohmann/json-schema.hpp"
-#ifndef JSONDATA_DISABLE_LINK_LIBS
 #pragma comment(lib, "nlohmann_json_schema_validator.lib")
-#endif
 
+
+/**************************************************
+*
+* A class that implements the asset interface of json(nlohmann_json) with validator(nlohmann_json_schema_validator)
+*
+**************************************************/
 class JsonData : public IAssetData<nlohmann::json>
 {
 public:
@@ -32,19 +36,17 @@ public:
     }
 
     bool Load() override {
-        return
-            LoadProcess([&] {
-                Json json;
-                std::ifstream ifs(m_filePath);
-                if (!ifs) return false;
-                ifs >> json;
-                if (ValidateJson(json)) {
-                    *m_upAssetData = json;
-                    return true;
-                }
-                return false;
+        return LoadProcess([&] {
+            Json json;
+            std::ifstream ifs(m_filePath);
+            if (!ifs) return false;
+            ifs >> json;
+            if (ValidateJson(json)) {
+                *m_upAssetData = json;
+                return true;
             }
-        );
+            return false;
+        });
     }
 
 private:
@@ -60,12 +62,12 @@ private:
                 return true;
             }
             catch (const std::exception& e) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Validation of json failed: " + std::string(e.what()));
+                assert::ShowError(ASSERT_FILE_LINE, "Validation of json failed: " + std::string(e.what()));
                 return false;
             }
         }
         else {
-            assert::RaiseAssert(ASSERT_FILE_LINE, "Schema name not found: " + std::string(schema_name));
+            assert::ShowError(ASSERT_FILE_LINE, "Schema name not found: " + std::string(schema_name));
             return false;
         }
     }

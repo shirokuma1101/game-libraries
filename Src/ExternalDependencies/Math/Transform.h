@@ -37,7 +37,7 @@ struct Transform {
     void Reset() noexcept {
         position = Vector3::Zero;
         rotation = Vector3::Zero;
-        scale    = { 1.f };
+        scale    = Vector3::One;
         matrix   = Matrix::Identity;
     }
 #else
@@ -61,7 +61,7 @@ struct Transform {
     void Reset() noexcept {
         position   = Vector3::Zero;
         quaternion = Quaternion::Identity;
-        scale      = { 1.f };
+        scale      = Vector3::One;
         matrix     = Matrix::Identity;
     }
 #endif

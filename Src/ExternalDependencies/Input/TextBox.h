@@ -35,7 +35,7 @@ public:
         for (int key = '0'; key <= 'Z'; ++key) {
             // 記号はスキップ
             if (':' <= key && key <= '@') continue;
-            if (m_pKeyManager->GetState(key, KeyManager::KeyState::Press)) {
+            if (m_pKeyManager->GetState(key, KeyManager::KEYSTATE_PRESS)) {
                 // Shiftで大文字にする
                 if (m_pKeyManager->GetState(VK_SHIFT)) {
                     key = std::toupper(key);
@@ -52,7 +52,7 @@ public:
             }
         }
         // 文字を削除
-        if (m_pKeyManager->GetState(VK_BACK, KeyManager::KeyState::Press)) {
+        if (m_pKeyManager->GetState(VK_BACK, KeyManager::KEYSTATE_PRESS)) {
             // 文字列が消された場合、cursor-1する
             if (UpdateText('\b', m_cursor)) {
                 --m_cursor;
@@ -63,12 +63,12 @@ public:
             }
         }
         // cursorの移動
-        if (m_pKeyManager->GetState(VK_LEFT, KeyManager::KeyState::Press)) {
+        if (m_pKeyManager->GetState(VK_LEFT, KeyManager::KEYSTATE_PRESS)) {
             if (m_cursor > 0) {
                 --m_cursor;
             }
         }
-        if (m_pKeyManager->GetState(VK_RIGHT, KeyManager::KeyState::Press)) {
+        if (m_pKeyManager->GetState(VK_RIGHT, KeyManager::KEYSTATE_PRESS)) {
             if (m_cursor < m_text.size()) {
                 ++m_cursor;
             }

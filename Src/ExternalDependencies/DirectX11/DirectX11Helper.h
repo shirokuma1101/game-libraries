@@ -3,9 +3,8 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_DIRECTX11_DIRECTX11HELPER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_DIRECTX11_DIRECTX11HELPER_H_
 
-#include <d3d11.h>
+#include <d3d11_4.h>
 #include <utility>
-#include <Windows.h>
 #include <wrl/client.h>
 
 #include "Utility/Assert.h"
@@ -14,6 +13,7 @@
 #include "SimpleMath.h"
 
 using Microsoft::WRL::ComPtr;
+
 
 namespace directx11_helper {
 
@@ -46,31 +46,98 @@ namespace directx11_helper {
 #define DIRECTX11_HELPER_PADDING_10BYTE(num) const int8_t padding10byte##num[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 #define DIRECTX11_HELPER_PADDING_11BYTE(num) const int8_t padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 #define DIRECTX11_HELPER_PADDING_12BYTE(num) const int8_t padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_13BYTE(num) const int8_t padding13byte##num[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_14BYTE(num) const int8_t padding14byte##num[14] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_15BYTE(num) const int8_t padding15byte##num[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_16BYTE(num) const int8_t padding16byte##num[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
     /**************************************************
     * enum class
     **************************************************/
 
+    /* DepthStencilState */
+
+    //enum class StencilOp {
+    //    KEEP,              // ステンシル値を保持
+    //    ZERO,              // ステンシル値を0に設定
+    //    REPLACE,           // ステンシル値を参照値で置き換える
+    //    INCR_SAT,          // ステンシル値をインクリメントし、最大値を超えた場合は最大値に設定
+    //    DECR_SAT,          // ステンシル値をデクリメントし、最小値を下回った場合は最小値に設定
+    //    INVERT,            // ステンシル値をビット反転
+    //    INCR,              // ステンシル値をインクリメント
+    //    DECR,              // ステンシル値をデクリメント
+    //};
+
+    /* RasterizerState */
+    
+    enum class FillMode {
+        SOLID,             // ソリッド
+        WIREFRAME,         // ワイヤーフレーム
+    };
+    enum class CullMode {
+        NONE,              // カリングなし
+        FRONT,             // 前面をカリング
+        BACK,              // 後面をカリング
+    };
+
+    /* SamplerState */
+    
     enum class SamplerFilterMode {
-        Point,       // ポイントサンプリング
-        Linear,      // バイリニアサンプリング
-        Anisotropic, // 異方性フィルタリング
+        POINT,             // ポイントサンプリング
+        LINEAR,            // バイリニアサンプリング
+        ANISOTROPIC,       // 異方性フィルタリング
     };
     enum class SamplerAddressMode {
-        Wrap,       // テクスチャの端を繋げて繰り返す
-        Mirror,     // テクスチャの端を繋げて反転して繰り返す
-        Clamp,      // テクスチャの端を固定する
-        Border,     // テクスチャの端をボーダーカラーで固定する
-        MirrorOnce, // テクスチャの端を反転して繰り返す
+        WRAP,              // テクスチャの端を繰り返す
+        MIRROR,            // テクスチャの端を反転して繰り返す
+        CLAMP,             // テクスチャの端をクランプする
+        BORDER,            // テクスチャの端をボーダーカラーでクランプする
+        MIRROR_ONCE,       // テクスチャの端を反転して繰り返す
     };
+    //enum class SamplerComparisonFunc {
+    //    NEVER,             // 比較関数なし
+    //    LESS,              // 比較関数：<
+    //    EQUAL,             // 比較関数：==
+    //    LESS_EQUAL,        // 比較関数：<=
+    //    GREATER,           // 比較関数：>
+    //    NOT_EQUAL,         // 比較関数：!=
+    //    GREATER_EQUAL,     // 比較関数：>=
+    //    ALWAYS,            // 比較関数：常に真
+    //};
+
+    /* BlendState */
+
     enum class BlendMode {
-        NoBlend, // ブレンドしない
-        Alpha,   // アルファブレンド
-        Add,     // 加算
+        NO,                // ブレンドしない
+        ALPHA,             // アルファブレンド
+        ADD,               // 加算
     };
+    //enum class BlendOp {
+    //    ADD,               // 加算
+    //    SUBTRACT,          // 減算
+    //    REV_SUBTRACT,      // 逆減算
+    //    MIN,               // 最小
+    //    MAX,               // 最大
+    //};
 
+    /* Topology */
+    
+    //enum class PrimitiveTopology {
+    //    UNDEFINED,         // 未定義
+    //    POINTLIST,         // ポイントリスト
+    //    LINELIST,          // ラインリスト
+    //    LINESTRIP,         // ラインストリップ
+    //    TRIANGLELIST,      // トライアングルリスト
+    //    TRIANGLESTRIP,     // トライアングルストリップ
+    //    LINELIST_ADJ,      // ラインリスト（隣接）
+    //    LINESTRIP_ADJ,     // ラインストリップ（隣接）
+    //    TRIANGLELIST_ADJ,  // トライアングルリスト（隣接）
+    //    TRIANGLESTRIP_ADJ, // トライアングルストリップ（隣接）
+    //    PATCHLIST,         // パッチリスト
+    //};
 
+    
     /**************************************************
     * Setup desc
     **************************************************/
@@ -166,18 +233,38 @@ namespace directx11_helper {
         return state;
     }
 
-    inline ID3D11RasterizerState* CreateRasterizerState(ID3D11Device* dev, D3D11_FILL_MODE fill_mode, D3D11_CULL_MODE cull_mode, bool depth_clip_enable, bool scissor_enable) {
+    inline ID3D11RasterizerState* CreateRasterizerState(ID3D11Device* dev, FillMode fill_mode, CullMode cull_mode, bool depth_clip_enable, bool scissor_enable) {
         D3D11_RASTERIZER_DESC rd{};
-        rd.FillMode              = fill_mode; // ポリゴンの描画モード
-        rd.CullMode              = cull_mode; // ポリゴンのカリングモード
-        rd.FrontCounterClockwise = FALSE;
-        rd.DepthBias             = 0;
-        rd.DepthBiasClamp        = 0;
-        rd.SlopeScaledDepthBias  = 0;
-        rd.DepthClipEnable       = depth_clip_enable;
-        rd.ScissorEnable         = scissor_enable;
-        rd.MultisampleEnable     = FALSE;
-        rd.AntialiasedLineEnable = FALSE;
+        
+        switch (fill_mode) {
+        case FillMode::SOLID:
+            rd.FillMode = D3D11_FILL_SOLID;
+            break;
+        case FillMode::WIREFRAME:
+            rd.FillMode = D3D11_FILL_WIREFRAME;
+            break;
+        }
+
+        switch (cull_mode) {
+        case CullMode::NONE:
+            rd.CullMode = D3D11_CULL_NONE;
+            break;
+        case CullMode::FRONT:
+            rd.CullMode = D3D11_CULL_FRONT;
+            break;
+        case CullMode::BACK:
+            rd.CullMode = D3D11_CULL_BACK;
+            break;
+        }
+
+        rd.FrontCounterClockwise = FALSE;             // カウンタクロックワイズか
+        rd.DepthBias             = 0;                 // 深度バイアス
+        rd.DepthBiasClamp        = 0.0f;              // 深度バイアスのクランプ値
+        rd.SlopeScaledDepthBias  = 0.0f;              // スロープスケール深度バイアス
+        rd.DepthClipEnable       = depth_clip_enable; // 深度クリップを有効にするか
+        rd.ScissorEnable         = scissor_enable;    // スキッシュテストを有効にするか
+        rd.MultisampleEnable     = FALSE;             // マルチサンプリングを有効にするか
+        rd.AntialiasedLineEnable = FALSE;             // アンチエイリアスを有効にするか
 
         ID3D11RasterizerState* state = nullptr;
         if (FAILED(dev->CreateRasterizerState(&rd, &state))) {
@@ -191,13 +278,13 @@ namespace directx11_helper {
 
         if (comparison_model) {
             switch (sampler_filter_mode) {
-            case SamplerFilterMode::Point:
+            case SamplerFilterMode::POINT:
                 sd.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT;
                 break;
-            case SamplerFilterMode::Linear:
+            case SamplerFilterMode::LINEAR:
                 sd.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
                 break;
-            case SamplerFilterMode::Anisotropic:
+            case SamplerFilterMode::ANISOTROPIC:
                 sd.Filter = D3D11_FILTER_COMPARISON_ANISOTROPIC;
                 break;
             }
@@ -205,42 +292,41 @@ namespace directx11_helper {
         }
         else {
             switch (sampler_filter_mode) {
-            case SamplerFilterMode::Point:
+            case SamplerFilterMode::POINT:
                 sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
                 break;
-            case SamplerFilterMode::Linear:
+            case SamplerFilterMode::LINEAR:
                 sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
                 break;
-            case SamplerFilterMode::Anisotropic:
+            case SamplerFilterMode::ANISOTROPIC:
                 sd.Filter = D3D11_FILTER_ANISOTROPIC;
-                sd.MaxAnisotropy = max_anisotropy;
                 break;
             }
             sd.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-        }        
-
+        }
+        
         switch (sampler_address_mode) {
-        case SamplerAddressMode::Wrap:
+        case SamplerAddressMode::WRAP:
             sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
             sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
             sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
             break;
-        case SamplerAddressMode::Mirror:
+        case SamplerAddressMode::MIRROR:
             sd.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
             sd.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
             sd.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
             break;
-        case SamplerAddressMode::Clamp:
+        case SamplerAddressMode::CLAMP:
             sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
             sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
             sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
             break;
-        case SamplerAddressMode::Border:
+        case SamplerAddressMode::BORDER:
             sd.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
             sd.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
             sd.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
             break;
-        case SamplerAddressMode::MirrorOnce:
+        case SamplerAddressMode::MIRROR_ONCE:
             sd.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR_ONCE;
             sd.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR_ONCE;
             sd.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR_ONCE;
@@ -248,6 +334,7 @@ namespace directx11_helper {
         }
 
         sd.MipLODBias     = 0;
+        sd.MaxAnisotropy  = max_anisotropy;
         sd.BorderColor[0] = sd.BorderColor[1] = sd.BorderColor[2] = sd.BorderColor[3] = 0;
         sd.MinLOD         = 0;
         sd.MaxLOD         = D3D11_FLOAT32_MAX;
@@ -268,7 +355,7 @@ namespace directx11_helper {
         bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // レンダーターゲットへの書き込みマスク
 
         // ブレンドなし
-        if (blend_mode == BlendMode::NoBlend) {
+        if (blend_mode == BlendMode::NO) {
             // 色の合成方法
             bd.RenderTarget[0].BlendOp        = D3D11_BLEND_OP_ADD;
             bd.RenderTarget[0].SrcBlend       = D3D11_BLEND_ONE;
@@ -279,7 +366,7 @@ namespace directx11_helper {
             bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
         }
         // 半透明ブレンド
-        else if (blend_mode == BlendMode::Alpha) {
+        else if (blend_mode == BlendMode::ALPHA) {
             // 色の合成方法
             bd.RenderTarget[0].BlendOp        = D3D11_BLEND_OP_ADD;
             bd.RenderTarget[0].SrcBlend       = D3D11_BLEND_SRC_ALPHA;
@@ -290,7 +377,7 @@ namespace directx11_helper {
             bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
         }
         // 加算ブレンド
-        else if (blend_mode == BlendMode::Add) {
+        else if (blend_mode == BlendMode::ADD) {
             // 色の合成方法
             bd.RenderTarget[0].BlendOp        = D3D11_BLEND_OP_ADD;
             bd.RenderTarget[0].SrcBlend       = D3D11_BLEND_SRC_ALPHA;

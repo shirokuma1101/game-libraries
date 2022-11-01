@@ -14,6 +14,12 @@
 #pragma warning(push)
 #pragma warning(disable:4172) // returning address of local variable or temporary
 
+
+/**************************************************
+*
+* Manager interface of AssetData implementation class
+*
+**************************************************/
 template<class AssetDataImpl>
 class IAssetManager
 {
@@ -29,7 +35,7 @@ public:
     virtual void Register(std::string_view file_path) {
         auto json_data = std::make_unique<JsonData>(file_path);
         if (!json_data->Load()) {
-            assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + file_path.data());
+            assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + std::string(file_path.data()));
             return;
         }
         for (const auto& e : json_data->GetData()->at("list")) {
@@ -39,14 +45,13 @@ public:
             m_upAssets.emplace(name, std::move(asset_data));
         }
     }
-
     virtual void Register(const std::unordered_map<std::string, std::unique_ptr<JsonData>>& jsons, std::initializer_list<std::string_view> keys = {}) {
         for (const auto& e : jsons) {
             auto& json_data = e.second;
             if (!json_data->IsLoaded()) {
                 assert::ShowWarning(ASSERT_FILE_LINE, "json data not loaded. Load (loading may take some time.)");
                 if (!json_data->Load()) {
-                    assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + json_data->GetFilePath());
+                    assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + std::string(json_data->GetFilePath()));
                     break;
                 }
             }
@@ -69,40 +74,36 @@ public:
         }
     }
 
+    virtual const std::unordered_map<std::string, std::unique_ptr<AssetDataImpl>>& GetAssets() const final {
+        return m_upAssets;
+    }
     virtual const std::unique_ptr<AssetDataImpl>& GetAsset(std::string_view name) const final {
         if (auto iter = m_upAssets.find(name.data()); iter != m_upAssets.end()) {
             return iter->second;
         }
-        assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Asset not found: ") + name.data());
+        assert::ShowError(ASSERT_FILE_LINE, "Asset not found: " + std::string(name.data()));
         return nullptr;
     }
-
     virtual const typename AssetDataImpl::AssetClassT& operator[](std::string_view name) const final {
         return *GetAsset(name)->GetData();
-    }
-
-    virtual const std::unordered_map<std::string, std::unique_ptr<AssetDataImpl>>& GetAssets() const final {
-        return m_upAssets;
     }
 
     virtual void Load() final {
         for (const auto& e : m_upAssets) {
             if (!e.second->Load()) {
-                assert::RaiseAssert(ASSERT_FILE_LINE, "Asset load failed: " + e.first);
+                assert::ShowError(ASSERT_FILE_LINE, "Asset load failed: " + e.first);
             }
         }
     }
-
     virtual bool Load(std::string_view name) const final {
         if (auto& asset = GetAsset(name); asset) {
             if (asset->Load()) {
                 return true;
             }
-            assert::RaiseAssert(ASSERT_FILE_LINE, std::string("Path not found: ") + GetFilePath(name).data());
+            assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + std::string(GetFilePath(name).data()));
         }
         return false;
     }
-    
     virtual bool AsyncLoad(std::string_view name, bool force = false) const final {
         if (auto& asset = GetAsset(name); asset) {
             asset->AsyncLoad(force);
@@ -117,14 +118,12 @@ public:
         }
         return false;
     }
-
     virtual bool IsLoadedOnlyOnce(std::string_view name) const final {
         if (auto& asset = GetAsset(name); asset) {
             return asset->IsLoadedOnlyOnce();
         }
         return false;
     }
-
     virtual bool LoadedOnlyOnceReset(std::string_view name) const final {
         if (auto& asset = GetAsset(name); asset) {
             asset->LoadedOnlyOnceReset();
@@ -155,8 +154,6 @@ public:
 protected:
 
     std::unordered_map<std::string, std::unique_ptr<AssetDataImpl>> m_upAssets;
-
-private:
 
 };
 

@@ -39,16 +39,17 @@ constexpr auto func_name(const ArgTy& arg_name) noexcept {                      
 }                                                                                         \
 MACRO_NAMESPACE_EXTERNAL_END
 
+    
     /**************************************************
     * Math conversion
     **************************************************/
     
     template<class T> constexpr T       ToSquare(const T& base) noexcept { return base * base; }
     template<class T> constexpr void    ToSquare(T* base)                { *base *= *base; }
-    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToHalf,    num, num * 0.5f,  num * 0.5);
-    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToQuarter, num, num * 0.25f, num * 0.25);
-    template<class T> constexpr T       ToPercent(const T& num)     noexcept { return num * 100; }
-    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToUndoPercent, num, num * 0.01f, num * 0.01);
+    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToHalf,     num,                          num * 0.5f,  num * 0.5 );
+    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToQuarter,  num,                          num * 0.25f, num * 0.25);
+    template<class T> constexpr T       ToPercent(const T& num) noexcept { return num * 100; }
+    CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToUndoPercent,     num,                   num * 0.01f, num * 0.01);
     
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToRadians, deg, deg * (constant::fPI / 180.f), deg * (constant::dPI / 180.0));
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToDegrees, rad, rad * (180.f / constant::fPI), rad * (180.0 / constant::dPI));
@@ -116,6 +117,7 @@ MACRO_NAMESPACE_EXTERNAL_END
         };
         return IterableWrapper{ std::forward<T>(iterable) };
     }
+    
 
     /**************************************************
     * Other

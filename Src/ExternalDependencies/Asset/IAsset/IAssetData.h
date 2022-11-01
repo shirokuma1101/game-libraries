@@ -9,6 +9,12 @@
 
 #include "Thread/SimpleThreadManager/SimpleUniqueThread.h"
 
+
+/**************************************************
+*
+* Interface for assets that support async loading using threads
+*
+**************************************************/
 template<class AssetClass>
 class IAssetData
 {
@@ -94,8 +100,6 @@ protected:
 
     const std::string                 m_filePath;
     const std::unique_ptr<AssetClass> m_upAssetData       = nullptr;
-
-private:
 
 };
 

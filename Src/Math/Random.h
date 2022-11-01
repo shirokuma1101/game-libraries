@@ -14,7 +14,7 @@ namespace random {
         return rand_distribution(mt);
     }
 
-    inline double RandomDistribution(float min, float max) {
+    inline double RandomDistribution(double min, double max) {
         std::random_device seed_gen;
         std::mt19937 mt(seed_gen());
         std::uniform_real_distribution<>rand_distribution(min, max);

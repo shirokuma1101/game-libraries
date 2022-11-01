@@ -14,23 +14,15 @@ class KeyManager
 {
 public:
 
-    static constexpr int PRESS = 1;
+    static constexpr int PRESS   = 1;
     static constexpr int RELEASE = 2;
 
-    enum class KeyState {
-        None    = 1 << 0, // No pressed
-        Press   = 1 << 1, // Just press
-        Hold    = 1 << 2, // Pushed and hold
-        Release = 1 << 3, // Just release
+    enum KeyState {
+        KEYSTATE_NONE    = 1 << 0, // No pressed
+        KEYSTATE_PRESS   = 1 << 1, // Just press
+        KEYSTATE_HOLD    = 1 << 2, // Pushed and hold
+        KEYSTATE_RELEASE = 1 << 3, // Just release
     };
-    friend bool operator&(KeyState lhs, KeyState rhs) {
-        using UnderlyingTypeT = std::underlying_type_t<KeyState>;
-        return (static_cast<UnderlyingTypeT>(lhs) & static_cast<UnderlyingTypeT>(rhs));
-    }
-    friend bool operator|(KeyState lhs, KeyState rhs) {
-        using UnderlyingTypeT = std::underlying_type_t<KeyState>;
-        return (static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs));
-    }
 
     void Update() noexcept {
         for (auto iter = m_keys.begin(); iter != m_keys.end();) {
@@ -49,8 +41,8 @@ public:
         }
     }
 
-    bool GetState(int key, KeyState key_state = KeyState::Hold) noexcept {
-        for (const auto & e : m_keys) {
+    bool GetState(int key, KeyState key_state = KEYSTATE_HOLD) noexcept {
+        for (const auto& e : m_keys) {
             if (std::get<input_helper::KeyData>(e).GetKey() == key) {
                 return GetState(key_state, e);
             }
@@ -67,13 +59,13 @@ private:
 
     bool GetState(KeyState key_state, const std::tuple<input_helper::KeyData, bool, bool>& key) noexcept {
         bool state = false;
-        if (key_state & KeyState::Hold) {
+        if (key_state & KEYSTATE_HOLD) {
             state |= true;
         }
-        if (key_state & KeyState::Press) {
+        if (key_state & KEYSTATE_PRESS) {
             state |= std::get<PRESS>(key);
         }
-        if (key_state & KeyState::Release) {
+        if (key_state & KEYSTATE_RELEASE) {
             state |= std::get<RELEASE>(key);
         }
         return state;
@@ -93,7 +85,7 @@ public:
         m_keyMgr.Update();
     }
 
-    bool GetState(T config, KeyManager::KeyState key_state = KeyManager::KeyState::Hold) noexcept {
+    bool GetState(T config, KeyManager::KeyState key_state = KeyManager::KEYSTATE_HOLD) noexcept {
         if (auto iter = m_configuredKeys.find(config); iter != m_configuredKeys.end()) {
             return m_keyMgr.GetState(iter->second, key_state);
         }
@@ -102,6 +94,19 @@ public:
 
     void AddKeyConfig(T config, int key) {
         m_configuredKeys.emplace(config, key);
+    }
+    void RemoveKeyConfig(T config) {
+        for (auto iter = m_configuredKeys.begin(); iter != m_configuredKeys.end();) {
+            if (iter->first == config) {
+                iter = m_configuredKeys.erase(iter);
+            }
+            else {
+                ++iter;
+            }
+        }
+    }
+    void ResetKeyConfig() {
+        m_configuredKeys.clear();
     }
 
 private:
@@ -137,7 +142,7 @@ private:
 
     std::unique_ptr<KeyManager>               m_upKeyMgr;
     std::unique_ptr<input_helper::CursorData> m_upCursorMgr;
-    
+
 };
 
 #endif
