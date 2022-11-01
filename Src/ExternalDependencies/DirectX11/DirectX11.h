@@ -27,9 +27,9 @@ public:
         }
     }
 
-    virtual bool Init(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool enable_debug, bool detailed_memory_infomation, bool enable_msaa = false) {
+    virtual bool Init(HWND hWnd, const std::pair<int32_t, int32_t>& size, bool enable_debug, bool enable_detailed_memory_infomation, bool enable_msaa = false) {
         CreateFactory();
-        CreateDevice(enable_debug, detailed_memory_infomation);
+        CreateDevice(enable_debug, enable_detailed_memory_infomation);
         CreateSwapChain(hWnd, size, enable_msaa);
         CreateBackBuffer();
         CreateDepthStencilView(size);
@@ -145,7 +145,7 @@ protected:
             assert::ShowError(ASSERT_FILE_LINE, "Enumerate adapters failed");
         }
     }
-    virtual void CreateDevice(bool enable_debug = false, bool detailed_memory_infomation = false) {
+    virtual void CreateDevice(bool enable_debug = false, bool enable_detailed_memory_infomation = false) {
         /* ドライバーの種類 */
         D3D_DRIVER_TYPE driver_type = D3D_DRIVER_TYPE_HARDWARE;
         // アダプタが指定されていた場合はD3D_DRIVER_TYPE_UNKNOWNを指定する
