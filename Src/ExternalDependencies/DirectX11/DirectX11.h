@@ -198,7 +198,7 @@ protected:
             assert::ShowError(ASSERT_FILE_LINE, "Create device failed");
         }
 
-        if (detailed_memory_infomation) {
+        if (enable_detailed_memory_infomation) {
             /* デバッグインターフェースを取得 */
             if (FAILED(m_cpDev->QueryInterface(IID_PPV_ARGS(&m_cpDebug)))) {
                 assert::ShowError(ASSERT_FILE_LINE, "Query debug interface failed");
