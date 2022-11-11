@@ -56,11 +56,12 @@ namespace input_helper {
             Position(const POINT& pos) noexcept
                 : POINT(pos)
             {}
+            Position(const Position& pos) noexcept
+                : POINT(pos)
+            {}
             constexpr Position(LONG x, LONG y) noexcept
                 : POINT({ x, y })
             {}
-            Position(const Position&) = default;
-            Position(Position&&)      = default;
 
             // Assignment
             Position& operator=(const POINT& pos) noexcept {
@@ -73,18 +74,41 @@ namespace input_helper {
                 y = pos.y;
                 return *this;
             }
-            Position& operator=(Position&& pos) noexcept {
-                x = pos.x;
-                y = pos.y;
+            // Compound assignment
+            Position& operator+=(const Position& pos) noexcept {
+                x += pos.x;
+                y += pos.y;
                 return *this;
             }
-            Position operator+(const Position& pos) const noexcept {
-                return Position(x + pos.x, y + pos.y);
+            Position& operator-=(const Position& pos) noexcept {
+                x -= pos.x;
+                y -= pos.y;
+                return *this;
             }
-            Position operator-(const Position& pos) const noexcept {
-                return Position(x - pos.x, y - pos.y);
+            Position& operator*=(const Position& pos) noexcept {
+                x *= pos.x;
+                y *= pos.y;
+                return *this;
+            }
+            Position& operator/=(const Position& pos) noexcept {
+                x /= pos.x;
+                y /= pos.y;
+                return *this;
             }
         };
+        // Arithmetic
+        friend Position operator+(const Position& pos1, const Position& pos2) noexcept {
+            return Position(pos1) += pos2;
+        }
+        friend Position operator-(const Position& pos1, const Position& pos2) noexcept {
+            return Position(pos1) -= pos2;
+        }
+        friend Position operator*(const Position& pos1, const Position& pos2) noexcept {
+            return Position(pos1) *= pos2;
+        }
+        friend Position operator/(const Position& pos1, const Position& pos2) noexcept {
+            return Position(pos1) /= pos2;
+        }
         
         CursorData(HWND hwnd = 0) noexcept
             : m_hwnd(hwnd)
@@ -110,13 +134,22 @@ namespace input_helper {
             return { wi.rcClient.left + width / 2, wi.rcClient.top + height / 2 };
         }
 
-        Position GetPositionFromCenter(bool invert_x = false, bool invert_y = false) const noexcept {
-            Position relative = Position(GetPosition(0)) - GetCenterPosition();
-            if (invert_x) {
-                relative.x *= -1;
+        Position GetPositionFromCenter() const noexcept {
+            return Position(GetPosition(0)) - GetCenterPosition();
+        }
+        Position GetPositionFromCenter(const Position& limit) const noexcept {
+            Position relative = GetPositionFromCenter();
+            if (relative.x > limit.x) {
+                relative.x = limit.x;
             }
-            if (invert_y) {
-                relative.y *= -1;
+            else if (relative.x < -limit.x) {
+                relative.x = -limit.x;
+            }
+            if (relative.y > limit.y) {
+                relative.y = limit.y;
+            }
+            else if (relative.y < -limit.y) {
+                relative.y = -limit.y;
             }
             return relative;
         }
