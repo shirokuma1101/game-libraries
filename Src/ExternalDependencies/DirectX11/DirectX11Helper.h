@@ -4,13 +4,16 @@
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_DIRECTX11_DIRECTX11HELPER_H_
 
 #include <d3d11_4.h>
+#include <d3dcompiler.h>
 #include <utility>
 #include <wrl/client.h>
+#pragma comment (lib, "D3DCompiler.lib")
 
 #include "Utility/Assert.h"
 #include "Utility/Memory.h"
 
 #include "SimpleMath.h"
+#include "strconv.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -34,27 +37,38 @@ namespace directx11_helper {
 
     constexpr DirectX::SimpleMath::Color normal  = { 0.5f, 0.5f, 1.0f, 1.0f };
 
-#define DIRECTX11_HELPER_PADDING_1BYTE(num)  const int8_t padding1byte##num[1]   = { 0 }
-#define DIRECTX11_HELPER_PADDING_2BYTE(num)  const int8_t padding2byte##num[2]   = { 0, 0 }
-#define DIRECTX11_HELPER_PADDING_3BYTE(num)  const int8_t padding3byte##num[3]   = { 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_4BYTE(num)  const int8_t padding4byte##num[4]   = { 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_5BYTE(num)  const int8_t padding5byte##num[5]   = { 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_6BYTE(num)  const int8_t padding6byte##num[6]   = { 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_7BYTE(num)  const int8_t padding7byte##num[7]   = { 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_8BYTE(num)  const int8_t padding8byte##num[8]   = { 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_9BYTE(num)  const int8_t padding9byte##num[9]   = { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_10BYTE(num) const int8_t padding10byte##num[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_11BYTE(num) const int8_t padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_12BYTE(num) const int8_t padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_13BYTE(num) const int8_t padding13byte##num[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_14BYTE(num) const int8_t padding14byte##num[14] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_15BYTE(num) const int8_t padding15byte##num[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_16BYTE(num) const int8_t padding16byte##num[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_1BYTE(num)  const char padding1byte##num[1]   = { 0 }
+#define DIRECTX11_HELPER_PADDING_2BYTE(num)  const char padding2byte##num[2]   = { 0, 0 }
+#define DIRECTX11_HELPER_PADDING_3BYTE(num)  const char padding3byte##num[3]   = { 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_4BYTE(num)  const char padding4byte##num[4]   = { 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_5BYTE(num)  const char padding5byte##num[5]   = { 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_6BYTE(num)  const char padding6byte##num[6]   = { 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_7BYTE(num)  const char padding7byte##num[7]   = { 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_8BYTE(num)  const char padding8byte##num[8]   = { 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_9BYTE(num)  const char padding9byte##num[9]   = { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_10BYTE(num) const char padding10byte##num[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_11BYTE(num) const char padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_12BYTE(num) const char padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_13BYTE(num) const char padding13byte##num[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_14BYTE(num) const char padding14byte##num[14] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_15BYTE(num) const char padding15byte##num[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define DIRECTX11_HELPER_PADDING_16BYTE(num) const char padding16byte##num[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
     /**************************************************
     * enum class
     **************************************************/
+
+    /* ShaderTarget */
+
+    enum class ShaderTarget {
+        CS, // Compute Shader
+        DS, // Domain Shader
+        GS, // Geometry Shader
+        HS, // Hull Shader
+        PS, // Pixel Shader
+        VS, // Vertex Shader
+    };
 
     /* DepthStencilState */
 
@@ -70,7 +84,7 @@ namespace directx11_helper {
     //};
 
     /* RasterizerState */
-    
+
     enum class FillMode {
         SOLID,             // ソリッド
         WIREFRAME,         // ワイヤーフレーム
@@ -82,7 +96,7 @@ namespace directx11_helper {
     };
 
     /* SamplerState */
-    
+
     enum class SamplerFilterMode {
         POINT,             // ポイントサンプリング
         LINEAR,            // バイリニアサンプリング
@@ -122,7 +136,7 @@ namespace directx11_helper {
     //};
 
     /* Topology */
-    
+
     //enum class PrimitiveTopology {
     //    UNDEFINED,         // 未定義
     //    POINTLIST,         // ポイントリスト
@@ -137,7 +151,7 @@ namespace directx11_helper {
     //    PATCHLIST,         // パッチリスト
     //};
 
-    
+
     /**************************************************
     * Setup desc
     **************************************************/
@@ -206,6 +220,115 @@ namespace directx11_helper {
 
 
     /**************************************************
+    * Shader compile helper
+    **************************************************/
+
+    inline ID3DBlob* CompileShaderFromFile(std::string_view file_path, std::string_view entry_point, ShaderTarget target, bool enable_debug) {
+        ID3DBlob* blob  = nullptr;
+        ID3DBlob* error = nullptr;
+
+        UINT compile_flag = 0;
+        if (enable_debug) {
+            compile_flag |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+        }
+
+        std::string target_str;
+        switch (target) {
+        case ShaderTarget::CS:
+            target_str = "cs_5_0";
+            break;
+        case ShaderTarget::DS:
+            target_str = "ds_5_0";
+            break;
+        case ShaderTarget::GS:
+            target_str = "gs_5_0";
+            break;
+        case ShaderTarget::HS:
+            target_str = "hs_5_0";
+            break;
+        case ShaderTarget::PS:
+            target_str = "ps_5_0";
+            break;
+        case ShaderTarget::VS:
+            target_str = "vs_5_0";
+            break;
+        default:
+            assert::ShowError(ASSERT_FILE_LINE, "Unknown shader target");
+            break;
+        }
+
+        if (FAILED(D3DCompileFromFile(
+            sjis_to_wide(file_path.data()).c_str(),
+            nullptr,
+            D3D_COMPILE_STANDARD_FILE_INCLUDE,
+            entry_point.data(),
+            target_str.c_str(),
+            compile_flag,
+            0,
+            &blob,
+            &error
+        ))) {
+            if (error) {
+                assert::ShowError(ASSERT_FILE_LINE, std::string(file_path) + "Shader compile failed: " + std::string(static_cast<char*>(error->GetBufferPointer()), error->GetBufferSize()));
+            }
+            else {
+                assert::ShowError(ASSERT_FILE_LINE, "Shader compile failed");
+            }
+        }
+
+        return blob;
+    }
+
+    inline ID3D11ComputeShader* CreateComputeShader(ID3D11Device* dev, ID3DBlob* blob) {
+        ID3D11ComputeShader* compute_shader = nullptr;
+        if (FAILED(dev->CreateComputeShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &compute_shader))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create compute shader failed");
+        }
+        return compute_shader;
+    }
+
+    inline ID3D11DomainShader* CreateDomainShader(ID3D11Device* dev, ID3DBlob* blob) {
+        ID3D11DomainShader* domain_shader = nullptr;
+        if (FAILED(dev->CreateDomainShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &domain_shader))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create domain shader failed");
+        }
+        return domain_shader;
+    }
+
+    inline ID3D11GeometryShader* CreateGeometryShader(ID3D11Device* dev, ID3DBlob* blob) {
+        ID3D11GeometryShader* geometry_shader = nullptr;
+        if (FAILED(dev->CreateGeometryShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &geometry_shader))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create geometry shader failed");
+        }
+        return geometry_shader;
+    }
+
+    inline ID3D11HullShader* CreateHullShader(ID3D11Device* dev, ID3DBlob* blob) {
+        ID3D11HullShader* hull_shader = nullptr;
+        if (FAILED(dev->CreateHullShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &hull_shader))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create hull shader failed");
+        }
+        return hull_shader;
+    }
+
+    inline ID3D11PixelShader* CreatePixelShader(ID3D11Device* dev, ID3DBlob* blob) {
+        ID3D11PixelShader* pixel_shader = nullptr;
+        if (FAILED(dev->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pixel_shader))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create pixel shader failed");
+        }
+        return pixel_shader;
+    }
+
+    inline ID3D11VertexShader* CreateVertexShader(ID3D11Device* dev, ID3DBlob* blob) {
+        ID3D11VertexShader* vertex_shader = nullptr;
+        if (FAILED(dev->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vertex_shader))) {
+            assert::ShowError(ASSERT_FILE_LINE, "Create vertex shader failed");
+        }
+        return vertex_shader;
+    }
+
+
+    /**************************************************
     * State helper
     **************************************************/
 
@@ -235,7 +358,7 @@ namespace directx11_helper {
 
     inline ID3D11RasterizerState* CreateRasterizerState(ID3D11Device* dev, FillMode fill_mode, CullMode cull_mode, bool depth_clip_enable, bool scissor_enable) {
         D3D11_RASTERIZER_DESC rd{};
-        
+
         switch (fill_mode) {
         case FillMode::SOLID:
             rd.FillMode = D3D11_FILL_SOLID;
@@ -304,7 +427,7 @@ namespace directx11_helper {
             }
             sd.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
         }
-        
+
         switch (sampler_address_mode) {
         case SamplerAddressMode::WRAP:
             sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
