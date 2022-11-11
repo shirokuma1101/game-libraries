@@ -61,25 +61,37 @@ public:
         return true;
     }
 
-    auto GetDev() const {
+    auto GetDev() const noexcept {
         return m_cpDev;
     }
-    auto GetCtx() const {
+    auto GetCtx() const noexcept {
         return m_cpCtx;
     }
-    auto GetSwapChain() const {
+    auto GetSwapChain() const noexcept {
         return m_cpSwapChain;
     }
-    auto GetBackBuffer() const {
+    std::shared_ptr<DirectX11Texture> GetBackBuffer() noexcept {
         return m_spBackBuffer;
     }
-    auto GetZBuffer() const {
+    std::shared_ptr<const DirectX11Texture> GetBackBuffer() const noexcept {
+        return m_spBackBuffer;
+    }
+    std::shared_ptr<DirectX11Texture> GetZBuffer() noexcept {
         return m_spZBuffer;
     }
-    auto GetWhiteTexture() const {
+    std::shared_ptr<const DirectX11Texture> GetZBuffer() const noexcept {
+        return m_spZBuffer;
+    }
+    std::shared_ptr<DirectX11Texture> GetWhiteTexture() noexcept {
         return m_spWhiteTexture;
     }
-    auto GetNormalTexture() const {
+    std::shared_ptr<const DirectX11Texture> GetWhiteTexture() const noexcept {
+        return m_spWhiteTexture;
+    }
+    std::shared_ptr<DirectX11Texture> GetNormalTexture() noexcept {
+        return m_spNormalTexture;
+    }
+    std::shared_ptr<const DirectX11Texture> GetNormalTexture() const noexcept {
         return m_spNormalTexture;
     }
     D3D11_VIEWPORT GetViewport() const {
