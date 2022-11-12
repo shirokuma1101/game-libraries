@@ -180,6 +180,9 @@
     <ClInclude Include="Src\ExternalDependencies\Input\TextBox.h">
       <Filter>Src\ExternalDependencies\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Math\MinimumMath.h">
+      <Filter>Src\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\TestMain.cpp">
