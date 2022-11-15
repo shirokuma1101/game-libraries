@@ -189,6 +189,39 @@ struct ProjectileMotionFromVelocityLength : public ProjectileMotion {
         }
     }
 
+    ProjectileMotionFromVelocityTheta GetNarrowAngle() const noexcept {
+        if (parabolicMotions[0].isEnable && parabolicMotions[1].isEnable) {
+            return parabolicMotions[0].projectileMotionFromVelocityTheta.theta < parabolicMotions[1].projectileMotionFromVelocityTheta.theta
+                ? parabolicMotions[0].projectileMotionFromVelocityTheta
+                : parabolicMotions[1].projectileMotionFromVelocityTheta;
+        }
+        else if (parabolicMotions[0].isEnable) {
+            return parabolicMotions[0].projectileMotionFromVelocityTheta;
+        }
+        else if (parabolicMotions[1].isEnable) {
+            return parabolicMotions[1].projectileMotionFromVelocityTheta;
+        }
+        else {
+            return ProjectileMotionFromVelocityTheta();
+        }
+    }
+    ProjectileMotionFromVelocityTheta GetWideAngle() const noexcept {
+        if (parabolicMotions[0].isEnable && parabolicMotions[1].isEnable) {
+            return parabolicMotions[0].projectileMotionFromVelocityTheta.theta > parabolicMotions[1].projectileMotionFromVelocityTheta.theta
+                ? parabolicMotions[0].projectileMotionFromVelocityTheta
+                : parabolicMotions[1].projectileMotionFromVelocityTheta;
+        }
+        else if (parabolicMotions[0].isEnable) {
+            return parabolicMotions[0].projectileMotionFromVelocityTheta;
+        }
+        else if (parabolicMotions[1].isEnable) {
+            return parabolicMotions[1].projectileMotionFromVelocityTheta;
+        }
+        else {
+            return ProjectileMotionFromVelocityTheta();
+        }
+    }
+
     struct ParabolicMotion {
         bool                              isEnable = false;
         ProjectileMotionFromVelocityTheta projectileMotionFromVelocityTheta;
