@@ -38,7 +38,7 @@ public:
             auto path = e.at("path").get<std::string>();
             JsonData schema(path);
             if (!schema.Load()) {
-                assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + std::string(path));
+                assert::ShowError(ASSERT_FILE_LINE, "Path not found: " + path);
                 return;
             }
             JsonData::JsonValidator validator;
@@ -46,7 +46,7 @@ public:
                 validator.set_root_schema(*schema.GetData());
             }
             catch (const std::exception& e) {
-                assert::ShowError(ASSERT_FILE_LINE, "Validation of schema failed: " + std::string(e.what()));
+                assert::ShowError(ASSERT_FILE_LINE, "Validation of schema failed: " + path + " - " + std::string(e.what()));
                 return;
             }
             m_spValidators->emplace(name, std::move(validator));

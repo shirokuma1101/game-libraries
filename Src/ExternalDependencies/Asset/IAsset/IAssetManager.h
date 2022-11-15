@@ -17,7 +17,8 @@
 
 /**************************************************
 *
-* Manager interface of AssetData implementation class
+* Manager interface of AssetData implementation
+* class
 *
 **************************************************/
 template<class AssetDataImpl>

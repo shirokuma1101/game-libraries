@@ -12,7 +12,8 @@
 
 /**************************************************
 *
-* Interface for assets that support async loading using threads
+* Interface for assets that support async loading
+* using threads
 *
 **************************************************/
 template<class AssetClass>

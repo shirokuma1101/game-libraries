@@ -17,7 +17,9 @@
 
 /**************************************************
 *
-* A class that implements the asset interface of json(nlohmann_json) with validator(nlohmann_json_schema_validator)
+* A class that implements the asset interface of
+* json(nlohmann_json) with
+* validator(nlohmann_json_schema_validator)
 *
 **************************************************/
 class JsonData : public IAssetData<nlohmann::json>
@@ -62,12 +64,12 @@ private:
                 return true;
             }
             catch (const std::exception& e) {
-                assert::ShowError(ASSERT_FILE_LINE, "Validation of json failed: " + std::string(e.what()));
+                assert::ShowError(ASSERT_FILE_LINE, "Validation of json failed: " + m_filePath + " - " + std::string(e.what()));
                 return false;
             }
         }
         else {
-            assert::ShowError(ASSERT_FILE_LINE, "Schema name not found: " + std::string(schema_name));
+            assert::ShowError(ASSERT_FILE_LINE, "Schema name not found: " + m_filePath + " - " + schema_name);
             return false;
         }
     }
