@@ -27,7 +27,7 @@ namespace minimum_math {
         // Unary
         Vector2 operator-()             const noexcept { return Vector2(-x, -y); }
         // Assignment
-        Vector2& operator=(const Vector2& v)  noexcept { x = v.x;  y =  v.y; return *this; }
+        Vector2& operator=(const Vector2& v)  noexcept { x =  v.x; y =  v.y; return *this; }
         // Compound assignment
         Vector2& operator+=(const Vector2& v) noexcept { x += v.x; y += v.y; return *this; }
         Vector2& operator-=(const Vector2& v) noexcept { x -= v.x; y -= v.y; return *this; }
@@ -37,6 +37,7 @@ namespace minimum_math {
         Vector2& operator/=(const Vector2& v) noexcept { x /= v.x; y /= v.y; return *this; }
 
         float Dot(const Vector2& v)     const noexcept { return x * v.x + y * v.y; }
+        Vector2 Cross(const Vector2& v) const noexcept { return Vector2(x * v.y - y * v.x); }
 
         float Length()                  const noexcept { return std::sqrt(Dot(*this)); }
         float LengthSquared()           const noexcept { return Dot(*this); }
