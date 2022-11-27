@@ -171,7 +171,7 @@ public:
         float distance = 0.f;
 
         m_boundingSphere.Transform(bounding_sphere, mat);
-        bool hit = m_boundingSphere.Intersects(target.position, target.direction, distance);
+        bool hit = bounding_sphere.Intersects(target.position, target.direction, distance);
         hit &= (target.range >= distance);
 
         if (!res) {
@@ -192,7 +192,7 @@ public:
         collision::BoundingSphere bounding_sphere;
 
         m_boundingSphere.Transform(bounding_sphere, mat);
-        bool hit = m_boundingSphere.Intersects(target);
+        bool hit = bounding_sphere.Intersects(target);
 
         if (!res) {
             return hit;
