@@ -169,6 +169,11 @@ namespace physx_helper {
             dynamic->putToSleep();
         }
     }
+    inline void WakeUp(physx::PxRigidActor* actor) {
+        if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
+            dynamic->wakeUp();
+        }
+    }
 
     //note: "https://nekopro99.com/move-rigidbody-addforce/"
     //note: "https://ekulabo.com/force-mode"
