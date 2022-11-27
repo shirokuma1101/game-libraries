@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Inc;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -97,7 +97,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Inc;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Inc;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\Src;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Inc;$(CPP_LIB)\DirectXTex\DirectXTex-may2022\include;$(CPP_LIB)\DirectXTK\DirectXTK-jun2022\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include;$(CPP_LIB)\EffekseerRuntime\EffekseerRuntime162d\include\Effekseer;$(CPP_LIB)\imgui\imgui-1.87\include;$(CPP_LIB)\json-schema-validator\json-schema-validator-2.1.0\include;$(CPP_LIB)\nlohmann_json\nlohmann_json\include;$(CPP_LIB)\PhysX\PhysX-4.1.2\include;$(CPP_LIB)\strconv\strconv-1.8.10\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -147,79 +147,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetData.h" />
-    <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetManager.h" />
-    <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonData.h" />
-    <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonManager.h" />
-    <ClInclude Include="Src\ExternalDependencies\Audio\AudioHelper.h" />
-    <ClInclude Include="Src\ExternalDependencies\Audio\AudioManager.h" />
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11.h" />
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Buffer.h" />
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Helper.h" />
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Texture.h" />
-    <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerHelper.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerManager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\ImGui\ImGuiHelper.h" />
-    <ClInclude Include="Src\ExternalDependencies\Input\InputHelper.h" />
-    <ClInclude Include="Src\ExternalDependencies\Input\InputManager.h" />
-    <ClInclude Include="Src\ExternalDependencies\Input\TextBox.h" />
-    <ClInclude Include="Src\ExternalDependencies\Math\Camera.h" />
-    <ClInclude Include="Src\ExternalDependencies\Math\Collider.h" />
-    <ClInclude Include="Src\ExternalDependencies\Math\Collision.h" />
-    <ClInclude Include="Src\ExternalDependencies\Math\Transform.h" />
-    <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXHelper.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXManager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Socket\SocketHelper.h" />
-    <ClInclude Include="Src\ExternalDependencies\Utility\DateTime.h" />
-    <ClInclude Include="Src\ExternalDependencies\Utility\String.h" />
-    <ClInclude Include="Src\Math\Constant.h" />
-    <ClInclude Include="Src\Math\Convert.h" />
-    <ClInclude Include="Src\Math\Easing.h" />
-    <ClInclude Include="Src\Math\ProjectileMotion.h" />
-    <ClInclude Include="Src\Math\Random.h" />
-    <ClInclude Include="Src\Math\DeltaTime.h" />
-    <ClInclude Include="Src\Math\Timer.h" />
-    <ClInclude Include="Src\Math\MinimumMath.h" />
-    <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h" />
-    <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleUniqueThread.h" />
-    <ClInclude Include="Src\Utility\Assert.h" />
-    <ClInclude Include="Src\Utility\Macro.h" />
-    <ClInclude Include="Src\Utility\Memory.h" />
-    <ClInclude Include="Src\Utility\StdC++.h" />
-    <ClInclude Include="Src\Utility\Templates.h" />
     <ClCompile Include="Test\TestMain.cpp" />
+    <ClInclude Include="Inc\ExternalDependencies\Asset\IAsset\IAssetData.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Asset\IAsset\IAssetManager.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Asset\Json\JsonData.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Asset\Json\JsonManager.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Audio\AudioHelper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Audio\AudioManager.h" />
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11.h" />
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Buffer.h" />
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Helper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Texture.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Effekseer\EffekseerHelper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Effekseer\EffekseerManager.h" />
+    <ClInclude Include="Inc\ExternalDependencies\ImGui\ImGuiHelper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Input\InputHelper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Input\InputManager.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Input\TextBox.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Math\Camera.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Math\Collider.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Math\Collision.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Math\Transform.h" />
+    <ClInclude Include="Inc\ExternalDependencies\PhysX\PhysXHelper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\PhysX\PhysXManager.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Socket\SocketHelper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Utility\DateTime.h" />
+    <ClInclude Include="Inc\ExternalDependencies\Utility\String.h" />
+    <ClInclude Include="Inc\Math\Constant.h" />
+    <ClInclude Include="Inc\Math\Convert.h" />
+    <ClInclude Include="Inc\Math\DeltaTime.h" />
+    <ClInclude Include="Inc\Math\Easing.h" />
+    <ClInclude Include="Inc\Math\MinimumMath.h" />
+    <ClInclude Include="Inc\Math\ProjectileMotion.h" />
+    <ClInclude Include="Inc\Math\Random.h" />
+    <ClInclude Include="Inc\Math\Timer.h" />
+    <ClInclude Include="Inc\Thread\SimpleThreadManager\SimpleThreadManager.h" />
+    <ClInclude Include="Inc\Thread\SimpleThreadManager\SimpleUniqueThread.h" />
+    <ClInclude Include="Inc\Utility\Assert.h" />
+    <ClInclude Include="Inc\Utility\Macro.h" />
+    <ClInclude Include="Inc\Utility\Memory.h" />
+    <ClInclude Include="Inc\Utility\StdC++.h" />
+    <ClInclude Include="Inc\Utility\Templates.h" />
+    <ClInclude Include="Test\TestExternalDependencies.h" />
+    <ClInclude Include="Test\TestMath.h" />
+    <ClInclude Include="Test\TestThread.h" />
+    <ClInclude Include="Test\TestUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Asset\asset.json" />

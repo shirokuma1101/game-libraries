@@ -1,187 +1,199 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Src">
-      <UniqueIdentifier>{8a37f264-7464-4d54-98be-7d0ed2bc6b5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Math">
-      <UniqueIdentifier>{227127d3-29e2-4588-b72e-899d88ef4eeb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Utility">
-      <UniqueIdentifier>{8ea6b7d7-19b7-4521-95b7-0265799064f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Thread">
-      <UniqueIdentifier>{d3c2f325-1645-44de-9e6f-7d574e95fbc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Thread\SimpleThreadManager">
-      <UniqueIdentifier>{90f1ce9b-48a0-4953-8532-33cb233749fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\ExternalDependencies">
-      <UniqueIdentifier>{e6aec463-15ba-4268-a22d-7d3865ddc1d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\ExternalDependencies\Math">
-      <UniqueIdentifier>{c5e911a4-e776-4e6e-90e5-b63fe4125aed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test">
       <UniqueIdentifier>{b2d5d939-9d91-467d-abde-f5f2ad552c5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\ExternalDependencies\Utility">
-      <UniqueIdentifier>{ade4d1f1-246d-4a92-8a7c-af2e61dccd5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\ExternalDependencies\Asset">
-      <UniqueIdentifier>{5c3cfacc-69e9-432a-81e4-d7b6f899c5c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\ExternalDependencies\Asset\IAsset">
-      <UniqueIdentifier>{31c2257d-ce17-4d21-a8b6-c1ff428d724c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\ExternalDependencies\Asset\Json">
-      <UniqueIdentifier>{cd07645c-0002-41b6-a051-e83a2e65ac6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Asset">
       <UniqueIdentifier>{a6475f04-25f0-4c11-a856-2b9da58793dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\Socket">
-      <UniqueIdentifier>{dcefa526-e8b9-44cd-a0fc-7dc8b3b64107}</UniqueIdentifier>
+    <Filter Include="Inc">
+      <UniqueIdentifier>{dc8b1ac3-a186-4b7c-b914-c67de4ed4d3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\PhysX">
-      <UniqueIdentifier>{f7f12427-5fc8-4aad-b239-7123a2551eb8}</UniqueIdentifier>
+    <Filter Include="Inc\ExternalDependencies">
+      <UniqueIdentifier>{47369e4f-c97b-4ebe-8377-bec6214799b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\Input">
-      <UniqueIdentifier>{655611e0-4647-4830-b098-b9154c56a709}</UniqueIdentifier>
+    <Filter Include="Inc\Math">
+      <UniqueIdentifier>{1c2e6ae4-b304-4353-a14a-293eaef73937}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\Effekseer">
-      <UniqueIdentifier>{9e151961-820d-477d-b4ff-52f73426db26}</UniqueIdentifier>
+    <Filter Include="Inc\Thread">
+      <UniqueIdentifier>{45677c69-9a3b-4413-9ba9-8e8bc29493ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\Audio">
-      <UniqueIdentifier>{7a69fff3-f435-4b62-b898-a077c3dfb8e9}</UniqueIdentifier>
+    <Filter Include="Inc\Utility">
+      <UniqueIdentifier>{d72eda69-f2ed-440f-8694-66d578ce0098}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\DirectX11">
-      <UniqueIdentifier>{018b9d7d-ab6f-48b0-8337-404503d2a947}</UniqueIdentifier>
+    <Filter Include="Inc\ExternalDependencies\Asset">
+      <UniqueIdentifier>{3cdfeec3-2a4d-403a-a4f4-4d5cb87cdc2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\ExternalDependencies\ImGui">
-      <UniqueIdentifier>{3f2dc6a1-7624-4cda-b6a0-425c6666c759}</UniqueIdentifier>
+    <Filter Include="Inc\ExternalDependencies\Audio">
+      <UniqueIdentifier>{190c4594-4889-499b-9a08-4535c84b9c1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\DirectX11">
+      <UniqueIdentifier>{7aea0e7c-e36d-4e0e-8ecb-79bc63aeceb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Effekseer">
+      <UniqueIdentifier>{3f08b56d-010b-4430-a845-cd156de86881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\ImGui">
+      <UniqueIdentifier>{9f7e6f5f-9f60-4811-bbac-068202e4e2a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Input">
+      <UniqueIdentifier>{b623541a-4cf7-480e-b3ad-5e09a8fe7cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Math">
+      <UniqueIdentifier>{b558e5ef-2e20-4931-afeb-8c8cb8aee1c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\PhysX">
+      <UniqueIdentifier>{9e6d3bfd-af9c-4367-a3c3-5bb424231300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Socket">
+      <UniqueIdentifier>{8d1caacd-5ea7-484d-aa7a-1ba183bb2d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Utility">
+      <UniqueIdentifier>{3cff242c-ce9c-4bfb-906a-e64ea1e7a82c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Asset\IAsset">
+      <UniqueIdentifier>{e062307c-7547-4830-a5a3-8d8c5120bdf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Asset\Json">
+      <UniqueIdentifier>{64b6608c-f1d8-4141-957c-a974e35af431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\Thread\SimpleThreadManager">
+      <UniqueIdentifier>{8e9a24af-b7b0-4947-a29f-fb34a83172de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Src\Math\Easing.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Test\TestUtility.h">
+      <Filter>Test</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\Convert.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Test\TestMath.h">
+      <Filter>Test</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\Constant.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Test\TestThread.h">
+      <Filter>Test</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\Macro.h">
-      <Filter>Src\Utility</Filter>
+    <ClInclude Include="Test\TestExternalDependencies.h">
+      <Filter>Test</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleThreadManager.h">
-      <Filter>Src\Thread\SimpleThreadManager</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Asset\IAsset\IAssetData.h">
+      <Filter>Inc\ExternalDependencies\Asset\IAsset</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\Assert.h">
-      <Filter>Src\Utility</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Asset\IAsset\IAssetManager.h">
+      <Filter>Inc\ExternalDependencies\Asset\IAsset</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Thread\SimpleThreadManager\SimpleUniqueThread.h">
-      <Filter>Src\Thread\SimpleThreadManager</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Asset\Json\JsonData.h">
+      <Filter>Inc\ExternalDependencies\Asset\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\Memory.h">
-      <Filter>Src\Utility</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Asset\Json\JsonManager.h">
+      <Filter>Inc\ExternalDependencies\Asset\Json</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\Random.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Audio\AudioHelper.h">
+      <Filter>Inc\ExternalDependencies\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\ProjectileMotion.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Audio\AudioManager.h">
+      <Filter>Inc\ExternalDependencies\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\DeltaTime.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Buffer.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\Timer.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Helper.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Math\Transform.h">
-      <Filter>Src\ExternalDependencies\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Texture.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Math\Camera.h">
-      <Filter>Src\ExternalDependencies\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Utility\String.h">
-      <Filter>Src\ExternalDependencies\Utility</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Effekseer\EffekseerManager.h">
+      <Filter>Inc\ExternalDependencies\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Utility\DateTime.h">
-      <Filter>Src\ExternalDependencies\Utility</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Effekseer\EffekseerHelper.h">
+      <Filter>Inc\ExternalDependencies\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetData.h">
-      <Filter>Src\ExternalDependencies\Asset\IAsset</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\ImGui\ImGuiHelper.h">
+      <Filter>Inc\ExternalDependencies\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Asset\IAsset\IAssetManager.h">
-      <Filter>Src\ExternalDependencies\Asset\IAsset</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Input\InputManager.h">
+      <Filter>Inc\ExternalDependencies\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonData.h">
-      <Filter>Src\ExternalDependencies\Asset\Json</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Input\TextBox.h">
+      <Filter>Inc\ExternalDependencies\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Asset\Json\JsonManager.h">
-      <Filter>Src\ExternalDependencies\Asset\Json</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Input\InputHelper.h">
+      <Filter>Inc\ExternalDependencies\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Socket\SocketHelper.h">
-      <Filter>Src\ExternalDependencies\Socket</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Math\Collider.h">
+      <Filter>Inc\ExternalDependencies\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerManager.h">
-      <Filter>Src\ExternalDependencies\Effekseer</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Math\Collision.h">
+      <Filter>Inc\ExternalDependencies\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Effekseer\EffekseerHelper.h">
-      <Filter>Src\ExternalDependencies\Effekseer</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Math\Transform.h">
+      <Filter>Inc\ExternalDependencies\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Input\InputManager.h">
-      <Filter>Src\ExternalDependencies\Input</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Math\Camera.h">
+      <Filter>Inc\ExternalDependencies\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXHelper.h">
-      <Filter>Src\ExternalDependencies\PhysX</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\PhysX\PhysXHelper.h">
+      <Filter>Inc\ExternalDependencies\PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\PhysX\PhysXManager.h">
-      <Filter>Src\ExternalDependencies\PhysX</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\PhysX\PhysXManager.h">
+      <Filter>Inc\ExternalDependencies\PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Input\InputHelper.h">
-      <Filter>Src\ExternalDependencies\Input</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Socket\SocketHelper.h">
+      <Filter>Inc\ExternalDependencies\Socket</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\Templates.h">
-      <Filter>Src\Utility</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Utility\String.h">
+      <Filter>Inc\ExternalDependencies\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Math\Collider.h">
-      <Filter>Src\ExternalDependencies\Math</Filter>
+    <ClInclude Include="Inc\ExternalDependencies\Utility\DateTime.h">
+      <Filter>Inc\ExternalDependencies\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Math\Collision.h">
-      <Filter>Src\ExternalDependencies\Math</Filter>
+    <ClInclude Include="Inc\Math\DeltaTime.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Audio\AudioManager.h">
-      <Filter>Src\ExternalDependencies\Audio</Filter>
+    <ClInclude Include="Inc\Math\Easing.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Audio\AudioHelper.h">
-      <Filter>Src\ExternalDependencies\Audio</Filter>
+    <ClInclude Include="Inc\Math\MinimumMath.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Buffer.h">
-      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    <ClInclude Include="Inc\Math\ProjectileMotion.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Helper.h">
-      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    <ClInclude Include="Inc\Math\Random.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Utility\StdC++.h">
-      <Filter>Src\Utility</Filter>
+    <ClInclude Include="Inc\Math\Timer.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\ImGui\ImGuiHelper.h">
-      <Filter>Src\ExternalDependencies\ImGui</Filter>
+    <ClInclude Include="Inc\Math\Constant.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11.h">
-      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    <ClInclude Include="Inc\Math\Convert.h">
+      <Filter>Inc\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\DirectX11\DirectX11Texture.h">
-      <Filter>Src\ExternalDependencies\DirectX11</Filter>
+    <ClInclude Include="Inc\Thread\SimpleThreadManager\SimpleThreadManager.h">
+      <Filter>Inc\Thread\SimpleThreadManager</Filter>
     </ClInclude>
-    <ClInclude Include="Src\ExternalDependencies\Input\TextBox.h">
-      <Filter>Src\ExternalDependencies\Input</Filter>
+    <ClInclude Include="Inc\Thread\SimpleThreadManager\SimpleUniqueThread.h">
+      <Filter>Inc\Thread\SimpleThreadManager</Filter>
     </ClInclude>
-    <ClInclude Include="Src\Math\MinimumMath.h">
-      <Filter>Src\Math</Filter>
+    <ClInclude Include="Inc\Utility\StdC++.h">
+      <Filter>Inc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Utility\Templates.h">
+      <Filter>Inc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Utility\Assert.h">
+      <Filter>Inc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Utility\Macro.h">
+      <Filter>Inc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\Utility\Memory.h">
+      <Filter>Inc\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
