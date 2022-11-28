@@ -37,8 +37,11 @@ namespace assert {
     }
 #else
     inline void ShowInfo(char const*, int = 0, std::string_view = "") {}
+    inline void ShowInfo(std::string_view = "") {}
     inline void ShowWarning(char const*, int = 0, std::string_view = "") {}
+    inline void ShowWarning(std::string_view = "") {}
     inline void ShowError(char const*, int = 0, std::string_view = "") {}
+    inline void ShowError(std::string_view = "") {}
 #endif // _DEBUG
     inline void ExceptionThrow(std::string_view message) {
         throw std::runtime_error(message.data());
