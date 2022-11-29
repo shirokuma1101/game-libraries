@@ -13,11 +13,14 @@
 
 /**************************************************
 *
-* Manage JsonData
+* Manage JsonData(nlohmann_json)
+* Validator(nlohmann_json_schema_validator) can be
+* used if ENABLE_JSON_SCHEMA_VALIDATOR is defined
 *
 **************************************************/
 class JsonManager : public IAssetManager<JsonData>
 {
+#ifdef ENABLE_JSON_SCHEMA_VALIDATOR
 public:
 
     JsonManager()
@@ -65,6 +68,15 @@ private:
 
     std::shared_ptr<std::unordered_map<std::string, JsonData::JsonValidator>> m_spValidators;
 
+#else
+public:
+    
+    JsonManager() {}
+    virtual ~JsonManager() override {
+        Release();
+    }
+
+#endif
 };
 
 #endif

@@ -11,32 +11,36 @@
 #include "ExternalDependencies/Asset/IAsset/IAssetData.h"
 
 #include "nlohmann/json.hpp"
+#ifdef ENABLE_JSON_SCHEMA_VALIDATOR
 #include "nlohmann/json-schema.hpp"
 #pragma comment(lib, "nlohmann_json_schema_validator.lib")
-
+#endif
 
 /**************************************************
 *
 * A class that implements the asset interface of
-* json(nlohmann_json) with
-* validator(nlohmann_json_schema_validator)
+* json(nlohmann_json)
+* Validator(nlohmann_json_schema_validator) can be
+* used if ENABLE_JSON_SCHEMA_VALIDATOR is defined
 *
 **************************************************/
 class JsonData : public IAssetData<nlohmann::json>
 {
+#ifdef ENABLE_JSON_SCHEMA_VALIDATOR
 public:
-
-    using Json          = nlohmann::json;
+    
+    using Json = nlohmann::json;
     using JsonValidator = nlohmann::json_schema::json_validator;
 
     JsonData(std::string_view file_path, std::shared_ptr<std::unordered_map<std::string, JsonData::JsonValidator>> validators = nullptr)
         : IAssetData(file_path)
         , m_wpValidators(validators)
     {}
+
     virtual ~JsonData() override {
         Release();
     }
-
+    
     bool Load() override {
         return LoadProcess([&] {
             Json json;
@@ -52,7 +56,7 @@ public:
     }
 
 private:
-    
+
     bool ValidateJson(const Json& data) const {
         if (m_wpValidators.expired() || !data.count("schema") || !data.at("schema").is_string()) {
             return true;
@@ -75,7 +79,30 @@ private:
     }
 
     std::weak_ptr<std::unordered_map<std::string, JsonData::JsonValidator>> m_wpValidators;
+    
+#else
+public:
+    
+    using Json = nlohmann::json;
+    
+    JsonData(std::string_view file_path)
+        : IAssetData(file_path)
+    {}
+    
+    virtual ~JsonData() override {
+        Release();
+    }
 
+    bool Load() override {
+        return LoadProcess([&] {
+            std::ifstream ifs(m_filePath);
+            if (!ifs) return false;
+            ifs >> *m_upAssetData;
+            return true;
+        });
+    }
+    
+#endif
 };
 
 #endif
