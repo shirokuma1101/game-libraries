@@ -10,9 +10,7 @@
 #include "Math/Convert.h"
 
 #include "SimpleMath.h"
-#ifndef CAMERA_DISABLE_LINK_LIBS
 #pragma comment(lib, "DirectXTK.lib")
-#endif
 
 namespace camera {
 
@@ -85,7 +83,7 @@ namespace camera {
 
         return convert_mat.Translation();
     }
-    
+
 }
 
 struct Camera {

@@ -6,9 +6,7 @@
 #include "Math/Convert.h"
 
 #include "SimpleMath.h"
-#ifndef TRANSFORM_DISABLE_LINK_LIBS
 #pragma comment(lib, "DirectXTK.lib")
-#endif
 
 struct Transform {
 
@@ -28,7 +26,7 @@ struct Transform {
         , rotation(r)
         , scale(s)
     {}
-    
+
     // CreateMatrix
     Matrix Composition() noexcept {
         return matrix = Matrix::CreateScale(scale) * Matrix::CreateFromYawPitchRoll(convert::ToRadians(rotation)) * Matrix::CreateTranslation(position);
@@ -52,7 +50,7 @@ struct Transform {
         , quaternion(q)
         , scale(s)
     {}
-    
+
     // CreateMatrix
     Matrix Composition() noexcept {
         return matrix = Matrix::CreateScale(scale) * Matrix::CreateFromQuaternion(quaternion) * Matrix::CreateTranslation(position);

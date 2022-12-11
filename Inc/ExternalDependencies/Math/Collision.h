@@ -4,9 +4,7 @@
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_MATH_COLLISION_H_
 
 #include "SimpleMath.h"
-#ifndef COLLISION_DISABLE_LINK_LIBS
 #pragma comment(lib, "DirectXTK.lib")
-#endif
 
 namespace collision {
     struct Ray : public DirectX::SimpleMath::Ray {
@@ -144,7 +142,7 @@ public:
     virtual T GetCollisionType() const noexcept final {
         return m_collisitonType;
     }
-    
+
     virtual bool Intersects(const collision::Ray&            target, const DirectX::SimpleMath::Matrix& mat, collision::Result* res) const = 0;
     virtual bool Intersects(const collision::BoundingSphere& target, const DirectX::SimpleMath::Matrix& mat, collision::Result* res) const = 0;
 

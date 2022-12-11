@@ -10,7 +10,6 @@
 #include "PxPhysicsAPI.h"
 #pragma warning(pop)
 #include "PxFoundation.h"
-#ifndef PHYSXHELPER_DISABLE_LINK_LIBS
 #pragma comment(lib, "PhysX_64.lib")
 #pragma comment(lib, "PhysXCommon_64.lib")
 #pragma comment(lib, "PhysXCooking_64.lib")
@@ -20,7 +19,6 @@
 #pragma comment(lib, "PhysXTask_static_64.lib")
 #pragma comment(lib, "SceneQuery_static_64.lib")
 #pragma comment(lib, "SimulationController_static_64.lib")
-#endif
 #include "SimpleMath.h"
 
 namespace physx_helper {
@@ -30,7 +28,7 @@ namespace physx_helper {
     **************************************************/
 
     /* DirectX Simple Math to PhysX math */
-    
+
     inline physx::PxMat44 ToPxMat44(const DirectX::SimpleMath::Matrix& mat) {
         return physx::PxMat44(
             physx::PxVec4(mat._11, mat._12, mat._13, mat._14),
@@ -74,7 +72,7 @@ namespace physx_helper {
         return DirectX::SimpleMath::Vector3(px_vec3.x, px_vec3.y, px_vec3.z);
     }
 
-    
+
     /****************************************
     * PhysX helper
     ****************************************/
@@ -143,8 +141,8 @@ namespace physx_helper {
     }
 
     inline physx::PxRigidDynamic* CreateDynamic(
-        physx::PxPhysics*                   physics,
-        const physx::PxTransform&           transform = physx::PxTransform(physx::PxIdentity)
+        physx::PxPhysics*         physics,
+        const physx::PxTransform& transform = physx::PxTransform(physx::PxIdentity)
     ) {
         physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(transform);
         return rigid_dynamic;
@@ -163,7 +161,7 @@ namespace physx_helper {
         }
         return false;
     }
-    
+
     inline void PutToSleep(physx::PxRigidActor* actor) {
         if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
             dynamic->putToSleep();
@@ -187,7 +185,7 @@ namespace physx_helper {
     inline DirectX::SimpleMath::Vector3 CalcCG(physx::PxRigidActor* actor, const DirectX::SimpleMath::Vector3& offset = {}) {
         if (physx::PxRigidDynamic* dynamic = IsDynamic(actor); dynamic) {
             physx::PxU32 shape_count = dynamic->getNbShapes();
-            physx::PxShape** shapes = new physx::PxShape * [shape_count];
+            physx::PxShape** shapes = new physx::PxShape*[shape_count];
 
             physx::PxVec3 cg = dynamic->getCMassLocalPose().p;
             dynamic->getShapes(shapes, shape_count);

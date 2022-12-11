@@ -13,8 +13,7 @@
 #include "backends/imgui_impl_dx11.h"
 #include "misc/cpp/imgui_stdlib.h"
 
-namespace imgui_helper
-{
+namespace imgui_helper {
     inline void Init(HWND hWnd, ID3D11Device* dev, ID3D11DeviceContext* ctx) {
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();

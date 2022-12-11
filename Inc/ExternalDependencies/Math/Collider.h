@@ -11,9 +11,7 @@
 #include "ExternalDependencies/Math/Collision.h"
 
 #include "SimpleMath.h"
-#ifndef COLLIDER_DISABLE_LINK_LIBS
 #pragma comment(lib, "DirectXTK.lib")
-#endif
 
 template<class T, class UnderlyingType = templates::UnderlyingTypeWrapperT<T>>
 class Collider
@@ -50,7 +48,7 @@ public:
 
         for (const auto& shape : m_spCollisionShapes) {
             if (!(static_cast<UnderlyingType>(type) & static_cast<UnderlyingType>(shape->GetCollisionType()))) continue;
-            
+
             collision::Result result;
             if (shape->Intersects(target, mat, &result)) {
                 hit = true;

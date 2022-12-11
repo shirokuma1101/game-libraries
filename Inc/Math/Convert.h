@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "Math/Constant.h"
-#include "Utility/Macro.h" 
-                                                                                                                  
+#include "Utility/Macro.h"
+
 namespace convert {
 
 #define CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(func_name, arg_name, float_expr, double_expr) \
@@ -31,29 +31,29 @@ struct func_name<ArgTy, double> {                                               
 MACRO_NAMESPACE_INTERNAL_END                                                              \
 template<class ArgTy>                                                                     \
 constexpr auto func_name(const ArgTy& arg_name) noexcept {                                \
-        return detail::func_name<ArgTy, ArgTy>::Func(arg_name);                           \
+    return detail::func_name<ArgTy, ArgTy>::Func(arg_name);                               \
 }                                                                                         \
 template<class ExpectTy, class ArgTy>                                                     \
 constexpr auto func_name(const ArgTy& arg_name) noexcept {                                \
-        return detail::func_name<ArgTy, ExpectTy>::Func(arg_name);                        \
+    return detail::func_name<ArgTy, ExpectTy>::Func(arg_name);                            \
 }                                                                                         \
 MACRO_NAMESPACE_EXTERNAL_END
 
-    
+
     /**************************************************
     * Math conversion
     **************************************************/
-    
+
     template<class T> constexpr T       ToSquare(const T& base) noexcept { return base * base; }
     template<class T> constexpr void    ToSquare(T* base)                { *base *= *base; }
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToHalf,     num,                          num * 0.5f,  num * 0.5 );
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToQuarter,  num,                          num * 0.25f, num * 0.25);
     template<class T> constexpr T       ToPercent(const T& num) noexcept { return num * 100; }
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToUndoPercent,     num,                   num * 0.01f, num * 0.01);
-    
+
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToRadians, deg, deg * (constant::fPI / 180.f), deg * (constant::dPI / 180.0));
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(ToDegrees, rad, rad * (180.f / constant::fPI), rad * (180.0 / constant::dPI));
-    
+
     /* Time conversion */
     // 1S = 1000MS = 1000000US = 1000000000NS
 
@@ -74,7 +74,7 @@ MACRO_NAMESPACE_EXTERNAL_END
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(NSToMS,  t,                   t * 0.000001f,    t * 0.000001   );
     CONVERT_SWITCHING_FLOAT_DOUBLE_FUNC(NSToS,   t,                   t * 0.000000001f, t * 0.000000001);
 
-    
+
     /**************************************************
     * Container conversion
     **************************************************/
@@ -96,7 +96,7 @@ MACRO_NAMESPACE_EXTERNAL_END
         return ToContainer<std::list>(iterable);
     }
 
-    
+
     /**************************************************
     * Enumerate
     **************************************************/
@@ -117,12 +117,12 @@ MACRO_NAMESPACE_EXTERNAL_END
         };
         return IterableWrapper{ std::forward<T>(iterable) };
     }
-    
+
 
     /**************************************************
     * Other
     **************************************************/
-    
+
     template<class CastTy, class T>
     constexpr CastTy SizeOf(const T& arg) {
         return static_cast<CastTy>(sizeof(arg));
