@@ -26,16 +26,58 @@
 #define MACRO_NAMESPACE_INTERNAL_END   }
 
 /* Enum class operator override */
-#define MACRO_ENUM_CLASS_OPERATOR_OVERLOAD_AND(class_name)                        \
-inline bool operator&(class_name lhs, class_name rhs) {                           \
-    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;        \
-    return static_cast<UnderlyingTypeT>(lhs) & static_cast<UnderlyingTypeT>(rhs); \
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_AND(class_name)                     \
+inline constexpr class_name operator&(class_name lhs, class_name rhs) noexcept { \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    return static_cast<class_name>(static_cast<UnderlyingTypeT>(lhs) &           \
+                                   static_cast<UnderlyingTypeT>(rhs));           \
 }
-#define MACRO_ENUM_CLASS_OPERATOR_OVERLOAD_OR(class_name)                         \
-inline bool operator|(class_name lhs, class_name rhs) {                           \
-    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;        \
-    return static_cast<UnderlyingTypeT>(lhs) | static_cast<UnderlyingTypeT>(rhs); \
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_OR(class_name)                      \
+inline constexpr class_name operator|(class_name lhs, class_name rhs) noexcept { \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    return static_cast<class_name>(static_cast<UnderlyingTypeT>(lhs) |           \
+                                   static_cast<UnderlyingTypeT>(rhs));           \
 }
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_XOR(class_name)                     \
+inline constexpr class_name operator^(class_name lhs, class_name rhs) noexcept { \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    return static_cast<class_name>(static_cast<UnderlyingTypeT>(lhs) ^           \
+                                   static_cast<UnderlyingTypeT>(rhs));           \
+}
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_NOT(class_name)                     \
+inline constexpr class_name operator~(class_name lhs) noexcept {                 \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    return static_cast<class_name>(~static_cast<UnderlyingTypeT>(lhs));          \
+}
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_AND_ASSIGN(class_name)              \
+inline class_name& operator&=(class_name& lhs, class_name rhs) noexcept {        \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    lhs = static_cast<class_name>(static_cast<UnderlyingTypeT>(lhs) &            \
+                                  static_cast<UnderlyingTypeT>(rhs));            \
+    return lhs;                                                                  \
+}
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_OR_ASSIGN(class_name)               \
+inline class_name& operator|=(class_name& lhs, class_name rhs) noexcept {        \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    lhs = static_cast<class_name>(static_cast<UnderlyingTypeT>(lhs) |            \
+                                  static_cast<UnderlyingTypeT>(rhs));            \
+    return lhs;                                                                  \
+}
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_XOR_ASSIGN(class_name)              \
+inline class_name& operator^=(class_name& lhs, class_name rhs) noexcept {        \
+    using UnderlyingTypeT = templates::UnderlyingTypeWrapperT<class_name>;       \
+    lhs = static_cast<class_name>(static_cast<UnderlyingTypeT>(lhs) ^            \
+                                  static_cast<UnderlyingTypeT>(rhs));            \
+    return lhs;                                                                  \
+}
+#define MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE(class_name)                         \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_AND(class_name)                             \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_OR(class_name)                              \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_XOR(class_name)                             \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_NOT(class_name)                             \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_AND_ASSIGN(class_name)                      \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_OR_ASSIGN(class_name)                       \
+MACRO_ENUM_OPERATOR_OVERLOAD_BITWISE_XOR_ASSIGN(class_name)
 
 /* Singleton */
 #define MACRO_SIMPLE_SINGLETON(class_name, func_name) \
