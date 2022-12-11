@@ -34,14 +34,14 @@ struct ProjectileMotion {
         , height(height)
         , gravity(gravity)
     {}
-    
+
     std::tuple<float, float> DisplacementPosition(float _time) const noexcept {
         return { vx * _time, vy * _time - convert::ToHalf(g * convert::ToSquare(_time)) };
     }
     std::tuple<float, float> DisplacementVector(float _time) const noexcept {
         return { vx, vy - (g * _time) };
     }
-    
+
     union {
         struct {
             float velocity;
@@ -96,20 +96,20 @@ struct ProjectileMotionFromHeightLength : public ProjectileMotion {
     }
 };
 
-//struct ProjectileMotionFromVelocityTime : public ProjectileMotion {
-//    ProjectileMotionFromVelocityTime() noexcept
-//        : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
-//    {}
-//    ProjectileMotionFromVelocityTime(float velocity, float time, float gravity = constant::fG) noexcept
-//        : ProjectileMotion(velocity, 0.f, 0.f, 0.f, time, 0.f, 0.f, gravity)
-//    {
-//        l     = std::sqrt(convert::ToSquare(v0) - convert::ToSquare(convert::ToHalf(g * t) * t)); //TODO: expr bug
-//        h     = g * convert::ToSquare(t) / 8.f;
-//        theta = std::atan(4.f * h / l);
-//        vx    = v0 * std::cos(theta);
-//        vy    = v0 * std::sin(theta);
-//    }
-//};
+struct ProjectileMotionFromVelocityTime : public ProjectileMotion {
+    ProjectileMotionFromVelocityTime() noexcept
+        : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
+    {}
+    ProjectileMotionFromVelocityTime(float velocity, float time, float gravity = constant::fG) noexcept
+        : ProjectileMotion(velocity, 0.f, 0.f, 0.f, time, 0.f, 0.f, gravity)
+    {
+        l     = v0 * t + 0.5f * g * convert::ToSquare(t);
+        h     = g * convert::ToSquare(t) / 8.f;
+        theta = std::atan(4.f * h / l);
+        vx    = v0 * std::cos(theta);
+        vy    = v0 * std::sin(theta);
+    }
+};
 
 struct ProjectileMotionFromTimeLength : public ProjectileMotion {
     ProjectileMotionFromTimeLength() noexcept
