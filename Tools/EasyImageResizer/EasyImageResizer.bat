@@ -11,4 +11,3 @@ for %%i in (!x!) do (
     .\EasyImageResizer.py -i %%i -r !resolution! -c !compression!
     echo %%i resized to !resolution! and compressed to !compression!
 )
-pause
