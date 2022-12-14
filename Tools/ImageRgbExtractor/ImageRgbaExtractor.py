@@ -10,7 +10,7 @@ from PIL import Image
 
 def main():
     # Parse arguments
-    parser = argparse.ArgumentParser(description="Image RGB Extractor")
+    parser = argparse.ArgumentParser(description="Image RGBA Extractor")
     parser.add_argument('-i', '--input_file',  type=str, required=True, help='Input file(Required)')
     parser.add_argument('-o', '--output_file', type=str, required=True, help='Output file(Required)')
     args = parser.parse_args()
