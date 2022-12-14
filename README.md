@@ -1,13 +1,11 @@
 # game-libraries
 
-ゲーム開発に利用できるC++17 Header-Only libraries
+ゲーム開発に利用できるライブラリ
 
-## 利用方法
+## C++17 Header-Only libraries
 
-VisualStudioの場合、Incまでのパスを通すだけで利用できます。全てHeaderOnlyなので、SolutionExplorerに追加する必要はありません。<br>
-__※ExternalDependenciesフォルダ内は外部ライブラリを利用しているソースなので別途必要な場合があります。__
-
-## 利用できる機能
+VisualStudio2022の場合、Incまでのパスを通すだけで利用できます。全てHeaderOnlyなので、SolutionExplorerに追加する必要はありません。<br>
+__※ExternalDependenciesフォルダ内は外部ライブラリを利用しているソースなので別途include、link等が必要です。__
 
 | Directory                              | File                  | Description                      |
 | -------------------------------------- | --------------------- | -------------------------------- |
@@ -51,3 +49,17 @@ __※ExternalDependenciesフォルダ内は外部ライブラリを利用して�
 |                                        | Memory.h              | メモリ関連                            |
 |                                        | StdC++.h              | 標準ライブラリ                          |
 |                                        | Templates.h           | テンプレートクラス                        |
+
+## Tools
+
+環境変数にffmpeg、pythonを追加してください。またImageRgbaExtractorではPillowを使用しています。
+
+| Directory               | File                       | Description      |
+| ----------------------- | -------------------------- | ---------------- |
+| ConvertToWave\          | ConvertToWave.bat          | 複数のファイルをWaveに変換  |
+| EasyImageResizer\       | EasyImageResizer.bat       | 複数の画像をリサイズ       |
+|                         | EasyImageResizer.py        | 画像をリサイズ          |
+| ImageRgbaExtractor\     | ImageRgbaExtractor.bat     | 複数の画像からのRGBA値を抽出 |
+|                         | ImageRgbaExtractor.py      | 画像からのRGBA値を抽出    |
+| VideoToSequentialImage\ | VideoToSequentialImage.bat | 複数のビデオを連番画像に変換   |
+|                         | VideoToSequentialImage.py  | ビデオを連番画像に変換      |
