@@ -23,7 +23,7 @@ GAME_LIBRARIES_MATH_TIMER_H_
 class TEST_MATH
 {
 public:
-    
+
     static void TEST_CONSTANT() {
         CONSTANT_G;
         CONSTANT_PI;
@@ -55,7 +55,7 @@ public:
     }
 
     static void TEST_EASING() {
-        
+
     }
 
     static void TEST_MINIMUMMATH() {
@@ -65,7 +65,7 @@ public:
 
         assert(VECTOR2_COMPARE(DxVec2,                 ==, MinVec2));
         assert(VECTOR2_COMPARE(-DxVec2,                ==, -MinVec2));
-        
+
         assert(VECTOR2_COMPARE(DxVec2 + DxVec2,        ==, MinVec2 + MinVec2));
         assert(VECTOR2_COMPARE(DxVec2 - DxVec2,        ==, MinVec2 - MinVec2));
         assert(VECTOR2_COMPARE(DxVec2 * DxVec2,        ==, MinVec2 * MinVec2));
@@ -73,7 +73,7 @@ public:
 
         assert(                DxVec2.Dot({ 1, 2 })    ==  MinVec2.Dot({ 1, 2 }));
         assert(VECTOR2_COMPARE(DxVec2.Cross({ 1, 2 }), ==, MinVec2.Cross({ 1, 2 })));
-        
+
         assert(                DxVec2.Length()         ==  MinVec2.Length());
         assert(                DxVec2.LengthSquared()  ==  MinVec2.LengthSquared());
 
@@ -84,7 +84,7 @@ public:
 
         assert(VECTOR3_COMPARE(DxVec3,                    ==, MinVec3));
         assert(VECTOR3_COMPARE(-DxVec3,                   ==, -MinVec3));
-        
+
         assert(VECTOR3_COMPARE(DxVec3 + DxVec3,           ==, MinVec3 + MinVec3));
         assert(VECTOR3_COMPARE(DxVec3 - DxVec3,           ==, MinVec3 - MinVec3));
         assert(VECTOR3_COMPARE(DxVec3 * DxVec3,           ==, MinVec3 * MinVec3));
@@ -92,7 +92,7 @@ public:
 
         assert(                DxVec3.Dot({ 1, 2, 3 })    ==  MinVec3.Dot({ 1, 2, 3 }));
         assert(VECTOR3_COMPARE(DxVec3.Cross({ 1, 2, 3 }), ==, MinVec3.Cross({ 1, 2, 3 })));
-        
+
         assert(                DxVec3.Length()            ==  MinVec3.Length());
         assert(                DxVec3.LengthSquared()     ==  MinVec3.LengthSquared());
 
@@ -106,7 +106,13 @@ public:
     }
 
     static void TEST_PROJECTILEMOTION() {
-
+        ProjectileMotionFromVelocityTheta  pmvtheta(30.f, convert::ToRadians(60.f));
+        ProjectileMotionFromHeightLength   pmhl(50.f, 80.f);
+        ProjectileMotionFromVelocityTime   pmvt(90.f, 5.f);
+        ProjectileMotionFromTimeLength     pmtl(5.f, 80.f);
+        ProjectileMotionFromThetaLength    pmthetal(60.f, 80.f);
+        ProjectileMotionFromThetaHeight    pmthetah(60.f, 50.f);
+        ProjectileMotionFromVelocityLength pmvl(90.f, 10.f);
     }
 
     static void TEST_RANDOM() {
@@ -116,5 +122,5 @@ public:
     static void TEST_TIMER() {
 
     }
-    
+
 };
