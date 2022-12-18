@@ -2,12 +2,10 @@
 
 #include "Utility/Macro.h"
 
-/**************************************************
-* 
-* C++ Standard Library headers
-* "https://en.cppreference.com/w/cpp/header"
-* 
-**************************************************/
+/**
+ * @brief C++ Standard Library headers
+ * @note "https://en.cppreference.com/w/cpp/header"
+ */
 
 // Concepts library
 #if __cplusplus >= MACRO_CPP20

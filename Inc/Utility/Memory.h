@@ -5,30 +5,41 @@
 
 #include "Utility/Templates.h"
 
-/**************************************************
-* 
-* Memory
-* 
-**************************************************/
+/**
+ * @namespace memory
+ * @brief Namespace containing functions for safely releasing and deleting objects
+ */
 namespace memory {
-    
+
+    /**
+     * @brief Safely release an object
+     * @tparam T Type of the object
+     * @param p Pointer to the object to release
+     */
     template<class T>
     inline void SafeRelease(T** p) {
         if (!*p) return;
 
+        // Check if the object has a Release or release function
         if constexpr (TEMPLATES_HAS_FUNC(T, Release())) {
             (*p)->Release();
         }
         else if constexpr (TEMPLATES_HAS_FUNC(T, release())) {
             (*p)->release();
         }
+        // If neither function is defined, trigger a static_assert
         else {
             static_assert(templates::false_v<T>, "No 'Release' or 'release' function defined");
         }
 
         *p = nullptr;
     }
-    
+
+    /**
+     * @brief Safely delete an object
+     * @tparam T Type of the object
+     * @param p Pointer to the object to delete
+     */
     template<class T>
     inline void SafeDelete(T** p) {
         if (!*p) return;

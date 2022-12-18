@@ -12,17 +12,33 @@ namespace templates {
     template<class>
     constexpr bool false_v = false;
 
-    /* Function to check if the target function is defined in the specified class */
+    /**
+     * @brief Determines if the specified type has a member function with the specified name
+     * @tparam T The type to check for the member function
+     * @tparam Func The type of the member function
+     * @param f The member function to check for
+     * @return true if the type has the member function, false otherwise
+     */
     template<class T, class Func>
     constexpr auto HasFunc(Func&& f) noexcept ->decltype(f(std::declval<T>()), true) {
         return true;
     }
+    /**
+     * @brief Overload of HasFunc that returns false
+     * @tparam T Unused template parameter
+     * @return false
+     */
     template<class>
     constexpr bool HasFunc(...) noexcept {
         return false;
     }
-    // Macros to simplify access to HasFunc
-#define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})
+    /**
+    * @brief Macro to simplify access to the templates::HasFunc function.
+    *
+    * @param type The type to check for the member function.
+    * @param func The name of the member function to check for.
+    */
+    #define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})
 
     /* Possible to cast */
     template<class T, class U>
@@ -43,7 +59,7 @@ namespace templates {
     struct UnderlyingTypeWrapper : UnderlyingTypeWrapperImpl<T, std::is_enum<T>::value> {};
     template<class T>
     using UnderlyingTypeWrapperT = typename UnderlyingTypeWrapper<T>::type;
-    
+
 }
 
 #endif
