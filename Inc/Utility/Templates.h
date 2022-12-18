@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file Templates.h
+ * @author shirokuma1101
+ * @version 1.0
+ * @date 2022-12-18
+ *
+ * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_UTILITY_TEMPLATES_H_
 #define GAME_LIBRARIES_UTILITY_TEMPLATES_H_
@@ -74,7 +84,6 @@ namespace templates {
      * @brief A wrapper class for the underlying type of an enum type
      * @tparam T The type to be wrapped
      * @tparam is_enum A boolean value indicating whether T is an enum type
-     * @note "https://cpprefjp.github.io/reference/type_traits/underlying_type.html"
      */
     template<class T, bool is_enum>
     struct UnderlyingTypeWrapperImpl : std::add_const<T> {};

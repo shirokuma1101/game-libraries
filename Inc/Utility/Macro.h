@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file Macro.h
+ * @author shirokuma1101
+ * @version 1.0
+ * @date 2022-12-18
+ *
+ * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_UTILITY_MACRO_H_
 #define GAME_LIBRARIES_UTILITY_MACRO_H_
