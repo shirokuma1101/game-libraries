@@ -124,7 +124,7 @@ public:
 protected:
 
     virtual void CreateFactory() {
-        if (FAILED(CreateDXGIFactory(IID_PPV_ARGS(&m_cpFactory)))) {
+        if (FAILED(CreateDXGIFactory1(IID_PPV_ARGS(&m_cpFactory)))) {
             assert::ShowError(ASSERT_FILE_LINE, "Create factory failed");
         }
 
@@ -138,7 +138,7 @@ protected:
             SecureZeroMemory(&ad, sizeof(ad));
 
             /* GPUを列挙 */
-            if (DXGI_ERROR_NOT_FOUND == m_cpFactory->EnumAdapters(index, &m_cpAdapter)) break;
+            if (DXGI_ERROR_NOT_FOUND == m_cpFactory->EnumAdapters1(index, &m_cpAdapter)) break;
             m_cpAdapter->GetDesc(&ad);
 
             /* 列挙したVRAMが大きかったら代入*/
@@ -153,7 +153,7 @@ protected:
         }
 
         /* 決定したGPUを設定する */
-        if (FAILED(m_cpFactory->EnumAdapters(gpu_number, &m_cpAdapter))) {
+        if (FAILED(m_cpFactory->EnumAdapters1(gpu_number, &m_cpAdapter))) {
             assert::ShowError(ASSERT_FILE_LINE, "Enumerate adapters failed");
         }
     }
@@ -291,8 +291,8 @@ protected:
     ComPtr<ID3D11DeviceContext> m_cpCtx       = nullptr;
     
     ComPtr<IDXGISwapChain>      m_cpSwapChain = nullptr;
-    ComPtr<IDXGIAdapter>        m_cpAdapter   = nullptr;
-    ComPtr<IDXGIFactory>        m_cpFactory   = nullptr;
+    ComPtr<IDXGIAdapter1>       m_cpAdapter   = nullptr; // IDXGIAdapter1
+    ComPtr<IDXGIFactory1>       m_cpFactory   = nullptr; // IDXGIFactory1
 
     ComPtr<ID3D11Debug>         m_cpDebug     = nullptr;
     
