@@ -29,6 +29,11 @@
 #define MACRO_SUCCESS_CHECK(func, err_code) int err_code = func; !err_code
 #define MACRO_FAIL_CHECK(func, err_code)    int err_code = func; err_code
 
+/* Disable copy constructor */
+#define MACRO_DISABLE_COPY_CONSTRUCTOR(class_name) \
+    class_name(const class_name&) = delete;        \
+    class_name& operator=(const class_name&) = delete
+
 /* Internal namespace */
 #define MACRO_NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {
 #define MACRO_NAMESPACE_EXTERNAL_END   }

@@ -13,7 +13,7 @@
 #include "Utility/Macro.h"
 
 /**
- * @brief C++ Standard Library headers
+ * @brief C++ Standard Library headers.
  * @note "https://en.cppreference.com/w/cpp/header"
  */
 

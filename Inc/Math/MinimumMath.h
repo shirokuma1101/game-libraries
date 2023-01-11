@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file MinimumMath.h
+ * @author shirokuma1101
+ * @version 1.0
+ * @date 2022-12-19
+ *
+ * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_MATH_MINIMUMMATH_H_
 #define GAME_LIBRARIES_MATH_MINIMUMMATH_H_
@@ -41,7 +51,7 @@ namespace minimum_math {
 
         float Length()                  const noexcept { return std::sqrt(Dot(*this)); }
         float LengthSquared()           const noexcept { return Dot(*this); }
-    
+
         union {
             struct { float x, y; };
             float v2[2];
@@ -54,7 +64,7 @@ namespace minimum_math {
     Vector2 operator*(const Vector2& v1, const Vector2& v2) noexcept { return Vector2(v1) *= v2; }
     Vector2 operator/(const Vector2& v,  float s)           noexcept { return Vector2(v)  /= s;  }
     Vector2 operator/(const Vector2& v1, const Vector2& v2) noexcept { return Vector2(v1) /= v2; }
-    
+
 
     /**************************************************
     * 3D Vector
@@ -78,10 +88,10 @@ namespace minimum_math {
 
         float   Dot(const Vector3& v)   const noexcept { return x * v.x + y * v.y + z * v.z; }
         Vector3 Cross(const Vector3& v) const noexcept { return Vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x); }
-        
+
         float   Length()                const noexcept { return std::sqrt(Dot(*this)); }
         float   LengthSquared()         const noexcept { return Dot(*this); }
-        
+
         union {
             struct { float x, y, z; };
             float v3[3];

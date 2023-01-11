@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file ProjectileMotion.h
+ * @author shirokuma1101
+ * @version 1.0
+ * @date 2022-12-19
+ *
+ * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_MATH_PROJECTILEMOTION_H_
 #define GAME_LIBRARIES_MATH_PROJECTILEMOTION_H_

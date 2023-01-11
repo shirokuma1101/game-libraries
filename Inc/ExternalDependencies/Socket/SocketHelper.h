@@ -58,7 +58,7 @@ namespace socket_helper {
         return std::string();
     }
     MACRO_NAMESPACE_INTERNAL_END
-    
+
     inline SOCKET Create(int family = IPv4, int type = TCP, int protocol = 0) {
         WSADATA wsa_data{};
         SecureZeroMemory(&wsa_data, sizeof(wsa_data));
@@ -91,7 +91,7 @@ namespace socket_helper {
 
         return socket(family, type, protocol);
     }
-    
+
     inline void Close(SOCKET* sock, bool wsa_cleanup = true) {
         if (MACRO_FAIL_CHECK(closesocket(*sock), err)) {
             assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("closesocket failed.", err));
@@ -122,13 +122,13 @@ namespace socket_helper {
             assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("bind failed.", err));
         }
     }
-    
+
     inline void Listen(SOCKET* sock, int backlog) {
         if (MACRO_FAIL_CHECK(listen(*sock, backlog), err)) {
             assert::ShowError(ASSERT_FILE_LINE, detail::MakeErrorDetails("listen failed.", err));
         }
     }
-    
+
     inline SOCKET Accept(SOCKET* sock, ADDRINFO* addr_info) {
         SecureZeroMemory(addr_info, sizeof(*addr_info));
         int size = convert::SizeOf<int>(*addr_info->ai_addr);
@@ -184,14 +184,14 @@ namespace socket_helper {
         }
         return false;
     }
-    
+
     inline int Send(SOCKET sock, std::string_view data) {
         return send(sock, data.data(), static_cast<int>(data.size()), 0);
     }
     inline int Send(SOCKET sock, std::string_view data, const SOCKADDR& sock_addr) {
         return sendto(sock, data.data(), static_cast<int>(data.size()), 0, &sock_addr, sizeof(sock_addr));
     }
-    
+
     inline std::string Recv(SOCKET sock) {
         char buf[BUFFER];
         return detail::CheckRecvData(buf, recv(sock, buf, BUFFER, 0));
@@ -222,7 +222,7 @@ namespace socket_helper {
             assert::ShowError(ASSERT_FILE_LINE, "Domain not found.");
             return false;
         }
-        
+
         *addr_info = *result;
         for (next = result; next != NULL; next = next->ai_next) {
             SOCKET sock = Create(next->ai_family, next->ai_socktype, next->ai_protocol);
@@ -238,16 +238,25 @@ namespace socket_helper {
         return true;
     }
 
+    /**
+     * @brief Get the IP address from the given ADDRINFO structure
+     * @param addr_info The ADDRINFO structure to extract the IP address from
+     * @return std::string The IP address in string format
+     */
     inline std::string GetIPAddr(const ADDRINFO& addr_info) {
+        // If ai_addr is a nullptr, return an empty string
         if (!addr_info.ai_addr) return std::string();
-        
-        SOCKADDR_IN* sock_addr_in = reinterpret_cast<SOCKADDR_IN*>(addr_info.ai_addr);
-        char dst[32];
 
+        // Cast ai_addr to SOCKADDR_IN type
+        SOCKADDR_IN* sock_addr_in = reinterpret_cast<SOCKADDR_IN*>(addr_info.ai_addr);
+
+        // Convert sock_addr_in->sin_addr to dst using inet_ntop function
+        // Return dst as std::string if the conversion is successful
+        char dst[32];
         inet_ntop(addr_info.ai_family, &sock_addr_in->sin_addr, dst, sizeof(dst));
         return std::string(dst);
     }
-    
+
     MACRO_NAMESPACE_EXTERNAL_END
 }
 

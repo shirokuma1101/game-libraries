@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file Easing.h
+ * @author shirokuma1101
+ * @version 1.0
+ * @date 2022-12-19
+ *
+ * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_MATH_EASING_H_
 #define GAME_LIBRARIES_MATH_EASING_H_
@@ -73,7 +83,7 @@ namespace easing {
             return detail::InOut(n, 4.f);
         }
     }
-    
+
     namespace Quint {
         inline float In(float n) noexcept {
             return detail::In(n, 5.f);
