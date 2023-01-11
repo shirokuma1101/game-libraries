@@ -335,8 +335,7 @@ namespace directx11_helper {
     inline ID3D11DepthStencilState* CreateDepthStencilState(ID3D11Device* dev, bool enable_depth, bool enable_write_depth) {
         D3D11_DEPTH_STENCIL_DESC dsd{};
         dsd.DepthEnable      = enable_depth;                // 深度テストを有効にするか
-                                                            // 深度バッファへの書き込みを許可するか
-        dsd.DepthWriteMask   = enable_write_depth ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO;
+        dsd.DepthWriteMask   = enable_write_depth ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO; // 深度バッファへの書き込みを許可するか
         dsd.DepthFunc        = D3D11_COMPARISON_LESS_EQUAL; // 深度テストの比較関数
         dsd.StencilEnable    = FALSE;                       // ステンシルテストを有効にするか
         dsd.StencilReadMask  = 0;                           // ステンシルバッファの読み込みマスク

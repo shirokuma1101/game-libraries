@@ -35,6 +35,6 @@ private:
 
     const nlohmann::json* m_pJson = nullptr;
     
-    T                    m_data;
+    T                     m_data;
 
 };
