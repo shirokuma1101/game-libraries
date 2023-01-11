@@ -7,7 +7,9 @@
 #include <d3d11.h>
 
 #include "Utility/Assert.h"
+#include "Utility/Macro.h"
 #include "Utility/Memory.h"
+#include "DirectX11Helper.h"
 
 
 class DirectX11Buffer
@@ -15,23 +17,27 @@ class DirectX11Buffer
 public:
 
     DirectX11Buffer(ID3D11Device* dev, ID3D11DeviceContext* ctx)
-        : m_pDevice(dev)
-        , m_pDeviceContext(ctx)
-    {}
+        : m_pDev(dev)
+        , m_pCtx(ctx)
+    {
+        if (!m_pDev || !m_pCtx) {
+            assert::ShowError(ASSERT_FILE_LINE, "device or device context is nullptr.");
+        }
+    }
     virtual ~DirectX11Buffer() {
         Release();
     }
 
-    ID3D11Buffer* Get() {
+    ID3D11Buffer* Get() noexcept {
         return m_pBuffer;
     }
-    ID3D11Buffer* Get() const {
+    ID3D11Buffer* Get() const noexcept {
         return m_pBuffer;
     }
-    ID3D11Buffer* const* GetAddress() const {
+    ID3D11Buffer* const* GetAddress() const noexcept {
         return &m_pBuffer;
     }
-    UINT GetSize() const {
+    UINT GetSize() const noexcept {
         return m_bufferSize;
     }
 
@@ -39,13 +45,17 @@ public:
         Release();
         m_bufferSize  = buffer_size;
         m_bufferUsage = buffer_usage;
-        return Create(m_pDevice, &m_pBuffer, m_bufferSize, m_bufferUsage, bind_flags, init_data);
-    }  
+        return Create(m_pDev, &m_pBuffer, m_bufferSize, m_bufferUsage, bind_flags, init_data);
+    }
 
     void Write(const void* src_data, UINT src_size) {
-        Write(m_pDeviceContext, m_pBuffer, m_bufferSize, m_bufferUsage, src_data, src_size);
+        Write(m_pCtx, m_pBuffer, m_bufferUsage, m_bufferSize, src_data, src_size);
     }
-    
+
+    void Set(directx11_helper::ShaderTarget target, UINT slot, UINT count = 1) {
+        Set(m_pCtx, &m_pBuffer, target, slot, count);
+    }
+
     void Release() {
         memory::SafeRelease(&m_pBuffer);
         m_bufferSize  = 0;
@@ -103,7 +113,7 @@ public:
         return true;
     }
 
-    static void Write(ID3D11DeviceContext* ctx, ID3D11Buffer* buffer, UINT buffer_size, D3D11_USAGE buffer_usage, const void* src_data, UINT src_size) {
+    static void Write(ID3D11DeviceContext* ctx, ID3D11Buffer* buffer, D3D11_USAGE buffer_usage, UINT buffer_size, const void* src_data, UINT src_size) {
         if (buffer_usage == D3D11_USAGE_DEFAULT) {
             ctx->UpdateSubresource(buffer, 0, 0, src_data, 0, 0);
         }
@@ -123,18 +133,40 @@ public:
         }
     }
 
+    static void Set(ID3D11DeviceContext* ctx, ID3D11Buffer* const* buffer, directx11_helper::ShaderTarget target, UINT slot, UINT count) {
+        switch (target) {
+        case directx11_helper::ShaderTarget::CS:
+            ctx->CSSetConstantBuffers(slot, count, buffer);
+            break;
+        case directx11_helper::ShaderTarget::DS:
+            ctx->DSSetConstantBuffers(slot, count, buffer);
+            break;
+        case directx11_helper::ShaderTarget::GS:
+            ctx->GSSetConstantBuffers(slot, count, buffer);
+            break;
+        case directx11_helper::ShaderTarget::HS:
+            ctx->HSSetConstantBuffers(slot, count, buffer);
+            break;
+        case directx11_helper::ShaderTarget::PS:
+            ctx->PSSetConstantBuffers(slot, count, buffer);
+            break;
+        case directx11_helper::ShaderTarget::VS:
+            ctx->VSSetConstantBuffers(slot, count, buffer);
+            break;
+        }
+    }
+
 protected:
 
-    ID3D11Device*        m_pDevice        = nullptr;
-    ID3D11DeviceContext* m_pDeviceContext = nullptr;
-    ID3D11Buffer*        m_pBuffer        = nullptr;
-    UINT                 m_bufferSize     = 0;
-    D3D11_USAGE          m_bufferUsage    = D3D11_USAGE_DEFAULT;
+    ID3D11Device*        m_pDev        = nullptr;
+    ID3D11DeviceContext* m_pCtx        = nullptr;
+    ID3D11Buffer*        m_pBuffer     = nullptr;
+    UINT                 m_bufferSize  = 0;
+    D3D11_USAGE          m_bufferUsage = D3D11_USAGE_DEFAULT;
 
 private:
 
-    DirectX11Buffer(const DirectX11Buffer& src) = delete;
-    void operator=(const DirectX11Buffer& src)  = delete;
+    MACRO_DISABLE_COPY_CONSTRUCTOR(DirectX11Buffer);
 
 };
 
@@ -150,14 +182,14 @@ public:
         Release();
     }
 
-    T* Get() {
+    T* Get() noexcept {
         m_isChanged = true;
         return &m_data;
     }
-    const T* Get() const {
+    const T* Get() const noexcept {
         return &m_data;
     }
-    ID3D11Buffer* const* GetBufferAddress() const {
+    ID3D11Buffer* const* GetBufferAddress() const noexcept {
         return m_upBuffer->GetAddress();
     }
 
@@ -176,6 +208,10 @@ public:
         m_isChanged = false;
     }
 
+    void Set(directx11_helper::ShaderTarget target, UINT slot, UINT count = 1) {
+        m_upBuffer->Set(target, slot, count);
+    }
+
     void Release() {
         if (m_upBuffer) {
             m_upBuffer->Release();
@@ -186,8 +222,7 @@ public:
 
 private:
 
-    DirectX11ConstantBuffer(const DirectX11ConstantBuffer& src) = delete;
-    void operator=(const DirectX11ConstantBuffer& src)          = delete;
+    MACRO_DISABLE_COPY_CONSTRUCTOR(DirectX11ConstantBuffer);
 
     T                                m_data;
     std::unique_ptr<DirectX11Buffer> m_upBuffer  = nullptr;
