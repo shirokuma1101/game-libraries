@@ -96,7 +96,7 @@ public:
 
     bool Load(std::string_view file_path, bool render_target = false, bool depth_stencil = false, bool generate_mipmap = true) {
         m_filePath = file_path;
-        DirectX::TexMetadata metadeta{};
+        DirectX::TexMetadata metadata{};
         DirectX::ScratchImage image{};
         std::string ext = std::filesystem::path(m_filePath).extension().string();
 
@@ -106,19 +106,19 @@ public:
 
         // .dds
         if (ext == ".dds") {
-            if (FAILED(LoadFromDDSFile(sjis_to_wide(m_filePath).data(), DirectX::DDS_FLAGS_NONE, &metadeta, image))) {
+            if (FAILED(LoadFromDDSFile(sjis_to_wide(m_filePath).data(), DirectX::DDS_FLAGS_NONE, &metadata, image))) {
                 return false;
             }
         }
         // .tga
         else if (ext == ".tga") {
-            if (FAILED(LoadFromTGAFile(sjis_to_wide(m_filePath).data(), &metadeta, image))) {
+            if (FAILED(LoadFromTGAFile(sjis_to_wide(m_filePath).data(), &metadata, image))) {
                 return false;
             }
         }
         // .bmp .png .gif .tiff ,jpeg
         else {
-            if (FAILED(LoadFromWICFile(sjis_to_wide(m_filePath).data(), DirectX::WIC_FLAGS::WIC_FLAGS_ALL_FRAMES, &metadeta, image))) {
+            if (FAILED(LoadFromWICFile(sjis_to_wide(m_filePath).data(), DirectX::WIC_FLAGS::WIC_FLAGS_ALL_FRAMES, &metadata, image))) {
                 return false;
             }
         }
@@ -290,7 +290,7 @@ private:
 class DirectX11RenderTarget
 {
 public:
-    
+
     DirectX11RenderTarget(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_pDev(dev)
         , m_pCtx(ctx)
@@ -314,7 +314,7 @@ public:
     const D3D11_VIEWPORT& GetViewport() const noexcept {
         return m_viewport;
     }
-    
+
     void Release() noexcept {
         m_spBackBuffer.reset();
         m_spBackBuffer = nullptr;
@@ -333,7 +333,7 @@ public:
         m_pCtx->RSGetViewports(&num, &v);
         m_viewport = v;
     }
-    
+
     void Set() {
         if (m_spBackBuffer) {
             m_pCtx->OMSetRenderTargets(1, m_spBackBuffer->GetRtvAddress(), m_spZBuffer ? m_spZBuffer->GetDsv() : nullptr);
@@ -343,7 +343,7 @@ public:
 
     void Create(const std::pair<int32_t, int32_t>& size, bool zbuffer, DXGI_FORMAT rt_format, DXGI_FORMAT ds_format, const D3D11_VIEWPORT& v) {
         Release();
-        
+
         m_spBackBuffer = std::make_shared<DirectX11Texture>(m_pDev, m_pCtx);
         m_spBackBuffer->CreateRenderTarget(size, 1, rt_format);
         if (zbuffer) {
@@ -360,7 +360,7 @@ public:
         v.Height   = static_cast<float>(size.second);
         v.MinDepth = 0.f;
         v.MaxDepth = 1.f;
-        
+
         Create(size, zbuffer, rt_format, ds_format, v);
     }
 
@@ -419,14 +419,14 @@ public:
         m_spSaveRT.reset();
         m_spSaveRT = nullptr;
     }
-    
+
 private:
 
     ID3D11Device*                          m_pDev = nullptr;
     ID3D11DeviceContext*                   m_pCtx = nullptr;
-    
+
     std::shared_ptr<DirectX11RenderTarget> m_spSaveRT = nullptr;
-    
+
 };
 
 #endif
