@@ -123,7 +123,7 @@ public:
             }
         }
 
-        if (generate_mipmap && metadeta.mipLevels == 1) {
+        if (generate_mipmap && metadata.mipLevels == 1) {
             DirectX::ScratchImage mip_chain;
             if (SUCCEEDED(DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_FLAGS::TEX_FILTER_DEFAULT, 0, mip_chain))) {
                 image.Release();
