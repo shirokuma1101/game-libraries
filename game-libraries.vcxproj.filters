@@ -195,6 +195,9 @@
     <ClInclude Include="Inc\Utility\Memory.h">
       <Filter>Inc\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Shader.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\TestMain.cpp">
