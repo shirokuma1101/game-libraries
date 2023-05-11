@@ -279,54 +279,6 @@ namespace directx11_helper {
         return blob;
     }
 
-    inline ID3D11ComputeShader* CreateComputeShader(ID3D11Device* dev, ID3DBlob* blob) {
-        ID3D11ComputeShader* compute_shader = nullptr;
-        if (FAILED(dev->CreateComputeShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &compute_shader))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create compute shader failed");
-        }
-        return compute_shader;
-    }
-
-    inline ID3D11DomainShader* CreateDomainShader(ID3D11Device* dev, ID3DBlob* blob) {
-        ID3D11DomainShader* domain_shader = nullptr;
-        if (FAILED(dev->CreateDomainShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &domain_shader))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create domain shader failed");
-        }
-        return domain_shader;
-    }
-
-    inline ID3D11GeometryShader* CreateGeometryShader(ID3D11Device* dev, ID3DBlob* blob) {
-        ID3D11GeometryShader* geometry_shader = nullptr;
-        if (FAILED(dev->CreateGeometryShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &geometry_shader))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create geometry shader failed");
-        }
-        return geometry_shader;
-    }
-
-    inline ID3D11HullShader* CreateHullShader(ID3D11Device* dev, ID3DBlob* blob) {
-        ID3D11HullShader* hull_shader = nullptr;
-        if (FAILED(dev->CreateHullShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &hull_shader))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create hull shader failed");
-        }
-        return hull_shader;
-    }
-
-    inline ID3D11PixelShader* CreatePixelShader(ID3D11Device* dev, ID3DBlob* blob) {
-        ID3D11PixelShader* pixel_shader = nullptr;
-        if (FAILED(dev->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pixel_shader))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create pixel shader failed");
-        }
-        return pixel_shader;
-    }
-
-    inline ID3D11VertexShader* CreateVertexShader(ID3D11Device* dev, ID3DBlob* blob) {
-        ID3D11VertexShader* vertex_shader = nullptr;
-        if (FAILED(dev->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vertex_shader))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create vertex shader failed");
-        }
-        return vertex_shader;
-    }
-
 
     /**************************************************
     * State helper
