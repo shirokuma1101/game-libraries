@@ -1,8 +1,8 @@
 ﻿/**
  * @file Macro.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-18
+ * @version 1.1
+ * @date 2023-05-12
  *
  * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
@@ -33,6 +33,25 @@
 #define MACRO_DISABLE_COPY_CONSTRUCTOR(class_name) \
     class_name(const class_name&) = delete;        \
     class_name& operator=(const class_name&) = delete
+
+/* Getter */
+#define MACRO_GETTER(class_name, getter_func_name, member_name) \
+    virtual class_name getter_func_name() const noexcept final { return member_name; }
+
+/* Const and non-const pointer getter */
+#define MACRO_GETTER_PTR(class_name, getter_func_name, member_name)                           \
+    virtual       class_name* getter_func_name()       noexcept final { return member_name; } \
+    virtual const class_name* getter_func_name() const noexcept final { return member_name; }
+
+/* Const and non-const reference getter */
+#define MACRO_GETTER_REF(class_name, getter_func_name, member_name)                           \
+    virtual       class_name& getter_func_name()       noexcept final { return member_name; } \
+    virtual const class_name& getter_func_name() const noexcept final { return member_name; }
+
+/* Const and non-const shared_ptr getter */
+#define MACRO_GETTER_SHARED_PTR(class_name, getter_func_name, member_name)                      \
+    std::shared_ptr<class_name>       getter_func_name()       noexcept { return member_name; } \
+    std::shared_ptr<const class_name> getter_func_name() const noexcept { return member_name; }
 
 /* Internal namespace */
 #define MACRO_NAMESPACE_EXTERNAL_BEGIN namespace detail {} namespace {

@@ -1,8 +1,8 @@
 ﻿/**
  * @file Templates.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-18
+ * @version 1.1
+ * @date 2023-05-12
  *
  * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
@@ -16,7 +16,8 @@
 #include <type_traits>
 
 /**
- * @brief A namespace containing various templates.
+ * @namespace templates
+ * @brief Namespace containing various templates.
  */
 namespace templates {
 
