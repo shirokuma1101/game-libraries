@@ -156,7 +156,9 @@
     <ClInclude Include="Inc\ExternalDependencies\Audio\AudioManager.h" />
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11.h" />
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Buffer.h" />
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Ex.h" />
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Helper.h" />
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11InputLayout.h" />
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Shader.h" />
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Texture.h" />
     <ClInclude Include="Inc\ExternalDependencies\Effekseer\EffekseerHelper.h" />

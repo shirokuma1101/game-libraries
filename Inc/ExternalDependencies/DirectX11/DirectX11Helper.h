@@ -37,22 +37,22 @@ namespace directx11_helper {
 
     constexpr DirectX::SimpleMath::Color normal  = { 0.5f, 0.5f, 1.0f, 1.0f };
 
-#define DIRECTX11_HELPER_PADDING_1BYTE(num)  const char padding1byte##num[1]   = { 0 }
-#define DIRECTX11_HELPER_PADDING_2BYTE(num)  const char padding2byte##num[2]   = { 0, 0 }
-#define DIRECTX11_HELPER_PADDING_3BYTE(num)  const char padding3byte##num[3]   = { 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_4BYTE(num)  const char padding4byte##num[4]   = { 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_5BYTE(num)  const char padding5byte##num[5]   = { 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_6BYTE(num)  const char padding6byte##num[6]   = { 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_7BYTE(num)  const char padding7byte##num[7]   = { 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_8BYTE(num)  const char padding8byte##num[8]   = { 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_9BYTE(num)  const char padding9byte##num[9]   = { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_10BYTE(num) const char padding10byte##num[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_11BYTE(num) const char padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_12BYTE(num) const char padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_13BYTE(num) const char padding13byte##num[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_14BYTE(num) const char padding14byte##num[14] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_15BYTE(num) const char padding15byte##num[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-#define DIRECTX11_HELPER_PADDING_16BYTE(num) const char padding16byte##num[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_1BYTE(num)  const char padding1byte##num[1]   = { 0 }
+    #define DIRECTX11_HELPER_PADDING_2BYTE(num)  const char padding2byte##num[2]   = { 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_3BYTE(num)  const char padding3byte##num[3]   = { 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_4BYTE(num)  const char padding4byte##num[4]   = { 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_5BYTE(num)  const char padding5byte##num[5]   = { 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_6BYTE(num)  const char padding6byte##num[6]   = { 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_7BYTE(num)  const char padding7byte##num[7]   = { 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_8BYTE(num)  const char padding8byte##num[8]   = { 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_9BYTE(num)  const char padding9byte##num[9]   = { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_10BYTE(num) const char padding10byte##num[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_11BYTE(num) const char padding11byte##num[11] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_12BYTE(num) const char padding12byte##num[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_13BYTE(num) const char padding13byte##num[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_14BYTE(num) const char padding14byte##num[14] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_15BYTE(num) const char padding15byte##num[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+    #define DIRECTX11_HELPER_PADDING_16BYTE(num) const char padding16byte##num[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 
 
     /**************************************************
@@ -198,27 +198,27 @@ namespace directx11_helper {
         }
     }
 
-    inline void SetUpSwapChainDesc(DXGI_SWAP_CHAIN_DESC* sd, const std::pair<int32_t, int32_t>& size, ID3D11Device* dev, IDXGIAdapter* adapter, HWND hWnd, bool enable_msaa) {
-        SecureZeroMemory(sd, sizeof(*sd));
+    inline void SetUpSwapChainDesc(DXGI_SWAP_CHAIN_DESC* scd, const std::pair<int32_t, int32_t>& size, ID3D11Device* dev, IDXGIAdapter* adapter, HWND hWnd, bool enable_msaa, UINT buffer_count = 1, DXGI_SWAP_EFFECT se = DXGI_SWAP_EFFECT_DISCARD) {
+        SecureZeroMemory(scd, sizeof(*scd));
 
         /* SwapChain設定 (ウィンドウのサイズやフォーマット) */
-        SetUpModeDesc(&sd->BufferDesc, size, dev, adapter); // バックバッファの設定
+        SetUpModeDesc(&scd->BufferDesc, size, dev, adapter); // バックバッファの設定
         if (enable_msaa) {
-            SetUpSampleDesc(&sd->SampleDesc, dev);          // マルチサンプリングの設定
+            SetUpSampleDesc(&scd->SampleDesc, dev);          // マルチサンプリングの設定
         }
         else {
-            sd->SampleDesc.Count   = 1;
-            sd->SampleDesc.Quality = 0;
+            scd->SampleDesc.Count   = 1;
+            scd->SampleDesc.Quality = 0;
         }
-        sd->BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT; // バッファの使用方法
-        sd->BufferCount  = 1;                                                         // バッファの数
-        sd->OutputWindow = hWnd;                                                      // 出力対象のウィンドウハンドル
-        sd->Windowed     = TRUE;                                                      // ウィンドウモード or フルスクリーンモード
-        sd->SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;                                  // SwapEffectの指定
-        sd->Flags        = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;                    // SwapChainの設定フラグの指定
+        scd->BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT; // バッファの使用方法
+        scd->BufferCount  = buffer_count;                                              // バッファの数
+        scd->OutputWindow = hWnd;                                                      // 出力対象のウィンドウハンドル
+        scd->Windowed     = TRUE;                                                      // ウィンドウモード or フルスクリーンモード
+        scd->SwapEffect   = se;                                                        // SwapEffectの指定
+        scd->Flags        = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;                    // SwapChainの設定フラグの指定
     }
 
-
+    
     /**************************************************
     * Shader compile helper
     **************************************************/

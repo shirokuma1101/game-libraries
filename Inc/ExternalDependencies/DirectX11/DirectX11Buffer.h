@@ -3,14 +3,13 @@
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_DIRECTX11_DIRECTX11BUFFER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_DIRECTX11_DIRECTX11BUFFER_H_
 
+#include <d3d11_4.h>
 #include <memory>
-#include <d3d11.h>
 
 #include "Utility/Assert.h"
 #include "Utility/Macro.h"
 #include "Utility/Memory.h"
 #include "DirectX11Helper.h"
-
 
 class DirectX11Buffer
 {
@@ -19,30 +18,17 @@ public:
     DirectX11Buffer(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_pDev(dev)
         , m_pCtx(ctx)
-    {
-        if (!m_pDev || !m_pCtx) {
-            assert::ShowError(ASSERT_FILE_LINE, "device or device context is nullptr.");
-        }
-    }
+    {}
     virtual ~DirectX11Buffer() {
         Release();
     }
-
-    ID3D11Buffer* Get() noexcept {
-        return m_pBuffer;
-    }
-    ID3D11Buffer* Get() const noexcept {
-        return m_pBuffer;
-    }
-    ID3D11Buffer* const* GetAddress() const noexcept {
-        return &m_pBuffer;
-    }
-    UINT GetSize() const noexcept {
-        return m_bufferSize;
-    }
+    
+    MACRO_GETTER_PTR(ID3D11Buffer, Get, m_pBuffer);
+    MACRO_GETTER_PTR_CONST_ADDR(ID3D11Buffer, GetAddress, &m_pBuffer);
+    MACRO_GETTER_AS_IS(UINT, GetSize, m_bufferSize);
 
     bool Create(UINT buffer_size, D3D11_USAGE buffer_usage, D3D11_BIND_FLAG bind_flags, const D3D11_SUBRESOURCE_DATA* init_data) {
-        Release();
+        Reset();
         m_bufferSize  = buffer_size;
         m_bufferUsage = buffer_usage;
         return Create(m_pDev, &m_pBuffer, m_bufferSize, m_bufferUsage, bind_flags, init_data);
@@ -52,20 +38,31 @@ public:
         Write(m_pCtx, m_pBuffer, m_bufferUsage, m_bufferSize, src_data, src_size);
     }
 
-    void Set(directx11_helper::ShaderTarget target, UINT slot, UINT count = 1) {
-        Set(m_pCtx, &m_pBuffer, target, slot, count);
+    template<class T>
+    void IASetVertexBuffers(UINT slot, UINT count = 1, UINT offset = 0) const {
+        UINT stride = sizeof(T);
+        m_pCtx->IASetVertexBuffers(slot, count, &m_pBuffer, &stride, &offset);
+    }
+    void IASetVertexBuffers(UINT slot, UINT count, UINT stride, UINT offset = 0) const {
+        m_pCtx->IASetVertexBuffers(slot, count, &m_pBuffer, &stride, &offset);
+    }
+    
+    void IASetIndexBuffer(DXGI_FORMAT format, UINT offset = 0) const {
+        m_pCtx->IASetIndexBuffer(m_pBuffer, format, offset);
+    }
+    
+    void SetConstantBuffers(directx11_helper::ShaderTarget target, UINT slot, UINT count = 1) {
+        SetConstantBuffers(m_pCtx, &m_pBuffer, target, slot, count);
     }
 
-    void Release() {
-        memory::SafeRelease(&m_pBuffer);
-        m_bufferSize  = 0;
-        m_bufferUsage = D3D11_USAGE_DEFAULT;
+    void Reset() {
+        Release();
     }
 
     static bool Create(ID3D11Device* dev, ID3D11Buffer** buffer, UINT buffer_size, D3D11_USAGE buffer_usage, D3D11_BIND_FLAG bind_flags, const D3D11_SUBRESOURCE_DATA* init_data) {
         if (bind_flags & D3D11_BIND_CONSTANT_BUFFER) {
             if (buffer_size % 16 != 0) {
-                assert::ShowError(ASSERT_FILE_LINE, "constant buffer size must be a multiple of 16 bytes.");
+                assert::ShowError(ASSERT_FILE_LINE, "Constant buffer size must be a multiple of 16 bytes.");
                 return false;
             }
         }
@@ -106,7 +103,7 @@ public:
         }
 
         if (FAILED(dev->CreateBuffer(&bd, init_data, buffer))) {
-            assert::ShowError(ASSERT_FILE_LINE, "Create buffer failed.");
+            assert::ShowError(ASSERT_FILE_LINE, "Create buffer failed");
             return false;
         }
 
@@ -133,7 +130,7 @@ public:
         }
     }
 
-    static void Set(ID3D11DeviceContext* ctx, ID3D11Buffer* const* buffer, directx11_helper::ShaderTarget target, UINT slot, UINT count) {
+    static void SetConstantBuffers(ID3D11DeviceContext* ctx, ID3D11Buffer* const* buffer, directx11_helper::ShaderTarget target, UINT slot, UINT count) {
         switch (target) {
         case directx11_helper::ShaderTarget::CS:
             ctx->CSSetConstantBuffers(slot, count, buffer);
@@ -156,15 +153,20 @@ public:
         }
     }
 
-protected:
-
-    ID3D11Device*        m_pDev        = nullptr;
-    ID3D11DeviceContext* m_pCtx        = nullptr;
-    ID3D11Buffer*        m_pBuffer     = nullptr;
-    UINT                 m_bufferSize  = 0;
-    D3D11_USAGE          m_bufferUsage = D3D11_USAGE_DEFAULT;
-
 private:
+
+    void Release() {
+        memory::SafeRelease(&m_pBuffer);
+        m_bufferSize = 0;
+        m_bufferUsage = D3D11_USAGE_DEFAULT;
+    }
+
+    ID3D11Device*        m_pDev = nullptr;
+    ID3D11DeviceContext* m_pCtx = nullptr;
+
+    ID3D11Buffer* m_pBuffer     = nullptr;
+    UINT          m_bufferSize  = 0;
+    D3D11_USAGE   m_bufferUsage = D3D11_USAGE_DEFAULT;
 
     MACRO_DISABLE_COPY_CONSTRUCTOR(DirectX11Buffer);
 
@@ -189,7 +191,7 @@ public:
     const T* Get() const noexcept {
         return &m_data;
     }
-    ID3D11Buffer* const* GetBufferAddress() const noexcept {
+    const ID3D11Buffer* const* GetBufferAddress() const noexcept {
         return m_upBuffer->GetAddress();
     }
 
@@ -208,25 +210,29 @@ public:
         m_isChanged = false;
     }
 
-    void Set(directx11_helper::ShaderTarget target, UINT slot, UINT count = 1) {
-        m_upBuffer->Set(target, slot, count);
+    void SetConstantBuffers(directx11_helper::ShaderTarget target, UINT slot, UINT count = 1) {
+        m_upBuffer->SetConstantBuffers(target, slot, count);
     }
+
+    void Reset() {
+        Release();
+    }
+
+private:
 
     void Release() {
         if (m_upBuffer) {
-            m_upBuffer->Release();
+            m_upBuffer->Reset();
             m_upBuffer = nullptr;
         }
         m_isChanged = true;
     }
 
-private:
-
-    MACRO_DISABLE_COPY_CONSTRUCTOR(DirectX11ConstantBuffer);
-
     T                                m_data;
     std::unique_ptr<DirectX11Buffer> m_upBuffer  = nullptr;
     bool                             m_isChanged = true;
+
+    MACRO_DISABLE_COPY_CONSTRUCTOR(DirectX11ConstantBuffer);
 
 };
 

@@ -198,6 +198,12 @@
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Shader.h">
       <Filter>Inc\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11InputLayout.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Ex.h">
+      <Filter>Inc\ExternalDependencies\DirectX11</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\TestMain.cpp">

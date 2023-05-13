@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "Utility/Assert.h"
+#include "Utility/Macro.h"
 #include "Utility/Memory.h"
 #include "DirectX11Helper.h"
 
@@ -22,32 +23,32 @@ public:
         Release();
     }
 
-    T* Get() noexcept {
-        return m_pShader;
-    }
-    T* Get() const noexcept {
-        return m_pShader;
-    }
+    MACRO_GETTER_PTR(T,        Get,     m_pShader);
+    MACRO_GETTER_PTR(ID3DBlob, GetBlob, m_pBlob  );
 
     virtual bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) = 0;
 
     virtual bool Create(const void* shader_bytecode, SIZE_T bytecode_length) = 0;
-    virtual bool Create(ID3DBlob* blob) final {
-        return Create(blob->GetBufferPointer(), blob->GetBufferSize());
+    virtual bool Create() final {
+        return Create(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize());
     }
 
     virtual void Set() = 0;
 
 protected:
 
+    ID3D11Device*        m_pDev = nullptr;
+    ID3D11DeviceContext* m_pCtx = nullptr;
+
+    T*        m_pShader = nullptr;
+    ID3DBlob* m_pBlob   = nullptr;
+
+private:
+
     void Release() {
+        memory::SafeRelease(&m_pBlob);
         memory::SafeRelease(&m_pShader);
     }
-
-    ID3D11Device*        m_pDev    = nullptr;
-    ID3D11DeviceContext* m_pCtx    = nullptr;
-    ID3DBlob*            m_pBlob   = nullptr;
-    T*                   m_pShader = nullptr;
 
 };
 
@@ -60,7 +61,7 @@ public:
     {}
 
     bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override {
-        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::CS, enable_debug), m_pBlob) {
+        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::CS, enable_debug); m_pBlob) {
             return true;
         }
         return false;
@@ -88,8 +89,8 @@ public:
         : DirectX11Shader(dev, ctx)
     {}
 
-    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override {
-        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::DS, enable_debug), m_pBlob) {
+    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override final {
+        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::DS, enable_debug); m_pBlob) {
             return true;
         }
         return false;
@@ -117,8 +118,8 @@ public:
         : DirectX11Shader(dev, ctx)
     {}
 
-    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override {
-        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::GS, enable_debug), m_pBlob) {
+    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override final {
+        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::GS, enable_debug); m_pBlob) {
             return true;
         }
         return false;
@@ -146,8 +147,8 @@ public:
         : DirectX11Shader(dev, ctx)
     {}
 
-    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override {
-        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::HS, enable_debug), m_pBlob) {
+    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override final {
+        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::HS, enable_debug); m_pBlob) {
             return true;
         }
         return false;
@@ -175,8 +176,8 @@ public:
         : DirectX11Shader(dev, ctx)
     {}
 
-    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override {
-        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::PS, enable_debug), m_pBlob) {
+    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override final {
+        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::PS, enable_debug); m_pBlob) {
             return true;
         }
         return false;
@@ -204,8 +205,8 @@ public:
         : DirectX11Shader(dev, ctx)
     {}
 
-    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override {
-        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::VS, enable_debug), m_pBlob) {
+    bool Compile(std::string_view file_path, std::string_view entry_point, bool enable_debug) override final {
+        if (m_pBlob = directx11_helper::CompileShaderFromFile(file_path, entry_point, directx11_helper::ShaderTarget::VS, enable_debug); m_pBlob) {
             return true;
         }
         return false;
