@@ -1,10 +1,10 @@
 ﻿/**
  * @file Assert.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-18
+ * @version 1.1
+ * @date 2023-05-14
  *
- * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
  */
 
@@ -24,7 +24,6 @@
 namespace assert {
 
     /**
-     * @def ASSERT_FILE_LINE
      * @brief Macro for the current file and line number.
      */
     #define ASSERT_FILE_LINE __FILE__, __LINE__
@@ -46,6 +45,7 @@ namespace assert {
     inline void ShowInfo(std::string_view message) {
         ShowInfo(ASSERT_FILE_LINE, message);
     }
+
     /**
      * @brief Show a warning message.
      * @param file File name.
@@ -62,6 +62,7 @@ namespace assert {
     inline void ShowWarning(std::string_view message) {
         ShowWarning(ASSERT_FILE_LINE, message);
     }
+
     /**
      * @brief Show an error message.
      * @param file File name.
@@ -81,16 +82,19 @@ namespace assert {
 #else
     inline void ShowInfo(char const*, int = 0, std::string_view = "") {}
     inline void ShowInfo(std::string_view = "") {}
+
     inline void ShowWarning(char const*, int = 0, std::string_view = "") {}
     inline void ShowWarning(std::string_view = "") {}
+
     inline void ShowError(char const*, int = 0, std::string_view = "") {}
     inline void ShowError(std::string_view = "") {}
 #endif // _DEBUG
+
     /**
-    * @brief Throws a runtime error with the specified message.
-    * @param message The message to include in the exception.
-    * @throw std::runtime_error The exception that is thrown.
-    */
+     * @brief Throws a runtime error with the specified message.
+     * @param message The message to include in the exception.
+     * @throw std::runtime_error The exception that is thrown.
+     */
     inline void ExceptionThrow(std::string_view message) {
         throw std::runtime_error(message.data());
     }

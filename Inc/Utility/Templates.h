@@ -2,9 +2,9 @@
  * @file Templates.h
  * @author shirokuma1101
  * @version 1.1
- * @date 2023-05-12
+ * @date 2023-05-14
  *
- * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
  */
 

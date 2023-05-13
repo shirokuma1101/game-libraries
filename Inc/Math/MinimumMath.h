@@ -1,10 +1,10 @@
 ﻿/**
  * @file MinimumMath.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-19
+ * @version 1.1
+ * @date 2023-05-14
  *
- * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
  */
 
@@ -18,17 +18,14 @@
 #pragma warning(push)
 #pragma warning(disable:4201) // nonstandard extension used : nameless struct/union
 
-/**************************************************
-*
-* A class that implements minimal (inefficient)
-* math functions
-*
-**************************************************/
+/**
+ * @brief A class that implements minimal (inefficient) math functions.
+ */
 namespace minimum_math {
 
-    /**************************************************
-    * 2D Vector
-    **************************************************/
+    /**
+     * @brief A class that implements a 2D vector.
+     */
     struct Vector2 {
         Vector2()                             noexcept : x(0), y(0) {}
         Vector2(float s)                      noexcept : x(s), y(s) {}
@@ -65,10 +62,9 @@ namespace minimum_math {
     Vector2 operator/(const Vector2& v,  float s)           noexcept { return Vector2(v)  /= s;  }
     Vector2 operator/(const Vector2& v1, const Vector2& v2) noexcept { return Vector2(v1) /= v2; }
 
-
-    /**************************************************
-    * 3D Vector
-    **************************************************/
+    /**
+     * @brief A class that implements a 3D vector.
+     */
     struct Vector3 {
         Vector3()                             noexcept : x(0), y(0), z(0) {}
         Vector3(float s)                      noexcept : x(s), y(s), z(s) {}
@@ -105,11 +101,11 @@ namespace minimum_math {
     Vector3 operator/(const Vector3& v,  float s)           noexcept { return Vector3(v)  /= s;  }
     Vector3 operator/(const Vector3& v1, const Vector3& v2) noexcept { return Vector3(v1) /= v2; }
 
-    /**************************************************
-    * 4x4 matrix with left-handed coordinate system
-    * default (right-handed coordinate system if
-    * MINIMUMMATH_MATRIX_RIGHT_HANDED is defined)
-    **************************************************/
+    /**
+     * @brief A class that implements a 4x4 matrix.
+     * @note The matrix is stored in left-handed coordinate system.
+     * @note right-handed coordinate system if MINIMUMMATH_MATRIX_RIGHT_HANDED is defined
+     */
     struct Matrix4x4 {
         Matrix4x4() noexcept
             : m00(1), m01(0), m02(0), m03(0)
@@ -182,7 +178,7 @@ namespace minimum_math {
         void    Left(const Vector3& v)        noexcept { m00 = -v.x; m01 = -v.y; m02 = -v.z; }
         void    Forward(const Vector3& v)     noexcept { m20 = -v.x; m21 = -v.y; m22 = -v.z; }
         void    Backward(const Vector3& v)    noexcept { m20 =  v.x; m21 =  v.y; m22 =  v.z; }
-#endif
+#endif // MINIMUMMATH_MATRIX_RIGHT_HANDED
         Vector3 Translation()           const noexcept { return Vector3( m30,  m31,  m32);   }
         void    Translation(const Vector3& v) noexcept { m30 =  v.x; m31 =  v.y; m32 =  v.z; }
 

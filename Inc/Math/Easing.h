@@ -1,10 +1,10 @@
 ﻿/**
  * @file Easing.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-19
+ * @version 1.1
+ * @date 2023-05-14
  *
- * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
  */
 
@@ -18,6 +18,10 @@
 #include "Math/Constant.h"
 #include "Utility/Macro.h"
 
+/**
+ * @namespace easing
+ * @brief Easing functions
+ */
 namespace easing {
 
     namespace Sine {

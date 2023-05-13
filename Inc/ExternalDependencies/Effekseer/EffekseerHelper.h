@@ -24,7 +24,7 @@
 namespace effekseer_helper {
 
     using RendererRef = EffekseerRendererDX11::RendererRef;
-    
+
     inline Effekseer::Vector3D ToVector3D(const DirectX::SimpleMath::Vector3& vec3) {
         return Effekseer::Vector3D(vec3.x, vec3.y, vec3.z);
     }
@@ -54,11 +54,13 @@ namespace effekseer_helper {
     inline void ManagerInit(Effekseer::ManagerRef* manager, const RendererRef& renderer, int max_square) {
         *manager = Effekseer::Manager::Create(max_square);
         (*manager)->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
+
         (*manager)->SetSpriteRenderer(renderer->CreateSpriteRenderer());
         (*manager)->SetRibbonRenderer(renderer->CreateRibbonRenderer());
         (*manager)->SetRingRenderer(renderer->CreateRingRenderer());
         (*manager)->SetTrackRenderer(renderer->CreateTrackRenderer());
         (*manager)->SetModelRenderer(renderer->CreateModelRenderer());
+
         (*manager)->SetTextureLoader(renderer->CreateTextureLoader());
         (*manager)->SetModelLoader(renderer->CreateModelLoader());
         (*manager)->SetMaterialLoader(renderer->CreateMaterialLoader());

@@ -1,12 +1,26 @@
-﻿#pragma once
+﻿/**
+ * @file DateTime.h
+ * @author shirokuma1101
+ * @version 1.1
+ * @date 2023-05-14
+ *
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_UTILITY_DATETIME_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_UTILITY_DATETIME_H_
 
 #include <Windows.h>
 
+/**
+ * @namespace date_time
+ * @brief date time utility
+ */
 namespace date_time {
-    
+
     union RealTime {
         ULARGE_INTEGER ui;
         FILETIME       ft;
@@ -35,7 +49,7 @@ namespace date_time {
 
         return st;
     }
-    
+
 }
 
 #endif

@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file SocketHelper.h
+ * @author shirokuma1101
+ * @version 1.1
+ * @date 2023-05-14
+ *
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_EXTERNALDEPENDENCIES_SOCKET_SOCKETHELPER_H_
 #define GAME_LIBRARIES_EXTERNALDEPENDENCIES_SOCKET_SOCKETHELPER_H_
@@ -23,6 +33,10 @@
 
 #undef GetAddrInfo
 
+/**
+ * @namespace socket_helper
+ * @brief Socket helper
+ */
 namespace socket_helper {
 
     using PORT           = uint16_t;
@@ -239,9 +253,13 @@ namespace socket_helper {
     }
 
     /**
-     * @brief Get the IP address from the given ADDRINFO structure
-     * @param addr_info The ADDRINFO structure to extract the IP address from
-     * @return std::string The IP address in string format
+     * @brief Returns the IP address string associated with the given ADDRINFO structure.
+     *
+     * This function takes an ADDRINFO structure as input and returns the corresponding IP address
+     * as a string. If the ADDRINFO does not contain a valid address, an empty string is returned.
+     *
+     * @param addr_info The ADDRINFO structure containing the address to convert to a string.
+     * @return The IP address as a string, or an empty string if the ADDRINFO does not contain a valid address.
      */
     inline std::string GetIPAddr(const ADDRINFO& addr_info) {
         // If ai_addr is a nullptr, return an empty string

@@ -1,10 +1,10 @@
 ﻿/**
  * @file Timer.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-19
+ * @version 1.1
+ * @date 2023-05-14
  *
- * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
  */
 
@@ -15,7 +15,10 @@
 
 #include <chrono>
 
-struct Timer {
+class Timer
+{
+public:
+
     using TimePoint = std::chrono::system_clock::time_point;
     using Time      = long long;
     using NS        = std::chrono::nanoseconds;
@@ -26,29 +29,29 @@ struct Timer {
     using H         = std::chrono::hours;
 
     Timer() noexcept
-        : start(TimePoint())
-        , end(TimePoint())
+        : m_start(TimePoint())
+        , m_end(TimePoint())
     {}
     Timer(const TimePoint& start, const TimePoint& end) noexcept
-        : start(start)
-        , end(end)
+        : m_start(start)
+        , m_end(end)
     {}
 
     void Start() noexcept {
-        start = GetPoint();
+        m_start = GetPoint();
     }
     void End() noexcept {
-        end = GetPoint();
+        m_end = GetPoint();
     }
 
     template<class Unit>
     Time Duration() const noexcept {
-        return std::chrono::duration_cast<Unit>(end - start).count();
+        return std::chrono::duration_cast<Unit>(m_end - m_start).count();
     }
 
     void Reset() noexcept {
-        start = TimePoint();
-        end = TimePoint();
+        m_start = TimePoint();
+        m_end   = TimePoint();
     }
 
     static TimePoint GetPoint() noexcept {
@@ -60,8 +63,10 @@ struct Timer {
         return std::chrono::duration_cast<Unit>(std::chrono::system_clock::now().time_since_epoch()).count();
     }
 
-    TimePoint start;
-    TimePoint end;
+private:
+
+    TimePoint m_start;
+    TimePoint m_end;
 
 };
 

@@ -1,4 +1,14 @@
-﻿#pragma once
+﻿/**
+ * @file SimpleUniqueThread.h
+ * @author shirokuma1101
+ * @version 1.1
+ * @date 2023-05-14
+ *
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
+ * @license MIT License (see LICENSE.txt file)
+ */
+
+#pragma once
 
 #ifndef GAME_LIBRARIES_THREAD_SIMPLETHREADMANAGER_SIMPLEUNIQUETHREAD_H_
 #define GAME_LIBRARIES_THREAD_SIMPLETHREADMANAGER_SIMPLEUNIQUETHREAD_H_
@@ -8,11 +18,6 @@
 
 #include "Utility/Assert.h"
 
-/**************************************************
-* 
-* Single instance of std::thread
-* 
-**************************************************/
 class SimpleUniqueThread
 {
 public:
@@ -119,7 +124,7 @@ private:
         SyncEnd(SyncType::DETACH);
         *is_end = true;
     }
-    
+
     void Release() noexcept {
         if (IsExists()) {
             SyncEnd();

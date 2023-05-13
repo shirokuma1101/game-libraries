@@ -1,10 +1,10 @@
 ﻿/**
  * @file ProjectileMotion.h
  * @author shirokuma1101
- * @version 1.0
- * @date 2022-12-19
+ * @version 1.1
+ * @date 2023-05-14
  *
- * @copyright Copyright (c) 2022 shirokuma1101. All rights reserved.
+ * @copyright Copyright (c) 2023 shirokuma1101. All rights reserved.
  * @license MIT License (see LICENSE.txt file)
  */
 
@@ -23,7 +23,10 @@
 #pragma warning(push)
 #pragma warning(disable:4201) // nonstandard extension used : nameless struct/union
 
-struct ProjectileMotion {
+class ProjectileMotion
+{
+public:
+
     ProjectileMotion() noexcept
         : velocity(0)
         , vectorx(0)
@@ -74,9 +77,13 @@ struct ProjectileMotion {
             float g;
         };
     };
+
 };
 
-struct ProjectileMotionFromVelocityTheta : public ProjectileMotion {
+class ProjectileMotionFromVelocityTheta : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromVelocityTheta() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -89,9 +96,13 @@ struct ProjectileMotionFromVelocityTheta : public ProjectileMotion {
         l  = vx * t;
         h  = convert::ToSquare(vy) / (2.f * g);
     }
+
 };
 
-struct ProjectileMotionFromHeightLength : public ProjectileMotion {
+class ProjectileMotionFromHeightLength : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromHeightLength() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -104,9 +115,13 @@ struct ProjectileMotionFromHeightLength : public ProjectileMotion {
         vy    = v0 * std::sin(theta);
         t     = 2.f * std::sqrt(2.f * h / g);
     }
+
 };
 
-struct ProjectileMotionFromVelocityTime : public ProjectileMotion {
+class ProjectileMotionFromVelocityTime : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromVelocityTime() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -119,9 +134,13 @@ struct ProjectileMotionFromVelocityTime : public ProjectileMotion {
         vx    = v0 * std::cos(theta);
         vy    = v0 * std::sin(theta);
     }
+
 };
 
-struct ProjectileMotionFromTimeLength : public ProjectileMotion {
+class ProjectileMotionFromTimeLength : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromTimeLength() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -134,9 +153,13 @@ struct ProjectileMotionFromTimeLength : public ProjectileMotion {
         theta = std::atan((g * convert::ToSquare(t)) / (2.f * l));
         h     = g * convert::ToSquare(t) / 8.0f;
     }
+
 };
 
-struct ProjectileMotionFromThetaLength : public ProjectileMotion {
+class ProjectileMotionFromThetaLength : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromThetaLength() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -149,9 +172,13 @@ struct ProjectileMotionFromThetaLength : public ProjectileMotion {
         t  = l / vx;
         h  = g * convert::ToSquare(t) / 8.f;
     }
+
 };
 
-struct ProjectileMotionFromThetaHeight : public ProjectileMotion {
+class ProjectileMotionFromThetaHeight : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromThetaHeight() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -164,9 +191,13 @@ struct ProjectileMotionFromThetaHeight : public ProjectileMotion {
         t  = (2.f * std::sqrt(2.f * g * h)) / g;
         l  = t * vx;
     }
+
 };
 
-struct ProjectileMotionFromVelocityLength : public ProjectileMotion {
+class ProjectileMotionFromVelocityLength : public ProjectileMotion
+{
+public:
+
     ProjectileMotionFromVelocityLength() noexcept
         : ProjectileMotion(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f)
     {}
@@ -237,6 +268,7 @@ struct ProjectileMotionFromVelocityLength : public ProjectileMotion {
         ProjectileMotionFromVelocityTheta projectileMotionFromVelocityTheta;
     };
     std::array<ParabolicMotion, 2> parabolicMotions;
+
 };
 
 #pragma warning(pop)
