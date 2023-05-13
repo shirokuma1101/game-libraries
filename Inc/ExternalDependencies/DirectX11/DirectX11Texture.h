@@ -10,6 +10,7 @@
 #include <d3d11_4.h>
 
 #include "Utility/Assert.h"
+#include "Utility/Macro.h"
 #include "Utility/Memory.h"
 #include "DirectX11Helper.h"
 
@@ -28,6 +29,13 @@ public:
     virtual ~DirectX11Texture() {
         Release();
     }
+    
+    MACRO_GETTER_PTR(ID3D11ShaderResourceView, GetSrv, m_pSrv);
+    MACRO_GETTER_PTR(ID3D11RenderTargetView,   GetRtv, m_pRtv);
+    MACRO_GETTER_PTR(ID3D11DepthStencilView,   GetDsv, m_pDsv);
+    MACRO_GETTER_PTR_ADDR(ID3D11ShaderResourceView, GetSrvAddress, &m_pSrv);
+    MACRO_GETTER_PTR_ADDR(ID3D11RenderTargetView,   GetRtvAddress, &m_pRtv);
+    MACRO_GETTER_PTR_ADDR(ID3D11DepthStencilView,   GetDsvAddress, &m_pDsv);
 
     const std::string& GetFilePath() const noexcept {
         return m_filePath;
@@ -35,46 +43,6 @@ public:
     const D3D11_TEXTURE2D_DESC& GetTextureDesc() const noexcept {
         return m_texture2dDesc;
     }
-
-    ID3D11ShaderResourceView* GetSrv() noexcept {
-        return m_pSrv;
-    }
-    const ID3D11ShaderResourceView* GetSrv() const noexcept {
-        return m_pSrv;
-    }
-    ID3D11ShaderResourceView** GetSrvAddress() noexcept {
-        return &m_pSrv;
-    }
-    ID3D11ShaderResourceView* const* GetSrvAddress() const noexcept {
-        return &m_pSrv;
-    }
-
-    ID3D11RenderTargetView* GetRtv() noexcept {
-        return m_pRtv;
-    }
-    const ID3D11RenderTargetView* GetRtv() const noexcept {
-        return m_pRtv;
-    }
-    ID3D11RenderTargetView** GetRtvAddress() noexcept {
-        return &m_pRtv;
-    }
-    ID3D11RenderTargetView* const* GetRtvAddress() const noexcept {
-        return &m_pRtv;
-    }
-
-    ID3D11DepthStencilView* GetDsv() noexcept {
-        return m_pDsv;
-    }
-    const ID3D11DepthStencilView* GetDsv() const noexcept {
-        return m_pDsv;
-    }
-    ID3D11DepthStencilView** GetDsvAddress() noexcept {
-        return &m_pDsv;
-    }
-    ID3D11DepthStencilView* const* GetDsvAddress() const noexcept {
-        return &m_pDsv;
-    }
-
     ID3D11Texture2D* GetTexture() const {
         if (!m_pSrv) {
             return nullptr;
@@ -279,11 +247,11 @@ private:
     ID3D11Device*             m_pDev = nullptr;
     ID3D11DeviceContext*      m_pCtx = nullptr;
 
-    std::string               m_filePath;
-    D3D11_TEXTURE2D_DESC      m_texture2dDesc{};
     ID3D11ShaderResourceView* m_pSrv = nullptr;
     ID3D11RenderTargetView*   m_pRtv = nullptr;
     ID3D11DepthStencilView*   m_pDsv = nullptr;
+    std::string               m_filePath;
+    D3D11_TEXTURE2D_DESC      m_texture2dDesc{};
 
 };
 
@@ -294,33 +262,18 @@ public:
     DirectX11RenderTarget(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_pDev(dev)
         , m_pCtx(ctx)
-    {}
+    {
+        if (!m_pDev || !m_pCtx) {
+            assert::ShowError(ASSERT_FILE_LINE, "device or device context is nullptr");
+        }
+    }
     virtual ~DirectX11RenderTarget() noexcept {
         Release();
     }
-
-    std::shared_ptr<DirectX11Texture> GetBackBuffer() noexcept {
-        return m_spBackBuffer;
-    }
-    std::shared_ptr<const DirectX11Texture> GetBackBuffer() const noexcept {
-        return m_spBackBuffer;
-    }
-    std::shared_ptr<DirectX11Texture> GetZBuffer() noexcept {
-        return m_spZBuffer;
-    }
-    std::shared_ptr<const DirectX11Texture> GetZBuffer() const noexcept {
-        return m_spZBuffer;
-    }
-    const D3D11_VIEWPORT& GetViewport() const noexcept {
-        return m_viewport;
-    }
-
-    void Release() noexcept {
-        m_spBackBuffer.reset();
-        m_spBackBuffer = nullptr;
-        m_spZBuffer.reset();
-        m_spZBuffer = nullptr;
-    }
+    
+    MACRO_GETTER_SHARED_PTR(DirectX11Texture, GetBackBuffer, m_spBackBuffer);
+    MACRO_GETTER_SHARED_PTR(DirectX11Texture, GetZBuffer,    m_spZBuffer);
+    MACRO_GETTER_CONST_REF(D3D11_VIEWPORT, GetViewport, m_viewport);
 
     void GetFromCurrent() {
         Release();
@@ -375,6 +328,13 @@ public:
 
 private:
 
+    void Release() noexcept {
+        m_spBackBuffer.reset();
+        m_spBackBuffer = nullptr;
+        m_spZBuffer.reset();
+        m_spZBuffer = nullptr;
+    }
+
     ID3D11Device*                     m_pDev         = nullptr;
     ID3D11DeviceContext*              m_pCtx         = nullptr;
 
@@ -391,7 +351,11 @@ public:
     DirectX11RenderTargetChanger(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_pDev(dev)
         , m_pCtx(ctx)
-    {}
+    {
+        if (!m_pDev || !m_pCtx) {
+            assert::ShowError(ASSERT_FILE_LINE, "device or device context is nullptr");
+        }
+    }
     ~DirectX11RenderTargetChanger() noexcept {
         Release();
     }
@@ -415,12 +379,12 @@ public:
         }
     }
 
+private:
+
     void Release() noexcept {
         m_spSaveRT.reset();
         m_spSaveRT = nullptr;
     }
-
-private:
 
     ID3D11Device*                          m_pDev = nullptr;
     ID3D11DeviceContext*                   m_pCtx = nullptr;
