@@ -36,13 +36,9 @@ public:
     MACRO_GETTER_PTR_ADDR(ID3D11ShaderResourceView, GetSrvAddress, &m_pSrv);
     MACRO_GETTER_PTR_ADDR(ID3D11RenderTargetView,   GetRtvAddress, &m_pRtv);
     MACRO_GETTER_PTR_ADDR(ID3D11DepthStencilView,   GetDsvAddress, &m_pDsv);
-
-    const std::string& GetFilePath() const noexcept {
-        return m_filePath;
-    }
-    const D3D11_TEXTURE2D_DESC& GetTextureDesc() const noexcept {
-        return m_texture2dDesc;
-    }
+    
+    MACRO_GETTER_CONST_REF(std::string, GetFilePath, m_filePath);
+    MACRO_GETTER_CONST_REF(D3D11_TEXTURE2D_DESC, GetTextureDesc, m_texture2dDesc);
     ID3D11Texture2D* GetTexture() const {
         if (!m_pSrv) {
             return nullptr;
@@ -244,8 +240,8 @@ private:
         memory::SafeRelease(&m_pDsv);
     }
 
-    ID3D11Device*             m_pDev = nullptr;
-    ID3D11DeviceContext*      m_pCtx = nullptr;
+    ID3D11Device*        m_pDev = nullptr;
+    ID3D11DeviceContext* m_pCtx = nullptr;
 
     ID3D11ShaderResourceView* m_pSrv = nullptr;
     ID3D11RenderTargetView*   m_pRtv = nullptr;
@@ -262,11 +258,7 @@ public:
     DirectX11RenderTarget(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_pDev(dev)
         , m_pCtx(ctx)
-    {
-        if (!m_pDev || !m_pCtx) {
-            assert::ShowError(ASSERT_FILE_LINE, "device or device context is nullptr");
-        }
-    }
+    {}
     virtual ~DirectX11RenderTarget() noexcept {
         Release();
     }
@@ -335,8 +327,8 @@ private:
         m_spZBuffer = nullptr;
     }
 
-    ID3D11Device*                     m_pDev         = nullptr;
-    ID3D11DeviceContext*              m_pCtx         = nullptr;
+    ID3D11Device*        m_pDev = nullptr;
+    ID3D11DeviceContext* m_pCtx = nullptr;
 
     std::shared_ptr<DirectX11Texture> m_spBackBuffer = nullptr;
     std::shared_ptr<DirectX11Texture> m_spZBuffer    = nullptr;
@@ -351,11 +343,7 @@ public:
     DirectX11RenderTargetChanger(ID3D11Device* dev, ID3D11DeviceContext* ctx)
         : m_pDev(dev)
         , m_pCtx(ctx)
-    {
-        if (!m_pDev || !m_pCtx) {
-            assert::ShowError(ASSERT_FILE_LINE, "device or device context is nullptr");
-        }
-    }
+    {}
     ~DirectX11RenderTargetChanger() noexcept {
         Release();
     }
@@ -386,8 +374,8 @@ private:
         m_spSaveRT = nullptr;
     }
 
-    ID3D11Device*                          m_pDev = nullptr;
-    ID3D11DeviceContext*                   m_pCtx = nullptr;
+    ID3D11Device*        m_pDev = nullptr;
+    ID3D11DeviceContext* m_pCtx = nullptr;
 
     std::shared_ptr<DirectX11RenderTarget> m_spSaveRT = nullptr;
 
