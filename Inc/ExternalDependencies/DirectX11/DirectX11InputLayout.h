@@ -40,12 +40,15 @@ public:
         }
     }
     
-    bool Create(ID3DBlob* blob) {
-        if (FAILED(m_pDev->CreateInputLayout(&m_inputElementDesc[0], static_cast<UINT>(m_inputElementDesc.size()), blob->GetBufferPointer(), blob->GetBufferSize(), &m_pInputLayout))) {
+    bool Create(const void* shader_bytecode, SIZE_T bytecode_length) {
+        if (FAILED(m_pDev->CreateInputLayout(&m_inputElementDesc.front(), static_cast<UINT>(m_inputElementDesc.size()), shader_bytecode, bytecode_length, &m_pInputLayout))) {
             assert::ShowError(ASSERT_FILE_LINE, "input layout create failed");
             return false;
         }
         return true;
+    }
+    bool Create(ID3DBlob* blob) {
+        return Create(blob->GetBufferPointer(), blob->GetBufferSize());
     }
 
     void Set() {
