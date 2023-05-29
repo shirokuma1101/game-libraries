@@ -31,7 +31,7 @@ public:
         Release();
     }
 
-    template<class Func, class Inst, class...Args>
+    template<class Func, class Inst, class... Args>
     ID Create(Func func, Inst inst, Args... args) const {
         auto thread = std::make_unique<SimpleUniqueThread>();
         thread->Create(func, inst, args...);

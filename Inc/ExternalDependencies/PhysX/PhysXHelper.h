@@ -80,9 +80,9 @@ namespace physx_helper {
     template<class VArray>
     inline physx::PxConvexMesh* ToPxConvexMesh(physx::PxPhysics* physics, physx::PxCooking* cooking, const VArray& vertices) {
         physx::PxConvexMeshDesc px_mesh_desc;
-        px_mesh_desc.points.count  = static_cast<physx::PxU32>(vertices.size());;
+        px_mesh_desc.points.count  = static_cast<physx::PxU32>(vertices.size());
         px_mesh_desc.points.stride = sizeof(VArray::value_type);
-        px_mesh_desc.points.data   = &vertices[0];;
+        px_mesh_desc.points.data   = &vertices[0];
         px_mesh_desc.flags         = physx::PxConvexFlag::eCOMPUTE_CONVEX;
 
         physx::PxDefaultMemoryOutputStream write_buffer;
@@ -144,8 +144,7 @@ namespace physx_helper {
         physx::PxPhysics*         physics,
         const physx::PxTransform& transform = physx::PxTransform(physx::PxIdentity)
     ) {
-        physx::PxRigidDynamic* rigid_dynamic = physics->createRigidDynamic(transform);
-        return rigid_dynamic;
+        return physics->createRigidDynamic(transform);
     }
 
     inline physx::PxRigidDynamic* IsDynamic(physx::PxRigidActor* actor) {
