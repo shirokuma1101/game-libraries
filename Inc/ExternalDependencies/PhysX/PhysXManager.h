@@ -58,14 +58,15 @@ public:
                 if (!m_pCudaCtxMgr->contextIsValid()) {
                     memory::SafeRelease(&m_pCudaCtxMgr);
                 }
+                else {
+                    scene_desc.cudaContextManager = m_pCudaCtxMgr;
+                    scene_desc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
+                    scene_desc.flags |= physx::PxSceneFlag::eENABLE_PCM;
+                    scene_desc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
+                    scene_desc.flags |= physx::PxSceneFlag::eENABLE_STABILIZATION;
+                    scene_desc.gpuMaxNumPartitions = 8;
+                }
             }
-
-            scene_desc.cudaContextManager = m_pCudaCtxMgr;
-            scene_desc.broadPhaseType = physx::PxBroadPhaseType::eGPU;
-            scene_desc.flags |= physx::PxSceneFlag::eENABLE_PCM;
-            scene_desc.flags |= physx::PxSceneFlag::eENABLE_GPU_DYNAMICS;
-            scene_desc.flags |= physx::PxSceneFlag::eENABLE_STABILIZATION;
-            scene_desc.gpuMaxNumPartitions = 8;
         }
 
         m_pScene = m_pPhysics->createScene(scene_desc);
@@ -78,7 +79,7 @@ public:
         }
 
         m_pMaterials.emplace("default", m_pPhysics->createMaterial(0.5f, 0.5f, 0.5f));
-        
+
         if (create_plane) {
             AddActor(StaticPlane());
         }
@@ -113,7 +114,7 @@ public:
     * Geometry manual
     * URL:"https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/Geometry.html"
     *****************************************************************************************************/
-    
+
     physx::PxShape* Sphere(float radius, std::string_view material_name = "") {
         return m_pPhysics->createShape(physx::PxSphereGeometry(radius), *FindMaterial(material_name));
     }
@@ -145,7 +146,7 @@ public:
     physx::PxTriangleMesh* ToPxTriangleMesh(const VArray& vertices, const TArray& triangles) {
         return physx_helper::ToPxTriangleMesh(m_pPhysics, m_pCooking, vertices, triangles);
     }
-    
+
     physx::PxRigidStatic* CreateStatic(
         const DirectX::SimpleMath::Vector3&    position   = DirectX::SimpleMath::Vector3::Zero,
         const DirectX::SimpleMath::Quaternion& quaternion = DirectX::SimpleMath::Quaternion::Identity
