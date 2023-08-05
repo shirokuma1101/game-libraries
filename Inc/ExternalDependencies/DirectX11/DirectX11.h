@@ -120,28 +120,18 @@ private:
             assert::ShowError(ASSERT_FILE_LINE, "Create factory failed.");
         }
 
-        UINT   limit          = 100; // 列挙上限
-        UINT   index          = 0;   // インデックス
-        UINT   gpu_number     = 0;   // GPU番号
-        SIZE_T gpu_max_memory = 0;   // 最大VRAM
+        UINT   gpu_number     = 0; // GPU番号
+        SIZE_T gpu_max_memory = 0; // 最大VRAM
 
-        while (true) {
+        for (UINT i = 0; m_cpFactory->EnumAdapters(i, m_cpAdapter.GetAddressOf()) != DXGI_ERROR_NOT_FOUND; ++i) {
             DXGI_ADAPTER_DESC ad{};
             SecureZeroMemory(&ad, sizeof(ad));
-
-            /* GPUを列挙 */
-            if (DXGI_ERROR_NOT_FOUND == m_cpFactory->EnumAdapters(index, m_cpAdapter.GetAddressOf())) break;
             m_cpAdapter->GetDesc(&ad);
 
-            /* 列挙したVRAMが大きかったら代入 */
             if (ad.DedicatedVideoMemory > gpu_max_memory) {
                 gpu_max_memory = ad.DedicatedVideoMemory;
-                gpu_number = index;
+                gpu_number = i;
             }
-
-            if (index >= limit) break;
-
-            ++index;
         }
 
         /* 決定したGPUを設定する */
