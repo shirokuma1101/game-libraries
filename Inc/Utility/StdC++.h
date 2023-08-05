@@ -18,12 +18,12 @@
  */
 
 // Concepts library
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <concepts>
 #endif
 
 // Coroutines library
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <coroutine>
 #endif
 
@@ -38,34 +38,34 @@
 #include <functional>
 #include <typeinfo>
 #include <utility>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <chrono>
 #include <initializer_list>
 #include <tuple>
 #include <type_traits>
 #include <typeindex>
 #endif
-#if __cplusplus >= MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP17
 #include <any>
 #include <optional>
 #include <variant>
 #endif
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <compare>
 #include <source_location>
 #include <version>
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <expected>
 #endif
 
 // Dynamic memory management
 #include <memory>
 #include <new>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <scoped_allocator>
 #endif
-#if __cplusplus >= MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP17
 #include <memory_resource>
 #endif
 
@@ -73,11 +73,11 @@
 #include <cfloat>
 #include <climits>
 #include <limits>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <cinttypes>
 #include <cstdint>
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <stdfloat>
 #endif
 
@@ -86,10 +86,10 @@
 #include <cerrno>
 #include <exception>
 #include <stdexcept>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <system_error>
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <stacktrace>
 #endif
 
@@ -99,14 +99,14 @@
 #include <cwchar>
 #include <cwctype>
 #include <string>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <cuchar>
 #endif
-#if __cplusplus >= MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP17
 #include <charconv>
 #include <string_view>
 #endif
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <format>
 #endif
 
@@ -118,16 +118,16 @@
 #include <set>
 #include <stack>
 #include <vector>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <array>
 #include <forward_list>
 #include <unordered_map>
 #include <unordered_set>
 #endif
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <span>
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <flat_map>
 #include <flat_set>
 #include <mdspan>
@@ -137,16 +137,16 @@
 #include <iterator>
 
 // Ranges library
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <ranges>
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <generator>
 #endif
 
 // Algorithms library
 #include <algorithm>
-#if __cplusplus >= MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP17
 #include <execution>
 #endif
 
@@ -155,12 +155,12 @@
 #include <complex>
 #include <numeric>
 #include <valarray>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <cfenv>
 #include <random>
 #include <ratio>
 #endif
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <bit>
 #include <numbers>
 #endif
@@ -168,7 +168,7 @@
 // Localization library
 #include <clocale>
 #include <locale>
-#if __cplusplus >= MACRO_CPP11 && __cplusplus < MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP11 && CPP_VERSION < MACRO_CPP17
 #include <codecvt> // deprecated in C++17
 #endif
 
@@ -183,43 +183,43 @@
 #include <ostream>
 #include <sstream>
 #include <streambuf>
-#if __cplusplus < MACRO_CPP98
+#if CPP_VERSION < MACRO_CPP98
 #include <strstream> // deprecated in C++98
 #endif
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <syncstream>
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <print>
 #include <spanstream>
 #endif
 
 // Filesystem library
-#if __cplusplus >= MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP17
 #include <filesystem>
 #endif
 
 // Regular Expressions library
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <regex>
 #endif
 
 // Atomic Operations library
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <atomic>
 #endif
 
 // Thread support library
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <condition_variable>
 #include <future>
 #include <mutex>
 #include <thread>
 #endif
-#if __cplusplus >= MACRO_CPP14
+#if CPP_VERSION >= MACRO_CPP14
 #include <shared_mutex>
 #endif
-#if __cplusplus >= MACRO_CPP20
+#if CPP_VERSION >= MACRO_CPP20
 #include <barrier>
 #include <latch>
 #include <semaphore>
@@ -244,7 +244,7 @@
 #include <time.h>   // Behaves as if each name from <ctime> is placed in global namespace
 #include <wchar.h>  // Behaves as if each name from <cwchar> is placed in global namespace
 #include <wctype.h> // Behaves as if each name from <cwctype> is placed in global namespace
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 #include <fenv.h>     // Behaves as if each name from <cfenv> is placed in global namespace
 #include <inttypes.h> // Behaves as if each name from <cinttypes> is placed in global namespace
 #include <stdint.h>   // Behaves as if each name from <cstdint> is placed in global namespace
@@ -252,28 +252,28 @@
 #endif
 
 // Special C compatibility headers
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 //#include <complex.h>
 //#include <tgmath.h>
 #endif
-#if __cplusplus >= MACRO_CPP11 && __cplusplus < MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP11 && CPP_VERSION < MACRO_CPP17
 #include <ccomplex> // deprecated in C++17 / removed in C++20
 #include <ctgmath> // deprecated in C++17 / removed in C++20
 #endif
-#if __cplusplus >= MACRO_CPP23
+#if CPP_VERSION >= MACRO_CPP23
 #include <stdatomic.h>
 #endif
 
 // Meaningless C headers
 #include <iso646.h>
-#if __cplusplus >= MACRO_CPP11
+#if CPP_VERSION >= MACRO_CPP11
 //#include <stdalign.h>
 //#include <stdbool.h>
 #endif
-#if __cplusplus >= MACRO_CPP11 && __cplusplus < MACRO_CPP17
+#if CPP_VERSION >= MACRO_CPP11 && CPP_VERSION < MACRO_CPP17
 #include <cstdalign> // deprecated in C++17 / removed in C++20
 #include <cstdbool> // deprecated in C++17 / removed in C++20
 #endif
-#if __cplusplus < MACRO_CPP20
+#if CPP_VERSION < MACRO_CPP20
 #include <ciso646> // removed in C++20
 #endif

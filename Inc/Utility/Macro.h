@@ -14,6 +14,12 @@
 #define GAME_LIBRARIES_UTILITY_MACRO_H_
 
 /**
+ * @brief Macro to check version of C++.
+ * @note If using visual studio, C/C++ -> command line -> Additional options -> /Zc:__cplusplus
+ */
+#define CPP_VERSION __cplusplus
+
+/**
  * @brief Macro to check if the compiler is C++98.
  */
 #define MACRO_CPP98 199711L
