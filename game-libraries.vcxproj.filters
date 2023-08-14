@@ -61,6 +61,12 @@
     <Filter Include="Inc\Thread\SimpleThreadManager">
       <UniqueIdentifier>{8e9a24af-b7b0-4947-a29f-fb34a83172de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Inc\ExternalDependencies\Gltf">
+      <UniqueIdentifier>{63b206d3-38e4-44bd-9737-12b466cdf25f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inc\ExternalDependencies\Window">
+      <UniqueIdentifier>{aca11485-5642-46c8-a788-647ac8ad1fdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test\TestUtility.h">
@@ -204,18 +210,25 @@
     <ClInclude Include="Inc\ExternalDependencies\DirectX11\DirectX11Ex.h">
       <Filter>Inc\ExternalDependencies\DirectX11</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\Gltf\Material.h">
+      <Filter>Inc\ExternalDependencies\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\Gltf\Mesh.h">
+      <Filter>Inc\ExternalDependencies\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\Gltf\Model.h">
+      <Filter>Inc\ExternalDependencies\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\Gltf\GltfLoader.h">
+      <Filter>Inc\ExternalDependencies\Gltf</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\ExternalDependencies\Window\Window.h">
+      <Filter>Inc\ExternalDependencies\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test\TestMain.cpp">
       <Filter>Test</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Asset\asset.json">
-      <Filter>Asset</Filter>
-    </None>
-    <None Include="Asset\test.json">
-      <Filter>Asset</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -29,14 +29,14 @@ public:
     virtual ~DirectX11Texture() {
         Release();
     }
-    
+
     MACRO_GETTER_PTR(ID3D11ShaderResourceView, GetSrv, m_pSrv);
     MACRO_GETTER_PTR(ID3D11RenderTargetView,   GetRtv, m_pRtv);
     MACRO_GETTER_PTR(ID3D11DepthStencilView,   GetDsv, m_pDsv);
     MACRO_GETTER_PTR_ADDR(ID3D11ShaderResourceView, GetSrvAddress, &m_pSrv);
     MACRO_GETTER_PTR_ADDR(ID3D11RenderTargetView,   GetRtvAddress, &m_pRtv);
     MACRO_GETTER_PTR_ADDR(ID3D11DepthStencilView,   GetDsvAddress, &m_pDsv);
-    
+
     MACRO_GETTER_CONST_REF(std::string, GetFilePath, m_filePath);
     MACRO_GETTER_CONST_REF(D3D11_TEXTURE2D_DESC, GetTextureDesc, m_texture2dDesc);
     ID3D11Texture2D* GetTexture() const {
@@ -105,7 +105,7 @@ public:
             bind_flags,
             0,
             0,
-            false,
+            DirectX::CREATETEX_FLAGS::CREATETEX_DEFAULT,
             (ID3D11Resource**)&texture2d
         ))) {
             return false;
@@ -262,7 +262,7 @@ public:
     virtual ~DirectX11RenderTarget() noexcept {
         Release();
     }
-    
+
     MACRO_GETTER_SHARED_PTR(DirectX11Texture, GetBackBuffer, m_spBackBuffer);
     MACRO_GETTER_SHARED_PTR(DirectX11Texture, GetZBuffer,    m_spZBuffer);
     MACRO_GETTER_CONST_REF(D3D11_VIEWPORT, GetViewport, m_viewport);
