@@ -42,7 +42,7 @@ namespace templates {
      * @return true if the type has the member function, false otherwise.
      */
     template<class T, class Func>
-    constexpr auto HasFunc(Func&& f) noexcept ->decltype(f(std::declval<T>()), true) {
+    constexpr auto HasFunc(Func&& f) noexcept -> decltype(f(std::declval<T>()), true) {
         return true;
     }
     /**
@@ -59,7 +59,7 @@ namespace templates {
      * @param type The type to check for the member function.
      * @param func The name of the member function to check for.
      */
-    #define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj)->decltype(obj.func){})
+    #define TEMPLATES_HAS_FUNC(type, func) templates::HasFunc<type>([](auto&& obj) -> decltype(obj.func) {})
 
     /**
      * @brief Tests whether a object of type T can be cast to type U.
@@ -68,7 +68,7 @@ namespace templates {
      * @return Returns true if the object of type T can be successfully cast to type U, false otherwise.
      */
     template<class T, class U>
-    constexpr auto IsCastable() noexcept ->decltype(static_cast<U>(std::declval<T>())) {
+    constexpr auto IsCastable() noexcept -> decltype(static_cast<U>(std::declval<T>())) {
         return true;
     }
     /**
